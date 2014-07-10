@@ -15,27 +15,23 @@ public class NetManager : Controller {
 		RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_VERSION, OnHandleGetVersion);
 		//RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_HEART, OnHandleSendHeart);
 		RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_REGIST, OnHandleRegist);
-		RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_HTTP_LOGIN, OnHandleHttpLogin);
-		RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_SOCKET_LOGIN, OnHandleSocketLogin);
-		RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_TASKID, OnHandleSendTask);
+		RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_LOGIN, OnHandleSocketLogin);
 
 		RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_TALK, OnHandle_SendTalk);
 		
-		RegistEvent(GameEvent.WebEvent.EVENT_WEB_LOGIN_SUCCESS, OnHandle_LoginSuccess);
+		RegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, OnHandle_LoginSuccess);
 	}
 	void OnDisable()
 	{
 		UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_VERSION, OnHandleGetVersion);
 		//UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_HEART, OnHandleSendHeart);
 		UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_REGIST ,OnHandleRegist);
-		UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_HTTP_LOGIN, OnHandleHttpLogin);
-		UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_SOCKET_LOGIN, OnHandleSocketLogin);
-		UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_TASKID, OnHandleSendTask);
+        UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_LOGIN, OnHandleSocketLogin);
 
 		UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_TALK, OnHandle_SendTalk);
-		
-		
-		UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_LOGIN_SUCCESS, OnHandle_LoginSuccess);
+
+
+        UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, OnHandle_LoginSuccess);
 	}
 	void Awake()
 	{
@@ -97,7 +93,7 @@ public class NetManager : Controller {
 		tmpJson.Dictionary.Add("task_id",(int)pSender);
 		tmpJson.Dictionary.Add("reward_message","[kl]you get\na reward!");
 
-		this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_TASKID,tmpJson);
+		//this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_TASKID,tmpJson);
 		return null;
 	}
 }

@@ -59,7 +59,7 @@ namespace NetMobile
 				isSocketDisconnect = true;
 				LogManager.Log("Talk_Connect Server Success");
 
-				this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_SOCKET_LOGIN,SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_SOCKET_LOGIN));
+                this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_LOGIN, SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_LOGIN));
 
 				IsInConnect = false;
 				return true;

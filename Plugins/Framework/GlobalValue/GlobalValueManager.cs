@@ -27,7 +27,7 @@ public class GlobalValueManager : MonoBehaviour {
 //	public static string SID = "8e9d3ac5e674a70e3428844646001877";
 //	public static int ID = 23;
 	
-	public static string SID = "asfasd";
+	public static string SID = "default";
 	public static int ID = 213;
 	public static string MD5_Key = "A55FC7E57F596C430009F898F9494767";
 	public static string UDID = "134578913";

@@ -39,7 +39,7 @@ public class CSharpHtmlInterface : NetBase {
 			{
 				Debug.Log("TimeOut");
 				m_bIsStop = true;
-				SendEvent(GameEvent.WebEvent.EVENT_WEB_CARRIER_TIME_OUT,null);
+				SendEvent(GameEvent.WebEvent.EVENT_WEB_NOT_REACHABLE,null);
 				
 				if(m_pHandleCount.IsRetain())
 					EndPost();
