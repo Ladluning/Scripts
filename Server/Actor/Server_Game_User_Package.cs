@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 namespace Server
 {
-    public class Server_Game_User_Package : Server_Game_User_Data
+    public class Server_Game_User_Package : Server_Game_User_Serialize
     {
         List<Struct_Item_Base> mItemList = new List<Struct_Item_Base>();
         public void InitPackage()
@@ -100,21 +100,20 @@ namespace Server
             Struct_Item_Base TmpA = GetItemWithSlotPos(PosA);
             Struct_Item_Base TmpB = GetItemWithSlotPos(PosB);
 
-            if (TmpA != TmpB && TmpA != null && TmpB != null)
+            if(TmpA == TmpB)
+                return false;
+
+            if (TmpA != null)
             {
                 TmpA.mItemPosID = PosB;
+            }
+
+            if (TmpB != null)
+            {
                 TmpB.mItemPosID = PosA;
-                return true;
             }
 
             return true;
         }
-
-        void ConvertItemToJson(Struct_Item_Base Target)
-        { 
-            
-        }
-
-        //void ConvertPotion
     }
 }

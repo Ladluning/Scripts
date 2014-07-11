@@ -17,6 +17,8 @@ namespace Server
         Thread mReceive = null;
         protected List<byte> Msg = new List<byte>();
         public string ID;
+
+        bool mIsStop = true;
         public Server_User()
         {
 
@@ -30,6 +32,7 @@ namespace Server
 
         public void Close()
         {
+            mIsStop = true;
             mSocket.Close();
             mReceive.Abort();
         }
@@ -47,7 +50,7 @@ namespace Server
 
         public string GetSendMessage()
         {
-            if (mSendMsgList.Count > 0)
+            if (!mIsStop&&mSendMsgList.Count > 0)
                 return mSendMsgList[0];
 
             return "";
@@ -63,6 +66,8 @@ namespace Server
         {
             mReceive = new Thread(OnReceive);
             mReceive.Start();
+
+            mIsStop = false;
         }
 
         void OnReceive()

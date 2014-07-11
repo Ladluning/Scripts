@@ -142,6 +142,16 @@ using System.Collections.Specialized;
             return output;
         }
 
+        public static explicit operator float(JsonData data)
+        {
+            float output = 0;
+            if (data.m_value != null && float.TryParse(data.m_value.ToString(), out output))
+                return output;
+
+            Debug.Log("Not Containing a float");
+            return output;
+        }
+
         #endregion
 
         public int Count

@@ -7,19 +7,42 @@ namespace Server
     {
         [HideInInspector]
         public Server_User mServer;
-
+        [HideInInspector]
+        public Struct_Game_User_Info mDataInfo;
 
         public string ID;
 
-        protected Struct_Game_User_Info mDataInfo;
         protected bool mMarkAsChanged = true;
         protected Transform mCurrentTransform;
         protected Server_Manager mManager;
         protected Server_Game_User mSelf;
+
+        protected List<Server_Game_User> mVisibleList = new List<Server_Game_User>();
+
         protected virtual void Awake()
         {
             mManager = Server_Manager.Singleton();
             mCurrentTransform = transform;
+        }
+
+        protected virtual void OnEnable()
+        { 
+        
+        }
+
+        protected virtual void OnDisable()
+        { 
+            
+        }
+
+        public void SetChanged()
+        {
+            mMarkAsChanged = true;
+        }
+
+        public bool GetIsChanged()
+        {
+            return mMarkAsChanged;
         }
 
         protected void SetSelf(Server_Game_User Target)
@@ -64,7 +87,7 @@ namespace Server
             mDataInfo.WorldPos = mCurrentTransform.position;
         }
 
-        protected void UpdateBoard()
+        protected virtual void UpdateBoard()
         {
 
         }
