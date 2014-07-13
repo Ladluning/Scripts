@@ -6,33 +6,25 @@ namespace Server
 {
     public class Server_Game_Manager : Controller
     {
-        Server_Manager mManager;
-        List<Server_Game_User> mPlayerList;
+		private static Server_Game_Manager m_pInterface;
+		public static Server_Game_Manager Singleton()
+		{
+			return m_pInterface;
+		}
+		Server_Game_Manager()
+		{
+			m_pInterface = this;
+		}
 
-        public int PlayerVisibleRange = 400;
-        void Awake()
-        {
-            mManager = Server_Manager.Singleton();
-            mPlayerList = mManager.mPlayerList;
-        }
-
-
-        void Update()
-        {
-            for (int i = 0; i < mPlayerList.Count;i++ )
-            {
-                for (int j = i+1; j < mPlayerList.Count; j++)
-                {
-                    if (!mPlayerList[j].GetIsChanged() || !mPlayerList[i].GetIsChanged())
-                        continue;
-
-                    if ((mPlayerList[j].transform.position - mPlayerList[i].transform.position).sqrMagnitude < PlayerVisibleRange)
-                    {
-                        mPlayerList[j].AddVisiblePlayer(mPlayerList[i]);
-                        mPlayerList[i].AddVisiblePlayer(mPlayerList[j]);
-                    }
-                }
-            }
-        }
+		List<Server_Game_Scene_Manager> mSceneList = new List<Server_Game_Scene_Manager>();
+		public Server_Game_Scene_Manager GetSceneWithID(string SceneID)
+		{
+			for (int i=0; i<mSceneList.Count; i++) 
+			{
+				if(SceneID == mSceneList[i].gameObject.name)	
+					return mSceneList[i];
+			}
+			return null;
+		}
     }
 }
