@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Server
 {
-	public class Server_Game_Spawn_Point : MonoBehaviour 
+	public class Server_Game_Spawn_Enemy_Point : MonoBehaviour 
 	{
 		public Server_Struct_Spawn_Info[] mRefreshInfo;
 		public float mPointRange;
@@ -12,7 +12,15 @@ namespace Server
 
 		private Transform mCurrentTransform;
 		private float mRefreshTimer;
-		private float mNextRefreshTime;	
+		private float mNextRefreshTime;
+
+        public void Init()
+        {
+            for (int i = 0; i < mRefreshCount; i++)
+            { 
+                
+            }
+        }
 
 		void Update()
 		{

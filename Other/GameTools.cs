@@ -121,36 +121,47 @@ public class GameTools
    		 double y1 = -(p1.x - center.x) * Math.Sin(angle) + (p1.z - center.z) * Math.Cos(angle) + center.z;  
    		 p1.x = (float)x1;  
    		 p1.z = (float)y1;  
-	} 
-
-}
-
-
-public class GameObjectHelper
-{
-	
-	public static Transform FindChildInHierarchy (Transform parent, string name)
-	{
-		if (null == parent) {
-			return null;
-		}
-		
-		for (int i = 0; i < parent.childCount; i++) {
-			Transform childTrans = parent.GetChild (i);
-			if (childTrans.name == name) {
-				return childTrans;
-			} else {
-				Transform t = FindChildInHierarchy (childTrans, name);
-				if (t != null) {
-					return t;
-				}
-			}
-		}
-		
-		return null;
 	}
 
-	
+    public static Transform FindChildInHierarchy(Transform parent, string name)
+    {
+        if (null == parent)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform childTrans = parent.GetChild(i);
+            if (childTrans.name == name)
+            {
+                return childTrans;
+            }
+            else
+            {
+                Transform t = FindChildInHierarchy(childTrans, name);
+                if (t != null)
+                {
+                    return t;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static T FindComponentInHierarchy<T>(Transform Target)
+    { 
+        T tmpComponent = (T)(object)Target.GetComponent(typeof(T));
+        if (tmpComponent != null)
+            return tmpComponent;
+
+        if (Target.parent != null)
+            return FindComponentInHierarchy<T>(Target);
+        else
+            return default(T);
+    }
 }
+
 
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+// panel rect 1500 780   gridPos -739.7 354.7   8,7  1.04     rank scale 0.006
 public class Game_Scene_Visible_Manager : Controller {
 
     Dictionary<string, Client_User> mVisibleUserList = new Dictionary<string, Client_User>();
