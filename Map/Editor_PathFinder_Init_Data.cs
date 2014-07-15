@@ -41,6 +41,11 @@ public class Editor_PathFinder_Init_Data : EditorWindow
 		}
 		if(GUILayout.Button("StartInit"))
 		{
+			MinOffect_X = 999999;
+			MinOffect_Y = 999999;
+			MaxOffect_X = 0;
+			MaxOffect_Y = 0;
+
 			int beginTime = DateTime.Now.Millisecond+DateTime.Now.Second*1000;
 			BackgroundLayer = LayerMask.NameToLayer("Background");
 			ColliderLayer = LayerMask.NameToLayer("SceneCollider");
@@ -52,13 +57,13 @@ public class Editor_PathFinder_Init_Data : EditorWindow
 			RaycastHit(tmpStart.x,tmpStart.y);
 
 			Editor_MapData_Save.Save(Application.dataPath+"/Resources/MapDate/"+TargetName+".date",
-			                         0,(uint)mMapData.Count,0,0,1000,1000,mMapData.ToArray());
+			                         0,(uint)mMapData.Count,(short)MinOffect_X,(short)MinOffect_Y,(short)(MaxOffect_X-MinOffect_X),(short)(MaxOffect_Y-MinOffect_Y),mMapData.ToArray());
 
-			Debug.Log ("Init Over"+Count+" "+(DateTime.Now.Millisecond+DateTime.Now.Second*1000-beginTime));
+			Debug.Log ("Init Over"+Count+": "+MinOffect_X+" :"+MinOffect_Y+" :"+(MaxOffect_X-MinOffect_X)+" :"+(MaxOffect_Y-MinOffect_Y)+" :"+(DateTime.Now.Millisecond+DateTime.Now.Second*1000-beginTime));
 		}
 		if (GUILayout.Button ("Load")) 
 		{
-			Game_MapData_Manager.Singleton().InitMapData();
+			//Game_MapData_Manager.Singleton().InitMapData();
 			Editor_MapData_Save.Load(Application.dataPath+"/Resources/MapDate/"+TargetName+".date");
 		}
 		GUILayout.EndVertical();
@@ -69,6 +74,11 @@ public class Editor_PathFinder_Init_Data : EditorWindow
 //			DestroyImmediate(TargetStartPoint);
 //	}
 	Vector3 TargetHitPoint;
+	int MinOffect_X;
+	int MinOffect_Y;
+	int MaxOffect_X;
+	int MaxOffect_Y;
+
 
 	void RaycastHit(int x,int y)
 	{
@@ -85,9 +95,20 @@ public class Editor_PathFinder_Init_Data : EditorWindow
 		{
 			return;
 		}
+
+		if (x < MinOffect_X)
+			MinOffect_X = x;
+		if ((x+1) > MaxOffect_X)
+			MaxOffect_X = x+1;
+		if (y < MinOffect_Y)
+			MinOffect_Y = y;
+		if (y+1 > MaxOffect_Y)
+			MaxOffect_Y = y+1;
+
 		SaveNode tmpNode = new SaveNode ();
-		tmpNode.H_X = (short)x;
-		tmpNode.H_Y = (short)y;
+		tmpNode.Value = 1;
+		tmpNode.Map_X = (short)x;
+		tmpNode.Map_Y = (short)y;
 		tmpNode.WorldPosX = TargetHitPoint.x;
 		tmpNode.WorldPosY = TargetHitPoint.y;
 		tmpNode.WorldPosZ = TargetHitPoint.z;

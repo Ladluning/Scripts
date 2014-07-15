@@ -55,7 +55,7 @@ namespace Server
             if (TargetNode == null || x < 0 || y < 0 || x >= mMapSize.x || y >= mMapSize.y)
                 return;
             //Debug.Log (TargetNode.WorldPos);
-            mMapData[y - mMapOriOffect.y][x - mMapOriOffect.x] = TargetNode;
+            mMapData[x - mMapOriOffect.x][y - mMapOriOffect.y] = TargetNode;
         }
 
         public MapNode GetMapData(int x, int y)
@@ -63,7 +63,7 @@ namespace Server
             if (x < mMapOriOffect.x || y < mMapOriOffect.y || x >= mMapSize.x || y >= mMapSize.y)
                 return null;
 
-            return mMapData[y - mMapOriOffect.y][x - mMapOriOffect.x];
+            return mMapData[x - mMapOriOffect.x][y - mMapOriOffect.y];
         }
 
         public bool GetPointIsInMap(int x, int y)
@@ -103,18 +103,17 @@ namespace Server
             return new Vector3(x * mMapNodeSize.x, 0, y * mMapNodeSize.y);
         }
 
-        void OnDrawGizmos()
-        {
-            if (mMapData == null || mMapData.Count <= 0)
-                return;
-
-            for (int i = 0; i < mMapSize.x; ++i)
-                for (int j = 0; j < mMapSize.y; j++)
-                {
-                    if (mMapData[i][j] != null)
-                        Gizmos.DrawWireCube(mMapData[i+mMapOriOffect.x][j+mMapOriOffect.y].WorldPos, Vector3.one * 0.3f);
-
-                }
-        }
+		void OnDrawGizmos()
+		{
+			if (mMapData == null || mMapData.Count <= 0)
+				return;
+			
+			for (int i = 0; i < mMapSize.x-mMapOriOffect.x; ++i)
+				for (int j = 0; j < mMapSize.y-mMapOriOffect.y; j++)
+			{
+				if (mMapData[i][j] != null)
+					Gizmos.DrawWireCube(mMapData[i][j].WorldPos, Vector3.one * 0.3f);
+			}
+		}
     }
 }

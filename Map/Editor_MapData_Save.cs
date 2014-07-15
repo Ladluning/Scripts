@@ -7,11 +7,9 @@ using System.Runtime.InteropServices;
 [System.Serializable]
 public class SaveNode
 {
-	public byte D;
-	public int A;
-	public int E;
-	public short H_X;
-	public short H_Y;
+	public int Value;
+	public short Map_X;
+	public short Map_Y;
 	public float WorldPosX;
 	public float WorldPosY;
 	public float WorldPosZ;
@@ -87,11 +85,9 @@ public class Editor_MapData_Save : MonoBehaviour {
 		newArray.Put (request.MapSizeY);
 		for (int i=0; i<request.request.Length; i++) 
 		{
-			newArray.Put (request.request [i].A);
-			newArray.Put (request.request [i].D);
-			newArray.Put (request.request [i].E);
-			newArray.Put (request.request [i].H_X);
-			newArray.Put (request.request [i].H_Y);
+			newArray.Put (request.request [i].Value);
+			newArray.Put (request.request [i].Map_X);
+			newArray.Put (request.request [i].Map_Y);
 			newArray.Put (request.request [i].WorldPosX);
 			newArray.Put (request.request [i].WorldPosY);
 			newArray.Put (request.request [i].WorldPosZ);
@@ -112,18 +108,18 @@ public class Editor_MapData_Save : MonoBehaviour {
 		newArray.Get_ (out tmpInfo.MapOffectY);
 		newArray.Get_ (out tmpInfo.MapSizeX);
 		newArray.Get_ (out tmpInfo.MapSizeY);
+		Game_MapData_Manager.mMapOriOffect = new Int2 ((int)tmpInfo.MapOffectX, (int)tmpInfo.MapOffectY);
+		Game_MapData_Manager.Singleton().InitMapData ((int)tmpInfo.MapSizeX,(int)tmpInfo.MapSizeY);
 		//Debug.Log (tmpInfo.MapID+" "+tmpInfo.MapSizeX);
 		for(int i=0;i<tmpInfo.DateLength;i++)
 		{
 			MapNode tmpNode = new MapNode();
-			newArray.Get_(out tmpNode.A);
-			newArray.Get_(out tmpNode.D);
-			newArray.Get_(out tmpNode.E);
+			newArray.Get_(out tmpNode.Value);
 			short X;
 			short Y;
 			newArray.Get_(out X);
 			newArray.Get_(out Y);
-			tmpNode.H = new Int2((int)X,(int)Y);
+			tmpNode.MapPos = new Int2((int)X,(int)Y);
 			float A;
 			float B;
 			float C;
@@ -131,7 +127,7 @@ public class Editor_MapData_Save : MonoBehaviour {
 			newArray.Get_(out B);
 			newArray.Get_(out C);
 			tmpNode.WorldPos = new Vector3(A,B,C);
-			Game_MapData_Manager.Singleton().InsertMapData(tmpNode);
+			Game_MapData_Manager.Singleton().InsertMapData((int)X,(int)Y,tmpNode);
 		}
 	} 
 
