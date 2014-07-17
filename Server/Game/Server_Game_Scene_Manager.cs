@@ -7,27 +7,47 @@ namespace Server
 
     public class Server_Game_Scene_Manager : Server_Game_Scene_PathFinder
     {
-
 		private Server_Manager mManager;
-		private List<Server_Game_User> mPlayerList = new List<Server_Game_User>();
+
+        [HideInInspector]
+        public List<Server_Game_User> mPlayerList = new List<Server_Game_User>();
+        [HideInInspector]
+        public List<Server_Game_Enemy> mEnemyList = new List<Server_Game_Enemy>();
+
         private List<Server_Game_Spawn_Manager> mSpawnList = new List<Server_Game_Spawn_Manager>();
         private List<Server_Game_Transmit_Manager> mTransmitList = new List<Server_Game_Transmit_Manager>();
         void OnEnable()
         {
             this.RegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_PLAYER,OnHandleNewPlayer);
             this.RegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_PLAYER,OnHandleDestroyPlayer);
+            this.RegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_ENEMY,OnHandleNewEnemy);
+            this.RegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_ENEMY,OnHandleDestroyEnemy);
         }
 
         void OnDisable()
         {
             this.UnRegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_PLAYER, OnHandleNewPlayer);
             this.UnRegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_PLAYER, OnHandleDestroyPlayer);
+            this.UnRegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_ENEMY, OnHandleNewEnemy);
+            this.UnRegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_ENEMY, OnHandleDestroyEnemy);
         }
 
-		void Awake()
+		public override void Init()
 		{
+            base.Init();
+
 			mManager = Server_Manager.Singleton();
 			mPlayerList = mManager.mPlayerList;
+
+            Server_Game_Spawn_Manager[] tmpList = gameObject.GetComponentsInChildren<Server_Game_Spawn_Manager>();
+            for (int i = 0; i < tmpList.Length; i++)
+            {
+                mSpawnList.Add(tmpList[i]);
+            }
+            for (int i = 0; i < mSpawnList.Count; i++)
+            {
+                mSpawnList[i].InitSpawnPoint();
+            }
 		}
 
 		void Update()
@@ -73,9 +93,44 @@ namespace Server
             return null;
         }
 
+        object OnHandleNewEnemy(object pSender)
+        {
+            Server_Game_Enemy tmpUser = (Server_Game_Enemy)pSender;
+            if (!mEnemyList.Contains(tmpUser))
+            {
+                mEnemyList.Add(tmpUser);
+            }
+            else
+            {
+                Debug.LogError("Already Add Enemy: " /*+ tmpUser.ID*/);
+            }
+            return null;
+        }
+
+        object OnHandleDestroyEnemy(object pSender)
+        {
+            Server_Game_Enemy tmpUser = (Server_Game_Enemy)pSender;
+            if (mEnemyList.Contains(tmpUser))
+            {
+                mEnemyList.Remove(tmpUser);
+            }
+            return null;
+        }
+
         object OnHandleSwitchLevel(object pSender)
         {
             return null;
         }
+
+        public Server_Game_Transmit_Point GetTransmitPointWithID(string ID)
+        {
+            for (int i = 0; i < mTransmitList.Count; i++)
+            {
+                if (mTransmitList[i].GetTransmitWithID(ID)!=null)
+                    return mTransmitList[i].GetTransmitWithID(ID);
+            }
+            return null;
+        }
+
     }
 }

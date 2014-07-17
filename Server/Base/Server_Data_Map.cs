@@ -5,7 +5,7 @@ using System;
 
 namespace Server
 {
-    public class Server_Data_Map : MonoBehaviour
+    public class Server_Data_Map
     {
 
         [System.Serializable]
@@ -20,7 +20,7 @@ namespace Server
             public SaveNode[] request;
         }
 
-        static public bool Load(string Path)
+        static public bool Load(string Path,string SceneID)
         {
             FileStream fs = new FileStream(Path, FileMode.Open);
             if (fs == null)
@@ -32,14 +32,14 @@ namespace Server
             fs.Read(date, 0, (int)fs.Length);
 
             Debug.Log(fs.Length);
-            DeserializeBinary(date);
+            DeserializeBinary(date, SceneID);
 
             fs.Close();
 
             Debug.Log("Load Success");
             return true;
         }
-        static public void DeserializeBinary(byte[] buf)
+        static public void DeserializeBinary(byte[] buf, string SceneID)
         {
             ByteArray newArray = new ByteArray(buf);
 
@@ -51,7 +51,8 @@ namespace Server
             newArray.Get_(out tmpInfo.MapSizeX);
             newArray.Get_(out tmpInfo.MapSizeY);
 
-            Server_Game_Manager.Singleton().GetSceneWithID("Scene_" + tmpInfo.MapID.ToString()).InitMapData(tmpInfo.MapSizeX, tmpInfo.MapSizeY);
+            Server_Game_Manager.Singleton().GetSceneWithID(SceneID).mMapOriOffect = new Int2((int)tmpInfo.MapOffectX, (int)tmpInfo.MapOffectY);
+            Server_Game_Manager.Singleton().GetSceneWithID(SceneID).InitMapData(tmpInfo.MapSizeX, tmpInfo.MapSizeY);
             //Debug.Log (tmpInfo.MapID+" "+tmpInfo.MapSizeX);
             for (int i = 0; i < tmpInfo.DateLength; i++)
             {
@@ -69,7 +70,7 @@ namespace Server
                 newArray.Get_(out B);
                 newArray.Get_(out C);
                 tmpNode.WorldPos = new Vector3(A, B, C);
-                Server_Game_Manager.Singleton().GetSceneWithID("Scene_" + tmpInfo.MapID.ToString()).InsertMapData((int)X,(int)Y, tmpNode);
+                Server_Game_Manager.Singleton().GetSceneWithID(SceneID).InsertMapData((int)X, (int)Y, tmpNode);
             }
         }
     }

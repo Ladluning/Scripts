@@ -157,7 +157,7 @@ public class GameTools
             return tmpComponent;
 
         if (Target.parent != null)
-            return FindComponentInHierarchy<T>(Target);
+            return FindComponentInHierarchy<T>(Target.parent);
         else
             return default(T);
     }

@@ -9,6 +9,8 @@ namespace Server
         protected Dictionary<int, Server_Game_FSM_State_Base> mStateMap = new Dictionary<int, Server_Game_FSM_State_Base>();
         protected int mCurrentState = -1;
         protected bool mAIStop = false;
+        protected Server_Game_Scene_Manager mManager;
+
         protected virtual void Awake()
         {
 
@@ -45,6 +47,11 @@ namespace Server
                 return;
 
             mStateMap[mCurrentState].OnLoop();
+        }
+
+        protected virtual void OnDrawGizmos()
+        {
+            mStateMap[mCurrentState].OnDrawGizmos();
         }
 
     }

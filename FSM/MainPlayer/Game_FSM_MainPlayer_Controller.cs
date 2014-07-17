@@ -3,12 +3,12 @@ using System.Collections;
 
 public enum E_State_MainPlayer
 {
-	Idle = 0,
-	Move,
+    Idle = 0,
+    Move,
 }
 
 public class Game_FSM_MainPlayer_Controller: Game_FSM_Controller {
-	
+
 	// Use this for initialization
 	void OnEnable()
 	{

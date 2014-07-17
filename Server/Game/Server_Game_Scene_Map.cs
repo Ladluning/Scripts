@@ -18,6 +18,7 @@ namespace Server
 
     public class Server_Game_Scene_Map : Controller
     {
+        public string mSceneID;
         [HideInInspector]
         public List<List<MapNode>> mMapData = new List<List<MapNode>>();
         [HideInInspector]
@@ -25,9 +26,14 @@ namespace Server
         [HideInInspector]
         public Int2 mMapOriOffect = new Int2(0, 0);
         [HideInInspector]
-        public Int2 mMapSize = new Int2(1000, 1000);
+        public Int2 mMapSize = new Int2(0, 0);
         [HideInInspector]
         public int PlayerVisibleRange = 400;
+
+        public virtual void Init()
+        {
+            Server_Data_Manager.Singleton().LoadMapDataWithID(mSceneID);
+        }
 
         public void InitMapData(int x, int y)
         {
@@ -70,12 +76,16 @@ namespace Server
         {
             if (x < mMapOriOffect.x || y < mMapOriOffect.y || x >= mMapSize.x || y >= mMapSize.y)
                 return false;
+            if (mMapData[x - mMapOriOffect.x][y - mMapOriOffect.y] == null)
+                return false;
             return true;
         }
 
         public bool GetPointIsInMap(Int2 Pos)
         {
             if (Pos.x < mMapOriOffect.x || Pos.y < mMapOriOffect.y || Pos.x >= mMapSize.x || Pos.y >= mMapSize.y)
+                return false;
+            if (mMapData[Pos.x - mMapOriOffect.x][Pos.y - mMapOriOffect.y] == null)
                 return false;
             return true;
         }
@@ -84,6 +94,18 @@ namespace Server
         {
             Int2 tmpPos = ConvertWorldPosToMapPos(Pos);
             if (tmpPos.x < mMapOriOffect.x || tmpPos.y < mMapOriOffect.y || tmpPos.x >= mMapSize.x || tmpPos.y >= mMapSize.y)
+                return false;
+            if (mMapData[tmpPos.x - mMapOriOffect.x][tmpPos.y - mMapOriOffect.y] == null)
+                return false;
+            return true;
+        }
+
+        public bool GetPointIsInMap(Vector3 Pos)
+        {
+            Int2 tmpPos = ConvertWorldPosToMapPos(Pos);
+            if (tmpPos.x < mMapOriOffect.x || tmpPos.y < mMapOriOffect.y || tmpPos.x >= mMapSize.x || tmpPos.y >= mMapSize.y)
+                return false;
+            if (mMapData[tmpPos.x - mMapOriOffect.x][tmpPos.y - mMapOriOffect.y] == null)
                 return false;
             return true;
         }
@@ -98,9 +120,22 @@ namespace Server
             return new Int2(TargetPos.x / mMapNodeSize.x, TargetPos.y / mMapNodeSize.y);
         }
 
+        public Vector3 ConvertMapPosToWorldPos(Int2 Pos)
+        {
+            return mMapData[Pos.x - mMapOriOffect.x][Pos.y - mMapOriOffect.y].WorldPos;
+        }
+
         public Vector3 ConvertMapPosToWorldPos(int x, int y)
         {
-            return new Vector3(x * mMapNodeSize.x, 0, y * mMapNodeSize.y);
+            try
+            {
+                return mMapData[x - mMapOriOffect.x][y - mMapOriOffect.y].WorldPos;//new Vector3(x * mMapNodeSize.x, 0, y * mMapNodeSize.y);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.Log(x + " " + y + " :Is Null:" + ex);
+                return new Vector3(x * mMapNodeSize.x, 0, y * mMapNodeSize.y);
+            }
         }
 
 		void OnDrawGizmos()

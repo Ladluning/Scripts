@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Server_Game_Spawn_NPC_Point : MonoBehaviour {
+public class Server_Game_Spawn_Point_NPC : MonoBehaviour
+{
 
     public string mRefreshInfo;
 

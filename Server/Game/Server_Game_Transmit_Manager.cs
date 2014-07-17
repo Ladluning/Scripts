@@ -15,16 +15,16 @@ namespace Server
             }
         }
 
-        public string GetTransmitWithID(string ID)
+        public Server_Game_Transmit_Point GetTransmitWithID(string ID)
         {
             for (int i = 0; i < mTransmitList.Count; i++)
             {
                 if (ID == mTransmitList[i].name)
                 {
-                    return mTransmitList[i].GetTargetTransmit();
+                    return mTransmitList[i];
                 }
             }
-            return "";
+            return null;
         }
     }
 }

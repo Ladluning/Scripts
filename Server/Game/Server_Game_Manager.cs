@@ -16,6 +16,20 @@ namespace Server
 			m_pInterface = this;
 		}
 
+        void Awake()
+        {
+            Server_Game_Scene_Manager[] tmpList = gameObject.GetComponentsInChildren<Server_Game_Scene_Manager>();
+            for (int i = 0; i < tmpList.Length; i++)
+            {
+                mSceneList.Add(tmpList[i]);
+            }
+
+            for (int i = 0; i < mSceneList.Count; i++)
+            {
+                mSceneList[i].Init();
+            }
+        }
+
 		List<Server_Game_Scene_Manager> mSceneList = new List<Server_Game_Scene_Manager>();
 		public Server_Game_Scene_Manager GetSceneWithID(string SceneID)
 		{

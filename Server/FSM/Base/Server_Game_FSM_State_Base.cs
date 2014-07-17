@@ -98,5 +98,10 @@ namespace Server
         {
             return Facade.Singleton().SendEvent(EventID, pSender);
         }
+
+        public virtual void OnDrawGizmos()
+        { 
+            
+        }
     }
 }

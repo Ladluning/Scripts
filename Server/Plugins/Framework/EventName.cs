@@ -55,6 +55,9 @@ namespace Server
     {
         public uint EVENT_FIGHT_NEW_PLAYER = 0xc000000;
         public uint EVENT_FIGHT_DESTROY_PLAYER = 0xc000002;
+
+        public uint EVENT_FIGHT_NEW_ENEMY = 0xc000004;
+        public uint EVENT_FIGHT_DESTROY_ENEMY = 0xc000006;
     }
     public class EventSys
     {

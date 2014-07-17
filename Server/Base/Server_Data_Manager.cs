@@ -18,11 +18,12 @@ namespace Server
 
         Struct_Game_User mData;
         Server_Data_IO mIO;
-
+        //Server_Data_Map mMap;
         static string Path = "/User_Info.xml";
         void Awake()
         {
             mIO = new Server_Data_IO();
+            //mMap = new Server_Data_Map();
             object tmp = null;
             mIO.LoadData(Application.persistentDataPath + Path, ref tmp, typeof(Struct_Game_User));
 
@@ -65,6 +66,11 @@ namespace Server
             return tmpNewUser;
         }
 
+
+        public void LoadMapDataWithID(string ID)
+        {
+            Server_Data_Map.Load(Application.dataPath + "/Resources/MapDate/" + ID + ".date", ID);
+        }
 
     }
 }

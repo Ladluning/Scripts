@@ -6,11 +6,17 @@ namespace Server
 {
     public class Server_Game_Scene_PathFinder : Server_Game_Scene_Map
     {
+        [HideInInspector]
         public LinkedList<MapNode> FindList = new LinkedList<MapNode>();
+        [HideInInspector]
         public List<MapNode> CloseList = new List<MapNode>();
+        [HideInInspector]
         public List<Vector3> MovePath = new List<Vector3>();
+        [HideInInspector]
         public MapNode EndGrid;
+        [HideInInspector]
         public MapNode StartGrid;
+        [HideInInspector]
         public Int2 EndPos;
 
         public bool StartFindPath(Int2 start, Int2 end)
@@ -84,6 +90,7 @@ namespace Server
                     break;
                 //    MovePath.Add(Tmp.transform);
             }
+            MovePath.Add(this.ConvertMapPosToWorldPos(StartGrid.MapPos.x, StartGrid.MapPos.y));
             MovePath.Reverse();
         }
 
