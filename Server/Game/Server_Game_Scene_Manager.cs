@@ -37,24 +37,23 @@ namespace Server
             base.Init();
 
 			mManager = Server_Manager.Singleton();
-			mPlayerList = mManager.mPlayerList;
 
             Server_Game_Spawn_Manager[] tmpList = gameObject.GetComponentsInChildren<Server_Game_Spawn_Manager>();
-            for (int i = 0; i < tmpList.Length; i++)
+            for (int i = 0; i < tmpList.Length; ++i)
             {
                 mSpawnList.Add(tmpList[i]);
             }
-            for (int i = 0; i < mSpawnList.Count; i++)
+            for (int i = 0; i < mSpawnList.Count; ++i)
             {
                 mSpawnList[i].InitSpawnPoint();
             }
 		}
 
-		void Update()
+		void LateUpdate()
 		{
-			for (int i = 0; i < mPlayerList.Count;i++ )
+            for (int i = 0; i < mPlayerList.Count; ++i)
 			{
-				for (int j = i+1; j < mPlayerList.Count; j++)
+                for (int j = i + 1; j < mPlayerList.Count; ++j)
 				{
 					if (!mPlayerList[j].GetIsChanged() || !mPlayerList[i].GetIsChanged())
 						continue;
@@ -65,6 +64,17 @@ namespace Server
 						mPlayerList[i].AddVisiblePlayer(mPlayerList[j]);
 					}
 				}
+
+                for (int j = 0; j < mEnemyList.Count; ++j)
+                {
+                    if (mEnemyList[j].GetIsChanged() || mPlayerList[i].GetIsChanged())
+					{
+                    	if ((mEnemyList[j].transform.position - mPlayerList[i].transform.position).sqrMagnitude < PlayerVisibleRange)
+                   		{
+                       	 	mPlayerList[i].AddVisibleEnemy(mEnemyList[j]);
+                    	}
+					}
+                }
 			}
 		}
 
@@ -75,6 +85,7 @@ namespace Server
             if (!mPlayerList.Contains(tmpUser))
             {
                 mPlayerList.Add(tmpUser);
+				//Debug.LogError("Add Player: " + tmpUser.ID);
             }
             else
             {
@@ -96,13 +107,9 @@ namespace Server
         object OnHandleNewEnemy(object pSender)
         {
             Server_Game_Enemy tmpUser = (Server_Game_Enemy)pSender;
-            if (!mEnemyList.Contains(tmpUser))
+            if (tmpUser.mSceneID == mSceneID&&!mEnemyList.Contains(tmpUser))
             {
                 mEnemyList.Add(tmpUser);
-            }
-            else
-            {
-                Debug.LogError("Already Add Enemy: " /*+ tmpUser.ID*/);
             }
             return null;
         }
@@ -124,7 +131,7 @@ namespace Server
 
         public Server_Game_Transmit_Point GetTransmitPointWithID(string ID)
         {
-            for (int i = 0; i < mTransmitList.Count; i++)
+            for (int i = 0; i < mTransmitList.Count; ++i)
             {
                 if (mTransmitList[i].GetTransmitWithID(ID)!=null)
                     return mTransmitList[i].GetTransmitWithID(ID);

@@ -37,8 +37,9 @@ namespace Server
 
                 Server_Game_Enemy tmpEnemy = (Instantiate(TargetObject) as GameObject).GetComponent<Server_Game_Enemy>();
                 tmpEnemy.transform.parent = transform;
-                tmpEnemy.SceneID = mFather.mSceneID;
-                tmpEnemy.name = name + "_Enemy_" + (++mRefreshID);
+                tmpEnemy.mSceneID = mFather.mSceneID;
+                tmpEnemy.name = name + "_Enemy_" + (mRefreshID++);
+				tmpEnemy.mEnemyID = tmpEnemy.name;
                 tmpEnemy.transform.position = RefreshPoint;
                 tmpEnemy.Init();
             }

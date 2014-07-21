@@ -24,11 +24,15 @@ namespace Server
                 mSceneList.Add(tmpList[i]);
             }
 
-            for (int i = 0; i < mSceneList.Count; i++)
-            {
-                mSceneList[i].Init();
-            }
         }
+
+		void Start()
+		{
+			for (int i = 0; i < mSceneList.Count; i++)
+			{
+				mSceneList[i].Init();
+			}
+		}
 
 		List<Server_Game_Scene_Manager> mSceneList = new List<Server_Game_Scene_Manager>();
 		public Server_Game_Scene_Manager GetSceneWithID(string SceneID)

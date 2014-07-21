@@ -14,18 +14,15 @@ namespace Server
         Escape,
     }
 
-    public class Server_Game_FSM_Enemy_General_Controller : Server_Game_FSM_Controller
+    public class Server_Game_FSM_Enemy_General_Controller : Server_Game_FSM_Enemy_Base_Controller
     {
-        [HideInInspector]
-        public EnemyConfigInfo mEnemyInfo;
-        [HideInInspector]
-        public Server_Game_Enemy mFather;
+
         // Use this for initialization
         void OnEnable()
         {
 
         }
-
+        
         void OnDisable()
         {
 
@@ -59,5 +56,6 @@ namespace Server
         {
             base.Update();
         }
+
     }
 }

@@ -19,6 +19,11 @@ namespace Server
             mController = FSMController;
         }
 
+        public T GetController<T>()
+        {
+            return (T)(object)mController;
+        }
+
         public T GetComponent<T>()
         {
             if (mStateComonentList.ContainsKey(typeof(T)))

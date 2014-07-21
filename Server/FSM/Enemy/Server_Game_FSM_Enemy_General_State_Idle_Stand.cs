@@ -12,6 +12,7 @@ namespace Server
         public override void Init()
         {
             mStateComponent.Add("Server_Game_Object_SearchTarget");
+            mStateComponent.Add("Server_Game_Object_Animation");
             base.Init();
 
             GetComponent<Server_Game_Object_SearchTarget>().InitSearchType((uint)E_Actor_Type.Enemy);
@@ -22,7 +23,10 @@ namespace Server
         {
             base.OnEnter();
 
+			mStandTimer = 0;
             mStandTime = ((Server_Game_FSM_Enemy_General_Controller)mController).mEnemyInfo.IdleStandTime;
+
+            GetComponent<Server_Game_Object_Animation>().PlayAnimation("Idle");
         }
 
         public override void OnLoop() 
@@ -44,6 +48,7 @@ namespace Server
 
         public override void OnExit()
         {
+			mStandTimer = 0;
             base.OnExit();
         }
     }

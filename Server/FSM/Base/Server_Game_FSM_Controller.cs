@@ -24,13 +24,18 @@ namespace Server
             }
         }
 
-        public void StartState(int nStateID)
+        public int GetCurrentState()
+        {
+            return mCurrentState;
+        }
+
+        public virtual void StartState(int nStateID)
         {
             mCurrentState = nStateID;
             mStateMap[mCurrentState].OnEnter();
         }
 
-        public void SwitchState(int nNextState)
+        public virtual void SwitchState(int nNextState)
         {
             if (mCurrentState != null && nNextState != mCurrentState && mStateMap[mCurrentState].GetIsCouldTranslate(nNextState))
             {

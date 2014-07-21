@@ -11,11 +11,13 @@ public class Client_User : Controller {
     void OnEnable()
     {
         this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, OnHandleLogin);
+        this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_VISIBLE_DATA,OnHandleUpdateVisibleData);
     }
 
     void OnDisable()
     {
         this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, OnHandleLogin);
+        this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_VISIBLE_DATA, OnHandleUpdateVisibleData);
     }
 
     public void InitWithID(string Target)
@@ -49,6 +51,9 @@ public class Client_User : Controller {
         JsonData tmpJson = new JsonData(pSender);
         Debug.Log(MiniJSON.Json.Serialize(pSender));
 
+		if ((string)tmpJson ["results"] ["id"] != ID)
+			return null;
+
         transform.position = new Vector3((float)(tmpJson["results"]["pos_x"]), (float)(tmpJson["results"]["pos_y"]), (float)(tmpJson["results"]["pos_z"]));
 
         return pSender;
@@ -57,10 +62,82 @@ public class Client_User : Controller {
     object OnHandleReceiveUpdatePos(object pSender)
     {
         JsonData tmpJson = new JsonData(pSender);
+        if ((string)tmpJson["results"]["id"] != ID)
+            return null;
+
         Debug.Log(MiniJSON.Json.Serialize(pSender));
 
         transform.position = new Vector3((float)(tmpJson["results"]["pos_x"]), (float)(tmpJson["results"]["pos_y"]), (float)(tmpJson["results"]["pos_z"]));
         return null;
     }
 
+    Dictionary<string, GameObject> mPlayerList = new Dictionary<string, GameObject>();
+    Dictionary<string, GameObject> mEnemyList = new Dictionary<string, GameObject>();
+    object OnHandleUpdateVisibleData(object pSender)
+    {
+        JsonData tmpJson = new JsonData(pSender);
+
+        if ((string)tmpJson["results"]["id"] != ID)
+            return null;
+		//Debug.Log(MiniJSON.Json.Serialize(pSender));
+        for (int i = 0; i < tmpJson["results"]["visi_player"].Count; ++i)
+        {
+            HandlePlayerVisible(tmpJson["results"]["visi_player"][i]);
+        }
+        for (int i = 0; i < tmpJson["results"]["visi_enemy"].Count; ++i)
+        {
+            HandleEnemyVisible(tmpJson["results"]["visi_enemy"][i]);
+        }
+
+        return null;
+    }
+
+    void HandlePlayerVisible(JsonData Target)
+    {
+        GameObject tmpObject;
+        if (mPlayerList.ContainsKey((string)Target["id"]))
+        {
+            tmpObject = mPlayerList[(string)Target["id"]];
+        }
+        else
+        {
+            tmpObject = Instantiate(Resources.Load("Client/Actor/"+(string)Target["mesh"])) as GameObject;
+            mPlayerList.Add((string)Target["id"], tmpObject);
+        }
+        tmpObject.transform.position = new Vector3((float)Target["pos_x"], (float)Target["pos_y"], (float)Target["pos_z"]);
+        //tmpObject.transform.localEulerAngles = new Vector3((float)Target["rotate_x"], (float)Target["rotate_y"], (float)Target["rotate_z"]);
+
+        //Target["id"];
+        //Target["hp"];
+        //Target["mp"];
+        //Target["exp"];
+        //Target["mesh"];
+    }
+
+    void HandleEnemyVisible(JsonData Target)
+    {
+        GameObject tmpObject;
+        if (mEnemyList.ContainsKey((string)Target["id"]))
+        {
+            tmpObject = mEnemyList[(string)Target["id"]];
+        }
+        else
+        {
+            tmpObject = Instantiate(Resources.Load("Client/Actor/"+(string)Target["mesh"])) as GameObject;
+			mEnemyList.Add((string)Target["id"], tmpObject);
+        }
+        tmpObject.transform.position = new Vector3((float)Target["pos_x"], (float)Target["pos_y"], (float)Target["pos_z"]);
+        tmpObject.transform.localEulerAngles = new Vector3((float)Target["rotate_x"], (float)Target["rotate_y"], (float)Target["rotate_z"]);
+
+        //Target["scene"]
+        //Target["fsm"]
+        //Target["ani"]
+        //Target["hp"]
+        //Target["maxHP"]
+        //Target["mp"]
+        //Target["maxMP"]
+        //Target["attack"]
+        //Target["defend"]
+        //Target["exp"]
+    }
 }

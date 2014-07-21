@@ -17,7 +17,8 @@ namespace Server
         protected Server_Manager mManager;
         protected Server_Game_User mSelf;
 
-        protected List<Server_Game_User> mVisibleList = new List<Server_Game_User>();
+        protected List<Server_Game_User> mVisiblePlayerList = new List<Server_Game_User>();
+        protected List<Server_Game_Enemy> mVisibleEnemyList = new List<Server_Game_Enemy>();
 
         protected virtual void Awake()
         {
@@ -57,7 +58,7 @@ namespace Server
             StopDestroy();
         }
 
-        protected virtual void LateUpdate()
+        protected virtual void FixedUpdate()
         {
             UpdateMessage();
             UpdateChanged();

@@ -30,7 +30,12 @@ namespace Server
 
         public void AddVisiblePlayer(Server_Game_User Target)
         {
-            mVisibleList.Add(Target);
+            mVisiblePlayerList.Add(Target);
+        }
+
+        public void AddVisibleEnemy(Server_Game_Enemy Target)
+        {
+            mVisibleEnemyList.Add(Target);
         }
 
         public void InitWithID(string Target)
@@ -49,11 +54,14 @@ namespace Server
             SaveData();
         }
 
-        protected override void LateUpdate()
+        protected override void FixedUpdate()
         {
-            base.LateUpdate();
+            base.FixedUpdate();
 
-            mVisibleList.Clear();
+            RequireVisibleData();
+
+            mVisibleEnemyList.Clear();
+            mVisiblePlayerList.Clear();
         }
 
 
@@ -71,7 +79,7 @@ namespace Server
 
         protected override void UpdateBoard()
         {
-            RequireVisibleData();
+            
         }
     }
 }

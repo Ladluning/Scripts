@@ -10,6 +10,7 @@ namespace Server
             Dictionary<string, object> tmpSend = SerializeUserData();
             Dictionary<string, object> tmpStorage = SerializeStorageData();
 
+            ((Dictionary<string, object>)tmpSend["results"]).Add("id", ID);
             ((Dictionary<string, object>)tmpSend["results"]).Add("packages", ((Dictionary<string, object>)(tmpStorage["results"]))["packages"]);
 
             this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, tmpSend);
@@ -50,11 +51,13 @@ namespace Server
         public string RequirePosData()
         {
             Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_POS);
-
-            ((Dictionary<string, object>)tmpSend["results"]).Add("pos_x", mCurrentTransform.position.x);
-            ((Dictionary<string, object>)tmpSend["results"]).Add("pos_y", mCurrentTransform.position.y);
-            ((Dictionary<string, object>)tmpSend["results"]).Add("pos_z", mCurrentTransform.position.z);
-
+            ((Dictionary<string, object>)tmpSend["results"]).Add("id",ID);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("pos_x", mCurrentTransform.localPosition.x);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("pos_y", mCurrentTransform.localPosition.y);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("pos_z", mCurrentTransform.localPosition.z);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("rotate_x", mCurrentTransform.localEulerAngles.x);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("rotate_y", mCurrentTransform.localEulerAngles.y);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("rotate_z", mCurrentTransform.localEulerAngles.z);
             this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_POS, tmpSend);
 
             return MiniJSON.Json.Serialize(tmpSend);
@@ -62,6 +65,9 @@ namespace Server
 
         public string RequireVisibleData()
         {
+            if (mVisibleEnemyList.Count <= 0&&mVisiblePlayerList.Count <= 0)
+                return "";
+
             Dictionary<string, object> tmpSend = SerializeVisibleData();
 
             if (tmpSend == null)
@@ -134,26 +140,32 @@ namespace Server
 
         Dictionary<string, object> SerializeVisibleData()
         {
-            if (mVisibleList.Count <= 0)
+			if (mVisiblePlayerList.Count <= 0&&mVisibleEnemyList.Count<=0)
                 return null;
 
             Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_VISIBLE_DATA);
-            List<object> tmpVisibleData = new List<object>();
-            for (int i = 0; i < mVisibleList.Count; i++)
+            List<object> tmpVisiblePlayerData = new List<object>();
+            for (int i = 0; i < mVisiblePlayerList.Count; i++)
             {
                 Dictionary<string, object> tmpUser = new Dictionary<string, object>();
-                tmpUser.Add("udid", mVisibleList[i].mDataInfo.ID);
-                tmpUser.Add("hp", mVisibleList[i].mDataInfo.HP);
-                tmpUser.Add("mp", mVisibleList[i].mDataInfo.MP);
-                tmpUser.Add("exp", mVisibleList[i].mDataInfo.EXP);
-                tmpUser.Add("pos_x", mVisibleList[i].mDataInfo.WorldPos.x);
-                tmpUser.Add("pos_y", mVisibleList[i].mDataInfo.WorldPos.y);
-                tmpUser.Add("pos_z", mVisibleList[i].mDataInfo.WorldPos.z);
-                tmpUser.Add("mesh", mVisibleList[i].mDataInfo.MeshID);
-                tmpVisibleData.Add(tmpUser);
+                tmpUser.Add("id", mVisiblePlayerList[i].mDataInfo.ID);
+                tmpUser.Add("hp", mVisiblePlayerList[i].mDataInfo.HP);
+                tmpUser.Add("mp", mVisiblePlayerList[i].mDataInfo.MP);
+                tmpUser.Add("exp", mVisiblePlayerList[i].mDataInfo.EXP);
+                tmpUser.Add("pos_x", mVisiblePlayerList[i].mDataInfo.WorldPos.x);
+                tmpUser.Add("pos_y", mVisiblePlayerList[i].mDataInfo.WorldPos.y);
+                tmpUser.Add("pos_z", mVisiblePlayerList[i].mDataInfo.WorldPos.z);
+                tmpUser.Add("mesh", mVisiblePlayerList[i].mDataInfo.MeshID);
+                tmpVisiblePlayerData.Add(tmpUser);
+            }
+            List<object> tmpVisibleEnemyData = new List<object>();
+            for (int i = 0; i < mVisibleEnemyList.Count; i++)
+            {
+                tmpVisibleEnemyData.Add(mVisibleEnemyList[i].GetSerializeData());
             }
             ((Dictionary<string, object>)tmpSend["results"]).Add("id", mDataInfo.ID);
-            ((Dictionary<string, object>)tmpSend["results"]).Add("visibles", tmpVisibleData);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("visi_player", tmpVisiblePlayerData);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("visi_enemy", tmpVisibleEnemyData);
             return tmpSend;
         }
 
