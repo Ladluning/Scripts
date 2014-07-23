@@ -1,14 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
-
 namespace Server
 {
-    public class Server_Game_FSM_Enemy_Base_Controller : Server_Game_FSM_Controller
+    public class Server_Game_FSM_NPC_Base_Controller : Server_Game_FSM_Controller
     {
+
         [HideInInspector]
-        public Server_Game_Enemy_Base mFather;
-        [HideInInspector]
-        public EnemyConfigInfo mEnemyInfo;
+        public Server_Game_NPC_Base mFather;
 
         public string GetCurrentAnimation()
         {
@@ -19,7 +17,7 @@ namespace Server
             return "disable";
         }
 
-        public virtual void Init(Server_Game_Enemy_Base Father)
+        public virtual void Init(Server_Game_NPC_Base Father)
         {
             mFather = Father;
         }

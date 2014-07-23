@@ -45,7 +45,7 @@ namespace Server
                 LoadData(Target);
             }
             ID = Target;
-            mCurrentTransform.position = mDataInfo.WorldPos;
+            //mCurrentTransform.position = mDataInfo.WorldPos;
             RequireLoginData();
         }
 
@@ -69,7 +69,7 @@ namespace Server
         {
             Debug.Log(MiniJSON.Json.Serialize(pSender));
             JsonData tmpJson = new JsonData(pSender);
-            mCurrentTransform.position = new Vector3((float)(tmpJson["results"]["pos_x"]), (float)(tmpJson["results"]["pos_y"]), (float)(tmpJson["results"]["pos_z"]));
+            mCurrentTransform.localPosition = new Vector3((float)(tmpJson["results"]["pos_x"]), (float)(tmpJson["results"]["pos_y"]), (float)(tmpJson["results"]["pos_z"]));
 
             SetChanged();
             RequirePosData();

@@ -9,6 +9,7 @@ namespace Server
 		public float mPointRange;
 		public float mRefreshSpaceTime;
 		public int mRefreshCount;
+		public Vector3 mRefreshPos;
 
 		private Transform mCurrentTransform;
 		private float mRefreshTimer;
@@ -30,7 +31,7 @@ namespace Server
 
             for (int i = 0; i < mRefreshCount; ++i)
             {
-                Vector3 RefreshPoint = mFather.ConvertMapPosToWorldPos(GetEmptyRandomPos());
+				Vector3 RefreshPoint = mFather.ConvertMapPosToWorldPos(GetEmptyRandomPos());
                 GameObject TargetObject = GetCreateTarget();
                 if (TargetObject == null)
                     return;
@@ -40,7 +41,7 @@ namespace Server
                 tmpEnemy.mSceneID = mFather.mSceneID;
                 tmpEnemy.name = name + "_Enemy_" + (mRefreshID++);
 				tmpEnemy.mEnemyID = tmpEnemy.name;
-                tmpEnemy.transform.position = RefreshPoint;
+                tmpEnemy.transform.localPosition = RefreshPoint;
                 tmpEnemy.Init();
             }
         }
@@ -60,7 +61,7 @@ namespace Server
 
 		void OnDrawGizmos()
 		{
-			Gizmos.DrawWireSphere (transform.position,mPointRange);
+			Gizmos.DrawWireSphere (transform.TransformPoint(mRefreshPos),mPointRange);
 		}
 
         GameObject GetCreateTarget()
@@ -79,9 +80,9 @@ namespace Server
             while (true)
             {
                 Vector3 RefreshPoint = new Vector3(Mathf.Sin(Random.Range(-3.15f, 3.15f)) * Random.Range(mPointRange / 2, mPointRange), 0, Mathf.Cos(Random.Range(-3.15f, 3.15f)) * Random.Range(mPointRange / 2, mPointRange));
-                if (mFather.GetPointIsInMap(transform.TransformPoint(RefreshPoint)))
+				if (mFather.GetPointIsInMap(mRefreshPos+RefreshPoint))
                 {
-                    return mFather.ConvertWorldPosToMapPos(transform.TransformPoint(RefreshPoint));
+					return mFather.ConvertWorldPosToMapPos(mRefreshPos+RefreshPoint);
                 }
             }
         }

@@ -8,7 +8,7 @@ namespace Server
     public class Server_Game_Scene_Manager : Server_Game_Scene_PathFinder
     {
 		private Server_Manager mManager;
-
+		private Transform mPlayerListNode;
         [HideInInspector]
         public List<Server_Game_User> mPlayerList = new List<Server_Game_User>();
         [HideInInspector]
@@ -37,15 +37,26 @@ namespace Server
             base.Init();
 
 			mManager = Server_Manager.Singleton();
+			mPlayerListNode = transform.FindChild ("UserList");
 
-            Server_Game_Spawn_Manager[] tmpList = gameObject.GetComponentsInChildren<Server_Game_Spawn_Manager>();
-            for (int i = 0; i < tmpList.Length; ++i)
+            Server_Game_Spawn_Manager[] tmpSpawnList = gameObject.GetComponentsInChildren<Server_Game_Spawn_Manager>();
+            for (int i = 0; i < tmpSpawnList.Length; ++i)
             {
-                mSpawnList.Add(tmpList[i]);
+                mSpawnList.Add(tmpSpawnList[i]);
             }
             for (int i = 0; i < mSpawnList.Count; ++i)
             {
                 mSpawnList[i].InitSpawnPoint();
+            }
+
+            Server_Game_Transmit_Manager[] tmpTransmitList = gameObject.GetComponentsInChildren<Server_Game_Transmit_Manager>();
+            for (int i = 0; i < tmpTransmitList.Length; ++i)
+            {
+                mTransmitList.Add(tmpTransmitList[i]);
+            }
+            for (int i = 0; i < mTransmitList.Count; ++i)
+            {
+                mTransmitList[i].InitTransmitManager();
             }
 		}
 
@@ -82,9 +93,15 @@ namespace Server
         object OnHandleNewPlayer(object pSender)
         {
             Server_Game_User tmpUser = (Server_Game_User)pSender;
+
+			if (tmpUser.mDataInfo.SceneID != mSceneID)
+				return null;
+
             if (!mPlayerList.Contains(tmpUser))
             {
                 mPlayerList.Add(tmpUser);
+				tmpUser.transform.parent = mPlayerListNode;
+				tmpUser.transform.localPosition = tmpUser.mDataInfo.WorldPos;
 				//Debug.LogError("Add Player: " + tmpUser.ID);
             }
             else

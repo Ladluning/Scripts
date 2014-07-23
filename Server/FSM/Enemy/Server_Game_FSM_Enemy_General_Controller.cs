@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Server
 {
-    public enum E_State_GeneralEnemy
+    public enum E_State_Enemy_General
     {
         Idle_Move = 0,
         Idle_Stand,
@@ -32,19 +32,19 @@ namespace Server
             base.Awake();
         }
 
-        public void Init(Server_Game_Enemy Father)
+        public override void Init(Server_Game_Enemy_Base Father)
         {
-            mFather = Father;
+            base.Init(Father);
 
-            mStateMap.Add((int)E_State_GeneralEnemy.Idle_Stand, new Server_Game_FSM_Enemy_General_State_Idle_Stand(this));
-            mStateMap[(int)E_State_GeneralEnemy.Idle_Stand].AddTranslate((int)E_State_GeneralEnemy.Idle_Move);
+            mStateMap.Add((int)E_State_Enemy_General.Idle_Stand, new Server_Game_FSM_Enemy_General_State_Idle_Stand(this));
+            mStateMap[(int)E_State_Enemy_General.Idle_Stand].AddTranslate((int)E_State_Enemy_General.Idle_Move);
 
-            mStateMap.Add((int)E_State_GeneralEnemy.Idle_Move, new Server_Game_FSM_Enemy_General_State_Idle_Move(this));
-            mStateMap[(int)E_State_GeneralEnemy.Idle_Move].AddTranslate((int)E_State_GeneralEnemy.Idle_Stand);
+            mStateMap.Add((int)E_State_Enemy_General.Idle_Move, new Server_Game_FSM_Enemy_General_State_Idle_Move(this));
+            mStateMap[(int)E_State_Enemy_General.Idle_Move].AddTranslate((int)E_State_Enemy_General.Idle_Stand);
 
 
             this.InitState();
-            this.StartState((int)E_State_GeneralEnemy.Idle_Stand);
+            this.StartState((int)E_State_Enemy_General.Idle_Stand);
         }
 
         void Start()

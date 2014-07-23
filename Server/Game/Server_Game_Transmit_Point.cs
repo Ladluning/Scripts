@@ -14,5 +14,12 @@ namespace Server
         {
             return mTransmitTarget;
         }
+
+        public void OnDrawGizmos()
+        {
+            if (IsAvailable) Gizmos.color = Color.green; else Gizmos.color = Color.red;
+            Gizmos.DrawSphere(transform.position,0.5f);
+            Gizmos.color = Color.white;
+        }
     }
 }

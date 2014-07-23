@@ -3,39 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 namespace Server
 {
-    public enum E_Actor_Type : uint
+    public class Server_Game_NPC_Base : MonoBehaviour
     {
-        None = 0,
-        Player = 1 << 1,
-        Enemy = 1 << 2,
-        NPC = 1 << 3,
-    }
-    [System.Serializable]
-    public class EnemyConfigInfo
-    {
-        public string MeshID;
-        public int HP;
-        public int MaxHP;
-        public int MP;
-        public int MaxMP;
-        public float IdleStandTime;
-        public float IdleMoveSpeed;
-        public float MoveSpeed;
-        public int Attack;
-        public int Defend;
-        public float AttackRange;
-        public int EscapeHP;
-        public int EXP;
-    }
-    public class Server_Game_Enemy_Base : Controller
-    {
-        public string mEnemyID;
+        [HideInInspector]
+        public string mNPCID;
         [HideInInspector]
         public string mSceneID;
 
-        public EnemyConfigInfo mConfigInfo;
-        protected Server_Game_FSM_Enemy_Base_Controller mController;
-        protected Server_Game_Spawn_Point_Enemy mFather;
+        protected Server_Game_FSM_NPC_Base_Controller mController;
+        protected Server_Game_Spawn_Point_NPC mFather;
         protected Server_Game_Scene_Manager mManager;
         protected Transform mCurrentTransform;
         protected bool mMarkAsChanged = true;
@@ -44,8 +20,9 @@ namespace Server
         {
             mCurrentTransform = transform;
             mManager = GameTools.FindComponentInHierarchy<Server_Game_Scene_Manager>(transform);
-            mFather = GameTools.FindComponentInHierarchy<Server_Game_Spawn_Point_Enemy>(transform);
+            mFather = GameTools.FindComponentInHierarchy<Server_Game_Spawn_Point_NPC>(transform);
         }
+
         public void SetChanged()
         {
             mMarkAsChanged = true;
@@ -66,7 +43,7 @@ namespace Server
             return mManager;
         }
 
-        public Server_Game_Spawn_Point_Enemy GetSpawnPoint()
+        public Server_Game_Spawn_Point_NPC GetSpawnPoint()
         {
             return mFather;
         }

@@ -85,7 +85,7 @@ namespace Server
 
         protected void UpdateData()
         {
-            mDataInfo.WorldPos = mCurrentTransform.position;
+            mDataInfo.WorldPos = mCurrentTransform.localPosition;
         }
 
         protected virtual void UpdateBoard()

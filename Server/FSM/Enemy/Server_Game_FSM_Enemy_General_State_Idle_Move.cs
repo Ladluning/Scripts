@@ -27,7 +27,7 @@ namespace Server
             base.OnEnter();
 
             Int2 TmpTargetPos = mEnemyController.mFather.GetSpawnPoint().GetEmptyRandomPos();
-            Int2 TmpCurrentPos = mEnemyController.mFather.GetManager().ConvertWorldPosToMapPos(mEnemyController.transform.position);
+            Int2 TmpCurrentPos = mEnemyController.mFather.GetManager().ConvertWorldPosToMapPos(mEnemyController.transform.localPosition);
             if (mEnemyController.mFather.GetManager().StartFindPath(TmpCurrentPos, TmpTargetPos))
             {
                 for (int i = 0; i < mEnemyController.mFather.GetManager().MovePath.Count; ++i)
@@ -45,7 +45,7 @@ namespace Server
         {
             if (GetComponent<Server_Game_Object_SearchTarget>().GetTargetList().Count > 0)
             {
-                //mController.SwitchState((int)E_State_GeneralEnemy.Move);
+                //mController.SwitchState((int)E_State_Enemy_General.Move);
                 return;
             }
 			mEnemyController.mFather.SetChanged();
@@ -73,7 +73,7 @@ namespace Server
 
         object OnActionOver(object pSender)
         {
-            mController.SwitchState((int)E_State_GeneralEnemy.Idle_Stand);
+            mController.SwitchState((int)E_State_Enemy_General.Idle_Stand);
             return null;
         }
     }

@@ -122,7 +122,7 @@ namespace Server
 
         public Vector3 ConvertMapPosToWorldPos(Int2 Pos)
         {
-            return mMapData[Pos.x - mMapOriOffect.x][Pos.y - mMapOriOffect.y].WorldPos;
+			return mMapData[Pos.x - mMapOriOffect.x][Pos.y - mMapOriOffect.y].WorldPos;
         }
 
         public Vector3 ConvertMapPosToWorldPos(int x, int y)
@@ -134,7 +134,7 @@ namespace Server
             catch (System.Exception ex)
             {
                 Debug.Log(x + " " + y + " :Is Null:" + ex);
-                return new Vector3(x * mMapNodeSize.x, 0, y * mMapNodeSize.y);
+				return new Vector3(x * mMapNodeSize.x, 0, y * mMapNodeSize.y);
             }
         }
 
@@ -147,7 +147,7 @@ namespace Server
 				for (int j = 0; j < mMapSize.y-mMapOriOffect.y; j++)
 			{
 				if (mMapData[i][j] != null)
-					Gizmos.DrawWireCube(mMapData[i][j].WorldPos, Vector3.one * 0.3f);
+					Gizmos.DrawWireCube(transform.TransformPoint(mMapData[i][j].WorldPos), Vector3.one * 0.3f);
 			}
 		}
     }

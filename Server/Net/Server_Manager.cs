@@ -86,7 +86,7 @@ namespace Server
             tmpPlayer.SetServer(tmpUser);
             tmpPlayer.InitWithID(tmpUser.ID);
             tmpPlayer.gameObject.name = "Point_" + tmpUser.ID.ToString();
-            tmpPlayer.transform.parent = transform;
+            //tmpPlayer.transform.parent = transform;
             mPlayerList.Add(tmpPlayer);
             this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_PLAYER, tmpPlayer);
 

@@ -47,9 +47,9 @@ namespace Server
             if (!IsStartMove)
                 return;
 
-			mCurrentTransform.position = Vector3.MoveTowards(mCurrentTransform.position, mTargetPos[mCurrentPoint], mMoveSpeed * Time.deltaTime);
+			mCurrentTransform.localPosition = Vector3.MoveTowards(mCurrentTransform.localPosition, mTargetPos[mCurrentPoint], mMoveSpeed * Time.deltaTime);
 
-            if ((mTargetPos[mCurrentPoint] - mCurrentTransform.position).sqrMagnitude < 0.01f)
+			if ((mTargetPos[mCurrentPoint] - mCurrentTransform.localPosition).sqrMagnitude < 0.01f)
             {
                 mCurrentPoint += 1;
 				if (mCurrentPoint >= mTargetPos.Count)

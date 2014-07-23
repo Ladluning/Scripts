@@ -7,7 +7,7 @@ namespace Server
     {
         List<Server_Game_Transmit_Point> mTransmitList = new List<Server_Game_Transmit_Point>();
 
-        void Awake()
+        public void InitTransmitManager()
         {
             for (int i = 0; i < transform.childCount; i++)
             {
@@ -26,5 +26,6 @@ namespace Server
             }
             return null;
         }
+
     }
 }
