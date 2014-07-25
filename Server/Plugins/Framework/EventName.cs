@@ -52,7 +52,12 @@ namespace Server
         public uint EVENT_WEB_SEND_UPDATE_ENEMY_DATA = 0x1100008;
         public uint EVENT_WEB_RECEIVE_UPDATE_ENEMY_DATA = 0x110000a;
 
+        public uint EVENT_WEB_SEND_REQUEST_NPC_DATA = 0x1200000;
+        public uint EVENT_WEB_RECEIVE_REQUEST_NPC_DATA = 0x1200002;
 
+        public uint EVENT_WEB_SEND_BUY_ITEM = 0x1200004;
+
+        public uint EVENT_WEB_SEND_ACCEPT_TASK = 0x1200010;
     }
     public class EventWebView
     {
@@ -69,6 +74,10 @@ namespace Server
 
         public uint EVENT_FIGHT_NEW_ENEMY = 0xc000004;
         public uint EVENT_FIGHT_DESTROY_ENEMY = 0xc000006;
+
+        public uint EVENT_FIGHT_NEW_NPC = 0xc000008;
+        public uint EVENT_FIGHT_DESTROY_NPC = 0xc00000a;
+
     }
     public class EventSys
     {
