@@ -86,6 +86,7 @@ namespace Server
         protected void UpdateData()
         {
             mDataInfo.WorldPos = mCurrentTransform.localPosition;
+			mDataInfo.WorldRotate = mCurrentTransform.localEulerAngles;
         }
 
         protected virtual void UpdateBoard()

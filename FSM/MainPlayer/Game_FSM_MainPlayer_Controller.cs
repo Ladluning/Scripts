@@ -22,8 +22,7 @@ public class Game_FSM_MainPlayer_Controller: Game_FSM_Controller {
 	protected override void Awake () 
 	{
 		base.Awake();
-
-		InitMainPlayer ("Blade_Girl_M_Base_All",new Vector3(185,7,88.5f),new Vector3(0,-95,0));
+		//InitMainPlayer ("Blade_Girl_M_Base_All",new Vector3(185,7,88.5f),new Vector3(0,-95,0));
 	}
 
 	public void InitMainPlayer(string MeshID,Vector3 Pos,Vector3 Rotate)
@@ -57,6 +56,7 @@ public class Game_FSM_MainPlayer_Controller: Game_FSM_Controller {
 
 		transform.localEulerAngles = Rotate;
 		transform.position = Pos;
+		Camera.main.GetComponent<Game_Input_Manager> ().Reset ();
 	}
 	void Start () 
 	{

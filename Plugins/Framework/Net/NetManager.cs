@@ -19,7 +19,7 @@ public class NetManager : Controller {
 
 		RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_TALK, OnHandle_SendTalk);
 		
-		RegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, OnHandle_LoginSuccess);
+		//RegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, OnHandle_LoginSuccess);
 	}
 	void OnDisable()
 	{
@@ -31,7 +31,7 @@ public class NetManager : Controller {
 		UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_TALK, OnHandle_SendTalk);
 
 
-        UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, OnHandle_LoginSuccess);
+        //UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, OnHandle_LoginSuccess);
 	}
 	void Awake()
 	{

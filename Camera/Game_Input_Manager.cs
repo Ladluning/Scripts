@@ -17,7 +17,7 @@ public class Game_Input_Manager : Controller {
 	private float mTargetAngle;
 	private float mCurrentAngle;
 	private float mDispatcherAngleStop = 90;
-	
+	private bool mIsInit = false;
 	private bool mIsMakeInput = false;
 
 	protected Transform mCenterTransform;
@@ -56,11 +56,13 @@ public class Game_Input_Manager : Controller {
 		mMainCamera = gameObject.GetComponent<Camera>();
 		
 
-		Reset ();
+		//Reset ();
 	}
 
 	public void Reset()
 	{
+		mIsInit = true;
+
 		mTargetTransform = GameObject.Find ("_Camera_Player_Target").transform;
 		mCenterTransform = GameObject.Find ("_Camera_Player_Center").transform;
 		
@@ -168,12 +170,13 @@ public class Game_Input_Manager : Controller {
 	
 	void Update()
 	{
+		if (!mIsInit)
+			return;
+
+
 		UpdateMove ();
 		UpdatePinch ();
 		UpdateSwipe ();
-
-
-
 	}
 
 	void UpdateMove()

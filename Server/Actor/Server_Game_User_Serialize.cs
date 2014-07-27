@@ -13,6 +13,7 @@ namespace Server
             ((Dictionary<string, object>)tmpSend["results"]).Add("id", ID);
             ((Dictionary<string, object>)tmpSend["results"]).Add("packages", ((Dictionary<string, object>)(tmpStorage["results"]))["packages"]);
 
+			Debug.Log ("Send LOgin"+GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN);
             this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, tmpSend);
             return tmpSend;
         }
@@ -89,6 +90,9 @@ namespace Server
             ((Dictionary<string, object>)tmpSend["results"]).Add("pos_x", mDataInfo.WorldPos.x);
             ((Dictionary<string, object>)tmpSend["results"]).Add("pos_y", mDataInfo.WorldPos.y);
             ((Dictionary<string, object>)tmpSend["results"]).Add("pos_z", mDataInfo.WorldPos.z);
+			((Dictionary<string, object>)tmpSend["results"]).Add("rotate_x", mDataInfo.WorldRotate.x);
+			((Dictionary<string, object>)tmpSend["results"]).Add("rotate_y", mDataInfo.WorldRotate.y);
+			((Dictionary<string, object>)tmpSend["results"]).Add("rotate_z", mDataInfo.WorldRotate.z);
             ((Dictionary<string, object>)tmpSend["results"]).Add("scene", mDataInfo.SceneID);
             ((Dictionary<string, object>)tmpSend["results"]).Add("mesh", mDataInfo.MeshID);
 
@@ -155,6 +159,9 @@ namespace Server
                 tmpUser.Add("pos_x", mVisiblePlayerList[i].mDataInfo.WorldPos.x);
                 tmpUser.Add("pos_y", mVisiblePlayerList[i].mDataInfo.WorldPos.y);
                 tmpUser.Add("pos_z", mVisiblePlayerList[i].mDataInfo.WorldPos.z);
+				tmpUser.Add("rotate_x", mVisiblePlayerList[i].mDataInfo.WorldRotate.x);
+				tmpUser.Add("rotate_y", mVisiblePlayerList[i].mDataInfo.WorldRotate.y);
+				tmpUser.Add("rotate_z", mVisiblePlayerList[i].mDataInfo.WorldRotate.z);
                 tmpUser.Add("mesh", mVisiblePlayerList[i].mDataInfo.MeshID);
                 tmpVisiblePlayerData.Add(tmpUser);
             }

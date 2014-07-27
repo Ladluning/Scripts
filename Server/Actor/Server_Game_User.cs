@@ -70,7 +70,7 @@ namespace Server
             Debug.Log(MiniJSON.Json.Serialize(pSender));
             JsonData tmpJson = new JsonData(pSender);
             mCurrentTransform.localPosition = new Vector3((float)(tmpJson["results"]["pos_x"]), (float)(tmpJson["results"]["pos_y"]), (float)(tmpJson["results"]["pos_z"]));
-
+			mCurrentTransform.localEulerAngles = new Vector3((float)(tmpJson["results"]["rotate_x"]), (float)(tmpJson["results"]["rotate_y"]), (float)(tmpJson["results"]["rotate_z"]));
             SetChanged();
             RequirePosData();
 

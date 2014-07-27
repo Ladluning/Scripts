@@ -55,9 +55,10 @@ namespace Server
             tmpNewUser.HP = 100;
             tmpNewUser.MP = 100;
             tmpNewUser.EXP = 0;
-            tmpNewUser.MeshID = "Mesh_Girl_0001";
+			tmpNewUser.MeshID = "Blade_Girl_M_Base_All";
             tmpNewUser.SceneID = "Scene_0001";
-            tmpNewUser.WorldPos = new Vector3(160, 0, 80);
+            tmpNewUser.WorldPos = new Vector3(185.5f,6.95f, 90);
+			tmpNewUser.WorldRotate = new Vector3 (0,-105,0);
             tmpNewUser.mItemList.Add(Server_Item_Factory.RandomItem(100));
             tmpNewUser.mItemList.Add(Server_Item_Factory.RandomItem(101));
             tmpNewUser.mEquipList.Add(Server_Item_Factory.RandomEquip(102));

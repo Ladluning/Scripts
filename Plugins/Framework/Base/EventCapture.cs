@@ -7,6 +7,7 @@ public class EventCapture {
 	Dictionary<uint,RegistFunction> m_listenMap = new Dictionary<uint, RegistFunction>();
 	public void RegistEvent(uint EventID,RegistFunction pFunction)
 	{	
+
 		if(!m_listenMap.ContainsKey(EventID))
 		{	
 			m_listenMap.Add(EventID,pFunction);
@@ -20,6 +21,7 @@ public class EventCapture {
 	{
 		if(m_listenMap.ContainsKey(EventID))
 		{	
+
 			m_listenMap[EventID] -= pFunction;
 		}
 	}

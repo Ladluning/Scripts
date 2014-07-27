@@ -25,7 +25,7 @@ namespace Server
 			mStandTimer = 0;
             mStandTime = ((Server_Game_FSM_Enemy_General_Controller)mController).mEnemyInfo.IdleStandTime;
 
-            GetComponent<Server_Game_Object_Animation>().PlayAnimation("Idle");
+            GetComponent<Server_Game_Object_Animation>().PlayAnimation("idle");
         }
 
         public override void OnLoop() 

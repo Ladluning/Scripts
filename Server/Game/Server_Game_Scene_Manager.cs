@@ -37,7 +37,7 @@ namespace Server
             base.Init();
 
 			mManager = Server_Manager.Singleton();
-			mPlayerListNode = transform.FindChild ("UserList");
+			mPlayerListNode = InitUserSaveNode ();
 
             Server_Game_Spawn_Manager[] tmpSpawnList = gameObject.GetComponentsInChildren<Server_Game_Spawn_Manager>();
             for (int i = 0; i < tmpSpawnList.Length; ++i)
@@ -58,6 +58,19 @@ namespace Server
             {
                 mTransmitList[i].InitTransmitManager();
             }
+		}
+
+		Transform InitUserSaveNode()
+		{
+			Transform tmp = transform.FindChild ("UserList");
+			if (tmp == null)
+			{
+				tmp = (new GameObject() ).transform;
+				tmp.name = "UserList";
+				tmp.transform.parent = transform;
+				tmp.transform.localPosition = Vector3.zero;
+			}
+			return tmp;
 		}
 
 		void LateUpdate()

@@ -26,11 +26,14 @@ namespace Server
             StartGrid = GetMapData(start.x, start.y);
             EndGrid = GetMapData(end.x, end.y);
 
-            if (StartGrid == null || EndGrid == null)
-                return false;
-
+            if (StartGrid == null || EndGrid == null) 
+			{
+				Debug.LogError ("StartGrid == null || EndGrid == null");
+				return false;
+			}
             if (StartGrid == EndGrid)
             {
+				Debug.LogError ("StartGrid == EndGrid");
                 return true;
             }
 

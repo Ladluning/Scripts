@@ -48,7 +48,7 @@ namespace Server
                 return;
 
 			mCurrentTransform.localPosition = Vector3.MoveTowards(mCurrentTransform.localPosition, mTargetPos[mCurrentPoint], mMoveSpeed * Time.deltaTime);
-
+			mCurrentTransform.LookAt (mTargetPos[mCurrentPoint]);
 			if ((mTargetPos[mCurrentPoint] - mCurrentTransform.localPosition).sqrMagnitude < 0.01f)
             {
                 mCurrentPoint += 1;

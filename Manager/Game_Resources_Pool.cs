@@ -18,6 +18,7 @@ public class Game_Resources_Pool : MonoBehaviour {
 	void Awake()
 	{
 		m_pCurrentTransform = transform;
+		m_pResourcesManager = Game_Resources_Manager.Singleton ();
 	}
 
 	protected Transform m_pCurrentTransform;
@@ -27,7 +28,7 @@ public class Game_Resources_Pool : MonoBehaviour {
 	{
 		foreach (GameObject tmp in m_pActorList) 
 		{
-			if(!tmp.activeSelf)
+			if(tmp.name == ID&&!tmp.activeSelf)
 				return tmp;
 		}
 

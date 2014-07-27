@@ -77,13 +77,21 @@ namespace Server
 
         public Int2 GetEmptyRandomPos()
         {
+			int i = 0;
             while (true)
             {
+				i++;
                 Vector3 RefreshPoint = new Vector3(Mathf.Sin(Random.Range(-3.15f, 3.15f)) * Random.Range(mPointRange / 2, mPointRange), 0, Mathf.Cos(Random.Range(-3.15f, 3.15f)) * Random.Range(mPointRange / 2, mPointRange));
 				if (mFather.GetPointIsInMap(mRefreshPos+RefreshPoint))
                 {
 					return mFather.ConvertWorldPosToMapPos(mRefreshPos+RefreshPoint);
                 }
+
+				if(i>1000)
+				{	
+					Debug.Log("Cant Find Empty Pos");
+					return new Int2(0,0);
+				}
             }
         }
 	}

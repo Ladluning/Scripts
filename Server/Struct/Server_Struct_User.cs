@@ -15,6 +15,7 @@ namespace Server
         public int mStorageSlotCount;
 
         public Vector3 WorldPos;
+		public Vector3 WorldRotate;
 
         public string SceneID;
         public string MeshID;

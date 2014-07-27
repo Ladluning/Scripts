@@ -36,7 +36,7 @@ namespace Server
                 }
             }
             GetComponent<Server_Game_Object_Move>().MoveToTarget(mMovePath, OnActionOver, 1);
-            GetComponent<Server_Game_Object_Animation>().PlayAnimation("Walk");
+            GetComponent<Server_Game_Object_Animation>().PlayAnimation("walk");
             
 			Debug.Log(mMovePath.Count+" Find Path Form" + TmpCurrentPos.x + " " + TmpCurrentPos.y + " To" + TmpTargetPos.x + " " + TmpTargetPos.y);
         }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 public delegate object RegistFunction(object pSender);
-public class Facade : MonoBehaviour {
+public class Facade {
 
 	// Use this for initialization
 	EventCapture     m_pEventListener = new EventCapture();
@@ -10,12 +10,16 @@ public class Facade : MonoBehaviour {
 	static Facade m_Interface;
 	static public Facade Singleton()
 	{
+		if (m_Interface == null) 
+		{
+			m_Interface = new Facade();	
+		}
 		return m_Interface;
 	}
-	Facade()
-	{
-		m_Interface = this;
-	}
+	//void Awake()
+	//{
+	//	m_Interface = this;
+	//}
 
 	public void RegistListen(uint EventID,RegistFunction pFunction)
 	{
