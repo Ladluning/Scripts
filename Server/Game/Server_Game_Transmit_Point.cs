@@ -9,6 +9,13 @@ namespace Server
         public string mTransmitTarget;
         public bool IsAvailable;
         public bool IsShow;
+        [HideInInspector]
+        public Server_Game_Scene_Manager mFather;
+
+        public void Init()
+        {
+            mFather = GameTools.FindComponentInHierarchy<Server_Game_Scene_Manager>(transform);
+        }
 
         public string GetTargetTransmit()
         {

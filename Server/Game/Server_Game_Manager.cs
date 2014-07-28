@@ -16,6 +16,16 @@ namespace Server
 			m_pInterface = this;
 		}
 
+        void OnEnable()
+        { 
+        
+        }
+
+        void OnDisable()
+        {
+        
+        }
+
         void Awake()
         {
             Server_Game_Scene_Manager[] tmpList = gameObject.GetComponentsInChildren<Server_Game_Scene_Manager>();
@@ -44,5 +54,57 @@ namespace Server
 			}
 			return null;
 		}
+
+        object OnHandleSwitchLevel(object pSender)
+        {
+            JsonData tmpData = (JsonData)pSender;
+
+            Server_Game_User tmpUser = GetServerUserWithID((string)tmpData["results"]["id"]);
+            if (tmpUser == null)
+                return null;
+
+            Server_Game_Transmit_Point tmpCurrentTransmit = GetServerTransmitWithID((string)tmpData["results"]["transmit"]);
+            if (tmpCurrentTransmit == null)
+                return null;
+
+            if (!tmpCurrentTransmit.IsAvailable)
+                return null;
+
+            Server_Game_Transmit_Point tmpTargetTransmit = GetServerTransmitWithID((string)tmpData["results"]["transmit"]);
+            if (tmpTargetTransmit == null)
+                return null;
+
+            this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_PLAYER, tmpUser);
+
+            tmpUser.mDataInfo.SceneID = tmpTargetTransmit.mFather.mSceneID;
+            tmpUser.mDataInfo.WorldPos = tmpTargetTransmit.transform.localPosition;
+            tmpUser.mDataInfo.WorldRotate = tmpTargetTransmit.transform.localEulerAngles;
+            this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_PLAYER,tmpUser);
+
+            tmpUser.RequireUserData();
+            return null;
+        }
+
+        Server_Game_User GetServerUserWithID(string ID)
+        {
+            for (int i = 0; i < mSceneList.Count; ++i)
+                for (int j = 0; j < mSceneList[i].mPlayerList.Count; ++j)
+                {
+                    if (mSceneList[i].mPlayerList[j].ID == ID)
+                        return mSceneList[i].mPlayerList[j];
+                }
+            return null;
+        }
+
+        Server_Game_Transmit_Point GetServerTransmitWithID(string ID)
+        {
+            for (int i = 0; i < mSceneList.Count; ++i)
+            {
+                if (mSceneList[i].GetTransmitPointWithID(ID) != null)
+                    return mSceneList[i].GetTransmitPointWithID(ID);
+            }
+
+            return null;
+        }
     }
 }

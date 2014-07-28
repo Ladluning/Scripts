@@ -13,6 +13,10 @@ namespace Server
             {
                 mTransmitList.Add(transform.GetChild(i).GetComponent<Server_Game_Transmit_Point>());
             }
+            for (int i = 0; i < mTransmitList.Count; i++)
+            {
+                mTransmitList[i].Init();
+            }
         }
 
         public Server_Game_Transmit_Point GetTransmitWithID(string ID)
