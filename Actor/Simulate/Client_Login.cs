@@ -39,10 +39,12 @@ public class Client_Login : Controller {
 
 		Game_FSM_MainPlayer_Controller tmpPlayer = (Instantiate (PlayerPrefab) as GameObject).GetComponent<Game_FSM_MainPlayer_Controller>();
 		tmpPlayer.name = ID;
+		this.SendEvent (GameEvent.FightingEvent.EVENT_FIGHT_INIT_LEVEL,(string)tmpJson["results"]["scene"]);
 		Vector3 tmpPos = new Vector3((float)(tmpJson["results"]["pos_x"]), (float)(tmpJson["results"]["pos_y"]), (float)(tmpJson["results"]["pos_z"]));
 		Vector3 tmpRotate = new Vector3((float)(tmpJson["results"]["rotate_x"]), (float)(tmpJson["results"]["rotate_y"]), (float)(tmpJson["results"]["rotate_z"]));
 		tmpPlayer.transform.parent = transform;
 		tmpPlayer.InitMainPlayer ((string)tmpJson["results"]["mesh"],tmpPos,tmpRotate);
+
 		return pSender;
 	}
 

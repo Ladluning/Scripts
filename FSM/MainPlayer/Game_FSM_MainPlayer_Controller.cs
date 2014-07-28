@@ -56,7 +56,7 @@ public class Game_FSM_MainPlayer_Controller: Game_FSM_Controller {
 
 		transform.localEulerAngles = Rotate;
 		transform.position = Pos;
-		Camera.main.GetComponent<Game_Input_Manager> ().Reset ();
+
 	}
 	void Start () 
 	{

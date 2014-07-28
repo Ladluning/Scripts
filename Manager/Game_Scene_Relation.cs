@@ -4,6 +4,7 @@ using System.Collections.Generic;
 class SceneRelationList
 {
 	public Game_Scene_Property NodeProperty;
+	public SceneRelationList NodeParent;
 	public List<SceneRelationList> ChildList = new List<SceneRelationList>();
 }
 public class Game_Scene_Relation : MonoBehaviour {
@@ -24,6 +25,7 @@ public class Game_Scene_Relation : MonoBehaviour {
 		for(int i = 0; i < Node.childCount; i++)
 		{
 			SceneRelationList Tmp = new SceneRelationList();
+			Tmp.NodeParent = pList;
 			AddScenePropertyInList(Node.GetChild(i), Tmp);
 			pList.ChildList.Add(Tmp);
 		}
@@ -68,5 +70,52 @@ public class Game_Scene_Relation : MonoBehaviour {
 		{
 			CloseSceneObject(Tmp);	
 		}
+	}
+
+	public void CloseChild(string Name)
+	{
+		SceneRelationList tmpRelation = GetSceneRelationWithName (Name,pSceneRelationList);
+		foreach (SceneRelationList Tmp in tmpRelation.ChildList) 
+		{
+			CloseSceneObject(Tmp);	
+		}
+	}
+	public void CloseBrother(string Name)
+	{
+		SceneRelationList tmpRelation = GetSceneRelationWithName (Name,pSceneRelationList);
+		for (int i=0; i<tmpRelation.NodeParent.ChildList.Count; ++i)
+		{
+			if(tmpRelation == tmpRelation.NodeParent.ChildList[i])
+			{
+				continue;
+			}
+			if (tmpRelation.NodeParent.ChildList[i].NodeProperty.FatherObject != null) 
+			{
+				Destroy(tmpRelation.NodeParent.ChildList[i].NodeProperty.FatherObject);	
+				tmpRelation.NodeParent.ChildList[i].NodeProperty.FatherObject = null;
+			}
+			foreach (SceneRelationList Tmp in tmpRelation.NodeParent.ChildList[i].ChildList) 
+			{
+				CloseSceneObject(Tmp);	
+			}
+		}
+	}
+
+	SceneRelationList GetSceneRelationWithName(string Name, SceneRelationList pList)
+	{
+		if(pList.NodeProperty)
+		{
+			if(pList.NodeProperty.name == Name)
+				return pList;
+		}
+		foreach(SceneRelationList Tmp in pList.ChildList)
+		{
+			SceneRelationList TmpProperty = GetSceneRelationWithName(Name, Tmp);
+			if(TmpProperty != null)
+			{
+				return TmpProperty;
+			}
+		}
+		return null;
 	}
 }
