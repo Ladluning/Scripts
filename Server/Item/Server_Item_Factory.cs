@@ -6,6 +6,13 @@ namespace Server
 {
     public class Server_Item_Factory : Controller
     {
+        public static Struct_Item_Base CopyItem(Struct_Item_Base Target,int Count)
+        {
+            Struct_Item_Base tmpItem = new Struct_Item_Base(Target);
+
+            return tmpItem;
+        }
+
         public static Struct_Item_Base RandomItem(int PosID = 0)
         {
             Struct_Item_Base tmpItem = new Struct_Item_Base();

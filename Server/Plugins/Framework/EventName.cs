@@ -81,7 +81,7 @@ namespace Server
     }
     public class EventSys
     {
-
+        public uint EVENT_SYS_ERROR = 0x2000000;
     }
     public class EventInput
     { }

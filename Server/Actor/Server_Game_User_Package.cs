@@ -56,6 +56,8 @@ namespace Server
         {
             mItemList.Remove(Target);
             RemoveStorageData(Target);
+
+
         }
 
         public Struct_Item_Base GetItemWithSlotPos(int Pos)
@@ -85,6 +87,8 @@ namespace Server
                 mDataInfo.mItemList.Add(Target);
             else if (Target.GetType() == typeof(Struct_Item_Equip))
                 mDataInfo.mEquipList.Add((Struct_Item_Equip)Target);
+
+
         }
 
         void RemoveStorageData(Struct_Item_Base Target)

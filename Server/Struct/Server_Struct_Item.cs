@@ -89,11 +89,44 @@ namespace Server
         public long mItemID;//uniform ID
         public int mItemPosID;
 
+        public Struct_Item_Base()
+        { 
+            
+        }
+
+        public Struct_Item_Base(Struct_Item_Base Target)
+        {
+            mUse = Target.mUse;
+            mItemMainType = Target.mItemMainType;
+            mItemSubType = Target.mItemSubType;
+            mMaxCount = Target.mMaxCount;
+            mCurrentCount = Target.mCurrentCount;
+            mItemID = Target.mItemID;
+            mItemPosID = Target.mItemPosID;
+        }
     }
 
     [System.Serializable]
     public class Struct_Item_Equip : Struct_Item_Base
     {
+        public Struct_Item_Equip(): base()
+        { 
+        
+        }
+
+        public Struct_Item_Equip(Struct_Item_Equip Target):base(Target)
+        {
+            mEquipLevel = Target.mEquipLevel;
+            mEquipMaxLevel = Target.mEquipMaxLevel;
+            mEquipSoltType = Target.mEquipSoltType;
+            mEquipQualityType = Target.mEquipQualityType;
+
+            for (int i = 0; i < Target.mStats.Count; ++i)
+            {
+                mStats.Add(new Struct_Item_Equip_Stat(Target.mStats[i]));
+            }
+        }
+
         public List<Struct_Item_Equip_Stat> mStats = new List<Struct_Item_Equip_Stat>();
 
         public int mEquipLevel;
@@ -105,6 +138,14 @@ namespace Server
     [System.Serializable]
     public class Struct_Item_Equip_Stat
     {
+        public Struct_Item_Equip_Stat()
+        { }
+        public Struct_Item_Equip_Stat(Struct_Item_Equip_Stat Target)
+        {
+            mIdentifier = Target.mIdentifier;
+            mModifier = Target.mModifier;
+            mAmount = Target.mAmount;
+        }
         public int mIdentifier;
         public int mModifier;
         public int mAmount;
