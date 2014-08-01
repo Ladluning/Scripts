@@ -12,8 +12,7 @@ namespace Server
         {
             mController = gameObject.AddComponent<Server_Game_FSM_NPC_Shopper_Controller>();
             mController.Init(this);
-
-            base.Init();
+			InitNPC ();
 
             this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_NPC, this);
         }
@@ -22,7 +21,7 @@ namespace Server
         {
             this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_REQUEST_NPC_DATA,OnHandleRequestNPCData);
             this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_BUY_ITEM,OnHandleBuyItem);
-            //this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_EXIT_NPC, OnHandleExitNPC);
+            this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_EXIT_NPC, OnHandleExitNPC);
             this.RegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_PLAYER,OnHandleDestroyPlayer);
         }
 
@@ -30,12 +29,16 @@ namespace Server
         {
             this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_REQUEST_NPC_DATA, OnHandleRequestNPCData);
             this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_BUY_ITEM, OnHandleBuyItem);
-            //this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_EXIT_NPC, OnHandleExitNPC);
+            this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_EXIT_NPC, OnHandleExitNPC);
             this.UnRegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_PLAYER, OnHandleDestroyPlayer);
         }
 
         object OnHandleRequestNPCData(object pSender)
         {
+			JsonData tmpJson = (JsonData)pSender;
+			if ((string)tmpJson ["results"] ["npc"] != mNPCID)
+				return null;
+
             Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_REQUEST_NPC_DATA);
             List<object> tmpItemData = new List<object>();
             for (int i = 0; i < mItemList.Count; i++)
@@ -46,9 +49,22 @@ namespace Server
             {
                 tmpItemData.Add(Server_Item_Serialize.ConvertItemToJson(mEquipList[i]));
             }
-            ((Dictionary<string, object>)tmpSend["results"]).Add("id", mNPCID);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("target", mNPCID);
             ((Dictionary<string, object>)tmpSend["results"]).Add("packages", tmpItemData);
+
             this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_REQUEST_NPC_DATA, tmpItemData);
+
+			Server_Game_User tmpUser = mGameManager.GetServerUserWithID ((string)tmpJson["results"]["id"]);
+			if (tmpUser == null) 
+			{	
+				this.SendEvent(GameEvent.SysEvent.EVENT_SYS_ERROR, ServerCommand.NewError(GameEvent.SysEvent.EVENT_SYS_ERROR, 100));//Error User ID
+				return null;    
+			}
+			if (!mConnectList.Contains (tmpUser))
+			{
+				mConnectList.Add(tmpUser);
+			}
+
             return null;
         }
 
@@ -79,6 +95,22 @@ namespace Server
                 return null;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
             }
 
+			Server_Game_User tmpUser = mGameManager.GetServerUserWithID ((string)tmpJson["results"]["id"]);
+			if (tmpUser == null) 
+			{	
+				this.SendEvent(GameEvent.SysEvent.EVENT_SYS_ERROR, ServerCommand.NewError(GameEvent.SysEvent.EVENT_SYS_ERROR, 100));//Error User ID
+				return null;    
+			}
+
+			if (tmpUser.GetEmptySlotWithStorage () == -1) 
+			{
+				this.SendEvent(GameEvent.SysEvent.EVENT_SYS_ERROR, ServerCommand.NewError(GameEvent.SysEvent.EVENT_SYS_ERROR, 105));//package full
+				return null;   					
+			}
+
+			Struct_Item_Base tmpInster = tmpTarget.Copy ();
+			tmpInster.mCurrentCount = tmpBuyCount;
+			tmpUser.InsertItemWithInStorage (tmpInster);
             //InsertItemWithInStorage();
 
             tmpTarget.mCurrentCount -= tmpBuyCount;
@@ -90,7 +122,14 @@ namespace Server
 
         protected virtual object OnHandleExitNPC(object pSender)
         {
-
+			JsonData tmpJson = (JsonData)pSender;
+			Server_Game_User tmpUser = mGameManager.GetServerUserWithID ((string)tmpJson["results"]["id"]);
+			if (tmpUser == null) 
+			{	
+				this.SendEvent(GameEvent.SysEvent.EVENT_SYS_ERROR, ServerCommand.NewError(GameEvent.SysEvent.EVENT_SYS_ERROR, 100));//Error User ID
+				return null;    
+			}
+			OnHandleDestroyPlayer (tmpUser);
             return null;
         }
 

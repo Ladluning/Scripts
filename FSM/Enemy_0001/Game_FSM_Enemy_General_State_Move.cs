@@ -1,15 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Game_FSM_Enemy_General_State_Move : MonoBehaviour {
+public class Game_FSM_Enemy_General_State_Move : Game_FSM_State_Base
+{
+    public Game_FSM_Enemy_General_State_Move(Game_FSM_Controller FSMController) : base(FSMController) { }
 
-	// Use this for initialization
-	void Start () {
-	
+	public override void Init()
+	{
+		base.Init();
+	}
+
+
+	public override void OnEnter()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+	{
+		base.OnEnter ();
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	public virtual void OnLoop()
+    {
+
+    }
 	
+	public virtual void OnExit()
+	{
+		base.OnExit ();
 	}
 }

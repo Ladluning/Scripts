@@ -1,15 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UI_MainGame : MonoBehaviour {
+public class UI_MainGame : UIBase {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public UISlider mHPSlider;
+    public UISlider mMPSlider;
+    public UISlider mEXPSlider;
+    public UILabel mEXPLabel;
+
+
 }

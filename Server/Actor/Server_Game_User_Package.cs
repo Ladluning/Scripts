@@ -34,9 +34,7 @@ namespace Server
                 return;
             }
 
-            Target.mItemPosID = TmpPos;
-            mItemList.Add(Target);
-            AddStorageData(Target);
+            InsertItemWithInStorage(Target, TmpPos);
         }
 
         public void InsertItemWithInStorage(Struct_Item_Base Target, int pos)
@@ -47,9 +45,18 @@ namespace Server
                 return;
             }
 
-            Target.mItemPosID = pos;
-            mItemList.Add(Target);
-            AddStorageData(Target);
+            Struct_Item_Base tmpItem = GetSameItemWithType(Target.mItemMainType, Target.mItemSubType, Target.mCurrentCount);
+            if (tmpItem == null)
+            {
+                Target.mItemPosID = pos;
+                mItemList.Add(Target);
+                AddStorageData(Target);
+            }
+            else
+            {
+                tmpItem.mCurrentCount += Target.mCurrentCount;
+                AddStorageData(tmpItem);
+            }
         }
 
         public virtual void RemoveItemWithStorage(Struct_Item_Base Target)
@@ -58,6 +65,26 @@ namespace Server
             RemoveStorageData(Target);
 
 
+        }
+
+        public Struct_Item_Base GetSameItemWithType(E_Main_Item_Type MainType, int SubType, int Count)
+        {
+            for (int i = 0; i < mItemList.Count; ++i)
+            {
+                if (mItemList[i].mItemMainType == MainType && mItemList[i].mItemSubType == SubType && Count <= (mItemList[i].mMaxCount - mItemList[i].mCurrentCount))
+                    return mItemList[i];
+            }
+            return null;
+        }
+
+        public Struct_Item_Base GetSameItemWithType(E_Main_Item_Type MainType, int SubType)
+        {
+            for (int i = 0; i < mItemList.Count; ++i)
+            {
+                if (mItemList[i].mItemMainType == MainType && mItemList[i].mItemSubType == SubType)
+                    return mItemList[i];
+            }
+            return null;
         }
 
         public Struct_Item_Base GetItemWithSlotPos(int Pos)
@@ -71,7 +98,7 @@ namespace Server
             return null;
         }
 
-        protected virtual int GetEmptySlotWithStorage()
+        public virtual int GetEmptySlotWithStorage()
         {
             for (int key = 100; key < mDataInfo.mStorageSlotMaxCount; key++)
             {
@@ -88,7 +115,8 @@ namespace Server
             else if (Target.GetType() == typeof(Struct_Item_Equip))
                 mDataInfo.mEquipList.Add((Struct_Item_Equip)Target);
 
-
+			Dictionary<string, object> tmpSend = SerializeAddItemData (Target);
+			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_SEND_Add_USER_STORAGE,tmpSend);
         }
 
         void RemoveStorageData(Struct_Item_Base Target)
@@ -97,6 +125,9 @@ namespace Server
                 mDataInfo.mItemList.Remove(Target);
             else if (Target.GetType() == typeof(Struct_Item_Equip))
                 mDataInfo.mEquipList.Remove((Struct_Item_Equip)Target);
+
+			Dictionary<string, object> tmpSend = SerializeRemoveItemData (Target);
+			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_SEND_REMOVE_USER_STORAGE,tmpSend);
         }
 
         protected bool SwipStorageSlot(int PosA,int PosB)

@@ -58,6 +58,9 @@ namespace Server
         public uint EVENT_WEB_SEND_BUY_ITEM = 0x1200004;
 
         public uint EVENT_WEB_SEND_ACCEPT_TASK = 0x1200010;
+
+		public uint EVENT_WEB_SEND_EXIT_NPC = 0x1200010;
+		public uint EVENT_WEB_RECEIVE_EXIT_NPC = 0x1200012;
     }
     public class EventWebView
     {

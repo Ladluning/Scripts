@@ -7,13 +7,10 @@ namespace Server
     {
         public Dictionary<string, object> RequireLoginData()
         {
-            Dictionary<string, object> tmpSend = SerializeUserData();
-            Dictionary<string, object> tmpStorage = SerializeStorageData();
+            Dictionary<string, object> tmpSend = SerializeLoginData();
 
             ((Dictionary<string, object>)tmpSend["results"]).Add("id", ID);
-            ((Dictionary<string, object>)tmpSend["results"]).Add("packages", ((Dictionary<string, object>)(tmpStorage["results"]))["packages"]);
 
-			Debug.Log ("Send LOgin"+GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN);
             this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, tmpSend);
             return tmpSend;
         }
@@ -59,6 +56,9 @@ namespace Server
             ((Dictionary<string, object>)tmpSend["results"]).Add("rotate_x", mCurrentTransform.localEulerAngles.x);
             ((Dictionary<string, object>)tmpSend["results"]).Add("rotate_y", mCurrentTransform.localEulerAngles.y);
             ((Dictionary<string, object>)tmpSend["results"]).Add("rotate_z", mCurrentTransform.localEulerAngles.z);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("scene", mDataInfo.SceneID);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("mesh", mDataInfo.MeshID);
+
             this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_POS, tmpSend);
 
             return MiniJSON.Json.Serialize(tmpSend);
@@ -78,15 +78,9 @@ namespace Server
             return MiniJSON.Json.Serialize(tmpSend);
         }
 
-        Dictionary<string, object> SerializeUserData()
+        Dictionary<string, object> SerializeLoginData()
         {
-            Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UDPATE_USER_DATA);
-
-            ((Dictionary<string, object>)tmpSend["results"]).Add("hp", mDataInfo.HP);
-            ((Dictionary<string, object>)tmpSend["results"]).Add("mp", mDataInfo.MP);
-            ((Dictionary<string, object>)tmpSend["results"]).Add("exp", mDataInfo.EXP);
-            ((Dictionary<string, object>)tmpSend["results"]).Add("package", mDataInfo.mStorageSlotCount);
-            ((Dictionary<string, object>)tmpSend["results"]).Add("packagemax", mDataInfo.mStorageSlotMaxCount);
+            Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN);
             ((Dictionary<string, object>)tmpSend["results"]).Add("pos_x", mDataInfo.WorldPos.x);
             ((Dictionary<string, object>)tmpSend["results"]).Add("pos_y", mDataInfo.WorldPos.y);
             ((Dictionary<string, object>)tmpSend["results"]).Add("pos_z", mDataInfo.WorldPos.z);
@@ -95,7 +89,15 @@ namespace Server
 			((Dictionary<string, object>)tmpSend["results"]).Add("rotate_z", mDataInfo.WorldRotate.z);
             ((Dictionary<string, object>)tmpSend["results"]).Add("scene", mDataInfo.SceneID);
             ((Dictionary<string, object>)tmpSend["results"]).Add("mesh", mDataInfo.MeshID);
+            return tmpSend;
+        }
 
+        Dictionary<string, object> SerializeUserData()
+        {
+            Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UDPATE_USER_DATA);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("hp", mDataInfo.HP);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("mp", mDataInfo.MP);
+            ((Dictionary<string, object>)tmpSend["results"]).Add("exp", mDataInfo.EXP);
             return tmpSend;
         }
 
@@ -103,11 +105,11 @@ namespace Server
         {
             Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UDPATE_USER_STORAGE);
             List<object> tmpItemData = new List<object>();
-            for (int i = 0; i < mDataInfo.mItemList.Count; i++)
+			for (int i = 0; i < mDataInfo.mItemList.Count; ++i)
             {
                 tmpItemData.Add(Server_Item_Serialize.ConvertItemToJson(mDataInfo.mItemList[i]));
             }
-            for (int i = 0; i < mDataInfo.mEquipList.Count; i++)
+			for (int i = 0; i < mDataInfo.mEquipList.Count; ++i)
             {
                 tmpItemData.Add(Server_Item_Serialize.ConvertItemToJson(mDataInfo.mEquipList[i]));
             }
@@ -116,11 +118,37 @@ namespace Server
             return tmpSend;
         }
 
-        Dictionary<string, object> SerializeAddItemData(Struct_Item_Base[] Target)
+		public Dictionary<string, object> SerializeAddItemData(Struct_Item_Base Target)
+		{
+			Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_Add_USER_STORAGE);
+			List<object> tmpItemData = new List<object>();
+			for (int i = 0; i < 1; ++i)
+			{
+				tmpItemData.Add(Server_Item_Serialize.ConvertItemToJson(Target));
+			}
+			((Dictionary<string, object>)tmpSend["results"]).Add("packages", tmpItemData);
+			
+			return tmpSend;
+		}
+		
+		public Dictionary<string, object> SerializeRemoveItemData(Struct_Item_Base Target)
+		{
+			Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_REMOVE_USER_STORAGE);
+			List<object> tmpItemData = new List<object>();
+			for (int i = 0; i < 1; ++i)
+			{
+				tmpItemData.Add(Target.mItemID);
+			}
+			((Dictionary<string, object>)tmpSend["results"]).Add("packages", tmpItemData);
+			
+			return tmpSend;
+		}
+
+		public Dictionary<string, object> SerializeAddItemData(Struct_Item_Base[] Target)
         {
             Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_Add_USER_STORAGE);
             List<object> tmpItemData = new List<object>();
-            for (int i = 0; i < Target.Length; i++)
+			for (int i = 0; i < Target.Length; ++i)
             {
                 tmpItemData.Add(Server_Item_Serialize.ConvertItemToJson(Target[i]));
             }
@@ -129,7 +157,7 @@ namespace Server
             return tmpSend;
         }
 
-        Dictionary<string, object> SerializeRemoveItemData(Struct_Item_Base[] Target)
+		public Dictionary<string, object> SerializeRemoveItemData(Struct_Item_Base[] Target)
         {
             Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_REMOVE_USER_STORAGE);
             List<object> tmpItemData = new List<object>();

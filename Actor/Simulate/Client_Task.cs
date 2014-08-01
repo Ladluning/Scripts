@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Game_FSM_Enemy_General_State_Idle : MonoBehaviour {
+public class Client_Task : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {

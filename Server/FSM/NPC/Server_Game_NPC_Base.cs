@@ -15,10 +15,17 @@ namespace Server
         protected Server_Game_Scene_Manager mManager;
         protected Transform mCurrentTransform;
         protected bool mMarkAsChanged = true;
+		protected Server_Game_Manager mGameManager;
 
-        public virtual void Init()
+		public virtual void Init()
+		{
+
+		}
+
+        protected void InitNPC()
         {
             mCurrentTransform = transform;
+			mGameManager = Server_Game_Manager.Singleton ();
             mManager = GameTools.FindComponentInHierarchy<Server_Game_Scene_Manager>(transform);
             mFather = GameTools.FindComponentInHierarchy<Server_Game_Spawn_Point_NPC>(transform);
         }

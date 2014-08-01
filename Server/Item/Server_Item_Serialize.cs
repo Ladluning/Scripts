@@ -35,13 +35,15 @@ namespace Server
             Dictionary<string, object> tmpItem = ConvertBaseToJson(Target);
             tmpItem.Add("level", Target.mEquipLevel);
             tmpItem.Add("maxlevel", Target.mEquipMaxLevel);
+            tmpItem.Add("equiptype", (int)Target.mEquipSoltType);
+            tmpItem.Add("quality", (int)Target.mEquipQualityType);
 
             List<Dictionary<string, object>> tmpStats = new List<Dictionary<string, object>>();
             for (int i = 0; i < Target.mStats.Count; i++)
             {
                 Dictionary<string, object> tmpStat = new Dictionary<string, object>();
-                tmpStat.Add("id", Target.mStats[i].mIdentifier);
-                tmpStat.Add("modifier", Target.mStats[i].mModifier);
+                tmpStat.Add("id", (int)Target.mStats[i].mIdentifier);
+                tmpStat.Add("modifier", (int)Target.mStats[i].mModifier);
                 tmpStat.Add("amount", Target.mStats[i].mAmount);
                 tmpStats.Add(tmpStat);
             }

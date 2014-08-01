@@ -85,7 +85,7 @@ namespace Server
             return null;
         }
 
-        Server_Game_User GetServerUserWithID(string ID)
+        public Server_Game_User GetServerUserWithID(string ID)
         {
             for (int i = 0; i < mSceneList.Count; ++i)
                 for (int j = 0; j < mSceneList[i].mPlayerList.Count; ++j)
@@ -96,7 +96,7 @@ namespace Server
             return null;
         }
 
-        Server_Game_Transmit_Point GetServerTransmitWithID(string ID)
+		public Server_Game_Transmit_Point GetServerTransmitWithID(string ID)
         {
             for (int i = 0; i < mSceneList.Count; ++i)
             {

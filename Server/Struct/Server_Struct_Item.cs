@@ -82,7 +82,7 @@ namespace Server
     public class Struct_Item_Base
     {
         public int mUse;
-        public int mItemMainType;//User For Class of Object
+        public E_Main_Item_Type mItemMainType;//User For Class of Object
         public int mItemSubType;//User For Icon // Use for Description
         public int mMaxCount = 5;
         public int mCurrentCount = 1;
@@ -94,15 +94,17 @@ namespace Server
             
         }
 
-        public Struct_Item_Base(Struct_Item_Base Target)
+        public virtual Struct_Item_Base Copy()
         {
-            mUse = Target.mUse;
-            mItemMainType = Target.mItemMainType;
-            mItemSubType = Target.mItemSubType;
-            mMaxCount = Target.mMaxCount;
-            mCurrentCount = Target.mCurrentCount;
-            mItemID = Target.mItemID;
-            mItemPosID = Target.mItemPosID;
+			Struct_Item_Base tmp = new Struct_Item_Base ();
+			tmp.mUse = mUse;
+			tmp.mItemMainType = mItemMainType;
+			tmp.mItemSubType = mItemSubType;
+			tmp.mMaxCount = mMaxCount;
+			tmp.mCurrentCount = mCurrentCount;
+			tmp.mItemID = mItemID;
+			tmp.mItemPosID = mItemPosID;
+			return tmp;
         }
     }
 
@@ -114,17 +116,27 @@ namespace Server
         
         }
 
-        public Struct_Item_Equip(Struct_Item_Equip Target):base(Target)
+        public override Struct_Item_Base Copy()
         {
-            mEquipLevel = Target.mEquipLevel;
-            mEquipMaxLevel = Target.mEquipMaxLevel;
-            mEquipSoltType = Target.mEquipSoltType;
-            mEquipQualityType = Target.mEquipQualityType;
+			Struct_Item_Equip tmp = new Struct_Item_Equip ();
+			tmp.mUse = mUse;
+			tmp.mItemMainType = mItemMainType;
+			tmp.mItemSubType = mItemSubType;
+			tmp.mMaxCount = mMaxCount;
+			tmp.mCurrentCount = mCurrentCount;
+			tmp.mItemID = mItemID;
+			tmp.mItemPosID = mItemPosID;
+			tmp.mEquipLevel = mEquipLevel;
+			tmp.mEquipMaxLevel = mEquipMaxLevel;
+			tmp.mEquipSoltType = mEquipSoltType;
+			tmp.mEquipQualityType = mEquipQualityType;
 
-            for (int i = 0; i < Target.mStats.Count; ++i)
+			for (int i = 0; i < mStats.Count; ++i)
             {
-                mStats.Add(new Struct_Item_Equip_Stat(Target.mStats[i]));
+				tmp.mStats.Add(new Struct_Item_Equip_Stat(mStats[i]));
             }
+
+			return tmp;
         }
 
         public List<Struct_Item_Equip_Stat> mStats = new List<Struct_Item_Equip_Stat>();
@@ -146,8 +158,8 @@ namespace Server
             mModifier = Target.mModifier;
             mAmount = Target.mAmount;
         }
-        public int mIdentifier;
-        public int mModifier;
+        public E_Sub_Equip_Stat_Identifier_Type mIdentifier;
+        public E_Sub_Equip_Stat_Modifier_Type mModifier;
         public int mAmount;
     }
 }
