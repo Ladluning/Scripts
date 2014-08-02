@@ -22,6 +22,11 @@ namespace Server
             mFather = Father;
         }
 
+		public Server_Game_NPC_Base GetFather()
+		{
+			return mFather;
+		}
+
         public override void StartState(int nStateID)
         {
             base.StartState(nStateID);

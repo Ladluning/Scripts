@@ -196,7 +196,7 @@ namespace Server
             List<object> tmpVisibleEnemyData = new List<object>();
             for (int i = 0; i < mVisibleEnemyList.Count; i++)
             {
-                tmpVisibleEnemyData.Add(mVisibleEnemyList[i].GetSerializeData());
+                tmpVisibleEnemyData.Add(mVisibleEnemyList[i].GetDataComponent<Server_Game_NPC_Data_Transform>().GetSerializeData());
             }
             ((Dictionary<string, object>)tmpSend["results"]).Add("id", mDataInfo.ID);
             ((Dictionary<string, object>)tmpSend["results"]).Add("visi_player", tmpVisiblePlayerData);

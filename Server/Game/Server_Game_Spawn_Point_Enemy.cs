@@ -3,29 +3,22 @@ using System.Collections;
 
 namespace Server
 {
-    public class Server_Game_Spawn_Point_Enemy : MonoBehaviour 
+    public class Server_Game_Spawn_Point_Enemy : Server_Game_Spawn_Point_Base 
 	{
 		public Server_Struct_Spawn_Info[] mRefreshInfo;
 		public float mPointRange;
 		public float mRefreshSpaceTime;
 		public int mRefreshCount;
-		public Vector3 mRefreshPos;
 
-		private Transform mCurrentTransform;
 		private float mRefreshTimer;
 		private float mNextRefreshTime;
-        private Server_Game_Scene_Manager mFather;
         private uint mRefreshID = 0;
-        void Awake()
-        {
-            mCurrentTransform = transform;
-        }
 
-        public void Init()
-        {
-            mFather = GameTools.FindComponentInHierarchy<Server_Game_Scene_Manager>(transform);
 
-            Debug.Log(mFather);
+        public override void Init()
+        {
+			base.Init();
+
             if (mFather == null)
                 return;
 
@@ -40,7 +33,7 @@ namespace Server
                 tmpEnemy.transform.parent = transform;
                 tmpEnemy.mSceneID = mFather.mSceneID;
                 tmpEnemy.name = name + "_Enemy_" + (mRefreshID++);
-				tmpEnemy.mEnemyID = tmpEnemy.name;
+				tmpEnemy.mID = tmpEnemy.name;
                 tmpEnemy.transform.localPosition = RefreshPoint;
                 tmpEnemy.Init();
             }
@@ -61,7 +54,7 @@ namespace Server
 
 		void OnDrawGizmos()
 		{
-			Gizmos.DrawWireSphere (transform.TransformPoint(mRefreshPos),mPointRange);
+			Gizmos.DrawWireSphere (transform.TransformPoint(SpawnPos),mPointRange);
 		}
 
         GameObject GetCreateTarget()
@@ -75,16 +68,16 @@ namespace Server
             return null;
         }
 
-        public Int2 GetEmptyRandomPos()
+        public override Int2 GetEmptyRandomPos()
         {
 			int i = 0;
             while (true)
             {
 				i++;
                 Vector3 RefreshPoint = new Vector3(Mathf.Sin(Random.Range(-3.15f, 3.15f)) * Random.Range(mPointRange / 2, mPointRange), 0, Mathf.Cos(Random.Range(-3.15f, 3.15f)) * Random.Range(mPointRange / 2, mPointRange));
-				if (mFather.GetPointIsInMap(mRefreshPos+RefreshPoint))
+				if (mFather.GetPointIsInMap(SpawnPos+RefreshPoint))
                 {
-					return mFather.ConvertWorldPosToMapPos(mRefreshPos+RefreshPoint);
+					return mFather.ConvertWorldPosToMapPos(SpawnPos+RefreshPoint);
                 }
 
 				if(i>1000)

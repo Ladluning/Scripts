@@ -10,7 +10,6 @@ namespace Server
         {
             mController = gameObject.AddComponent<Server_Game_FSM_NPC_Trader_Controller>();
             mController.Init(this);
-			InitNPC ();
 
             this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_NPC, this);
         }

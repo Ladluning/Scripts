@@ -11,6 +11,12 @@ public class Int2
 		
 	}
 
+	public Int2(Vector3 value)
+	{
+		x = (int)value.x;
+		y = (int)value.z;
+	}
+
 	public Int2(float xValue,float yValue)
 	{
 		x = (int)xValue;

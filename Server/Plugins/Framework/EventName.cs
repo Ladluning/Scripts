@@ -61,6 +61,9 @@ namespace Server
 
 		public uint EVENT_WEB_SEND_EXIT_NPC = 0x1200010;
 		public uint EVENT_WEB_RECEIVE_EXIT_NPC = 0x1200012;
+
+		public uint EVENT_WEB_SEND_UPDATE_NPC_POS = 0x1200014;
+		public uint EVENT_WEB_RECEIVE_UPDATE_NPC_POS = 0x1200016;
     }
     public class EventWebView
     {

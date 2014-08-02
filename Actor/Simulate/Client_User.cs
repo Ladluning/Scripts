@@ -14,6 +14,7 @@ public class Client_User : Controller
     {
         m_pInterface = this;
         mClientTransform = gameObject.AddComponent<Client_Transform>();
+		mClientPackage   = gameObject.AddComponent<Client_Package>();
     }
 
     private string mID;

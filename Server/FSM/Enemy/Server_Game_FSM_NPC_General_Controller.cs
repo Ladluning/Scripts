@@ -1,13 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace Server
 {
-    public class Server_Game_FSM_NPC_Trader_Controller : Server_Game_FSM_NPC_Base_Controller
+    public enum E_State_NPC_General
     {
-        [HideInInspector]
-        public List<Struct_Item_Base> mItemList = new List<Struct_Item_Base>();
+        Idle_Move = 0,
+        Idle_Stand,
+        Move,
+        Attack,
+        Away,
+        Died,
+        Escape,
+    }
+
+    public class Server_Game_FSM_NPC_General_Controller : Server_Game_FSM_NPC_Base_Controller
+    {
+
+        // Use this for initialization
+        void OnEnable()
+        {
+
+        }
+        
+        void OnDisable()
+        {
+
+        }
+        protected override void Awake()
+        {
+            base.Awake();
+        }
 
         public override void Init(Server_Game_NPC_Base Father)
         {
@@ -23,5 +46,16 @@ namespace Server
             this.InitState();
 			this.StartState((int)E_State_NPC_General.Idle_Stand);
         }
+
+        void Start()
+        {
+
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+        }
+
     }
 }

@@ -15,6 +15,11 @@ public class Client_Package : Game_Storage_Manager_Base
     }
 
 
+	void Awake()
+	{
+
+	}
+
     object OnHandleReceiveUpdatePackage(object pSender)
     {
         JsonData tmpJson = new JsonData(pSender);

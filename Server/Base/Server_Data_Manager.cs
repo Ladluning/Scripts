@@ -70,7 +70,7 @@ namespace Server
 
         public void LoadMapDataWithID(string ID)
         {
-            Server_Data_Map.Load(Application.dataPath + "/Resources/MapDate/" + ID + ".date", ID);
+            Server_Data_Map.Load(Application.dataPath + "/Resources/MapData/" + ID + ".date", ID);
         }
 
     }

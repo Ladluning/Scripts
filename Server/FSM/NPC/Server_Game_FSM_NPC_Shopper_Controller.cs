@@ -13,10 +13,10 @@ namespace Server
         {
             base.Init(Father);
 
-            mStateMap.Add((int)E_State_NPC_Trader.Idle_Stand, new Server_Game_FSM_NPC_Shopper_State_Idle_Stand(this));
+			mStateMap.Add((int)E_State_NPC_General.Idle_Stand, new Server_Game_FSM_NPC_General_State_Idle_Stand(this));
 
             this.InitState();
-            this.StartState((int)E_State_NPC_Trader.Idle_Stand);
+			this.StartState((int)E_State_NPC_General.Idle_Stand);
         }
     }
 }
