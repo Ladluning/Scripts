@@ -18,7 +18,7 @@ namespace Server
         public Dictionary<string, object> RequireUserData()
         {
             Dictionary<string, object> tmpSend = SerializeUserData();
-
+			((Dictionary<string, object>)tmpSend["results"]).Add("id", ID);
             this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UDPATE_USER_DATA, tmpSend);
             return tmpSend;
         }
@@ -26,7 +26,7 @@ namespace Server
         public Dictionary<string, object> RequireStorageData()
         {
             Dictionary<string, object> tmpSend = SerializeStorageData();
-
+			((Dictionary<string, object>)tmpSend["results"]).Add("id", ID);
             this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UDPATE_USER_STORAGE, tmpSend);
             return tmpSend;
         }

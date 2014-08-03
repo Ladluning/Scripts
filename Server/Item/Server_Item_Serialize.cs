@@ -38,7 +38,7 @@ namespace Server
             tmpItem.Add("equiptype", (int)Target.mEquipSoltType);
             tmpItem.Add("quality", (int)Target.mEquipQualityType);
 
-            List<Dictionary<string, object>> tmpStats = new List<Dictionary<string, object>>();
+            List<object> tmpStats = new List<object>();
             for (int i = 0; i < Target.mStats.Count; i++)
             {
                 Dictionary<string, object> tmpStat = new Dictionary<string, object>();
@@ -47,7 +47,7 @@ namespace Server
                 tmpStat.Add("amount", Target.mStats[i].mAmount);
                 tmpStats.Add(tmpStat);
             }
-            tmpItem.Add("stats", tmpStats.ToArray());
+            tmpItem.Add("stats", tmpStats);
             return tmpItem;
         }
     }

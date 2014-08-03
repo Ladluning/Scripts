@@ -32,7 +32,7 @@ public enum E_Sub_Equip_Type
 
     Count,
 }
-
+[System.Serializable]
 public class Game_Item_Equip : Game_Item_Base 
 {
 	public List<Game_Item_Equip_Stat> mStats = new List<Game_Item_Equip_Stat>();

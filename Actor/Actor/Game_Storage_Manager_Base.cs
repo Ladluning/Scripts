@@ -33,8 +33,15 @@ public class Game_Storage_Manager_Base : Controller
             Debug.LogError("ID:" + Target .mItemID + "Insert Pos Not Empty:" + Target.mItemPosID);
             return;
         }
-
-        mItemList.Add(Target);
+		Game_Item_Base TmpItem = GetItemWithID (Target.mItemID);
+		if(TmpItem == null)
+		{
+      		mItemList.Add(Target);
+		}
+		else 
+		{
+			TmpItem = Target;
+		}
     }
 
     public virtual void RemoveItemWithStorage(Game_Item_Base Target)

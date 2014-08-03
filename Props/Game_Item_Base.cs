@@ -17,6 +17,7 @@ public enum E_Use_Item_Type
     Normal,
 }
 
+[System.Serializable]
 public class Game_Item_Base 
 {
 	public int mUse;
