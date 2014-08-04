@@ -6,8 +6,8 @@ public class UI_Character_Package : UIBase {
 
     private Dictionary<int, UI_Character_Package_Page> mPageList = new Dictionary<int, UI_Character_Package_Page>();
 
+	public Transform  mInstanceNode;
     public GameObject mPagePrefab;
-
     public int mPageSlotMaxCount = 30;
     public int mStorageStartID;
     void Start()
@@ -39,13 +39,6 @@ public class UI_Character_Package : UIBase {
         //gameObject.GetComponent<UICenterOnChild> ().CenterOn (mPageList[0].transform);
         gameObject.GetComponent<UIGrid>().Reposition();
         gameObject.GetComponent<UICenterOnChild>().Recenter();
-
-        //foreach (int key in Game_Player_Storage_Manager.Singleton().GetItemList().Keys) 
-        //{
-        //    //Debug.Log (Game_Player_Storage_Manager.Singleton().GetItemList()[key]);
-        //    if(key>=Game_Player_Storage_Manager.StorageStartID)
-        //        InsertPackage(key,Game_Player_Storage_Manager.Singleton().GetItemList()[key]);
-        //}
     }
 
     public void InsertPackage(int Pos, Game_Item_Base Target)

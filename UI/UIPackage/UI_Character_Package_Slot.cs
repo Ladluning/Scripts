@@ -37,11 +37,11 @@ public class UI_Character_Package_Slot : UI_Package_Slot_Base
         if (UI_Character_Package_Cursor.Singleton().GetCurrentCursor() == null)
             return;
 
-        if (!UI_Character_Package_Cursor.Singleton().GetCurrentCursor().GetItem().GetIsOwn(Client_User.Singleton().GetID()))
-        {
-            UI_Character_Package_Cursor.Singleton().CancelCurrentCursor();
-            return;
-        }
+        //if (!UI_Character_Package_Cursor.Singleton().GetCurrentCursor().GetItem().GetIsOwn(Client_User.Singleton().GetID()))
+        //{
+        //    UI_Character_Package_Cursor.Singleton().CancelCurrentCursor();
+        //    return;
+        //}
 
         UI_Character_Package_Cursor.Singleton().ReplaceCurrentCursor(this);
 

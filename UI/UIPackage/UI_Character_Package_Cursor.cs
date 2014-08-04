@@ -14,13 +14,16 @@ public class UI_Character_Package_Cursor : MonoBehaviour {
 
 		if (uiCamera == null)
 			uiCamera = NGUITools.FindCameraForLayer(gameObject.layer);
+
+		mItemSprite = gameObject.GetComponent<UITexture>();
 	}
 	private Camera uiCamera;
-    private UI_Package_Slot_Base mCurrentCursor;
-    public void SetCurrentCursor(UI_Package_Slot_Base Target)
+    private UI_Slot_Base mCurrentCursor;
+	private UITexture mItemSprite;
+    public void SetCurrentCursor(UI_Slot_Base Target)
 	{
 		mCurrentCursor = Target;
-
+		mItemSprite.material = Target.mItemSprite.material;
 	}
 
 	public void CancelCurrentCursor()
@@ -28,13 +31,9 @@ public class UI_Character_Package_Cursor : MonoBehaviour {
 		mCurrentCursor = null;
 	}
 
-    public void ReplaceCurrentCursor(UI_Package_Slot_Base Target)
+    public void ReplaceCurrentCursor(UI_Slot_Base Target)
 	{
-        if (Target.GetIsPlaceWithItemType(mCurrentCursor.GetItem().mItemMainType)
-                        && mCurrentCursor.GetIsPlaceWithItemType(Target.GetItem().mItemMainType))
-        {
-            //Debug.Log("Swip");
-        }
+		CancelCurrentCursor();
 	}
 
 	public bool GetIsInCursor()
@@ -42,39 +41,33 @@ public class UI_Character_Package_Cursor : MonoBehaviour {
 		return mCurrentCursor != null;
 	}
 
-    public UI_Package_Slot_Base GetCurrentCursor()
+    public UI_Slot_Base GetCurrentCursor()
 	{
 		return mCurrentCursor;
 	}
 
-	public UITexture mItemIconSprite;
+
 	void Update()
 	{
 		if (mCurrentCursor == null) 
 		{
-			mItemIconSprite.material = null;
+			mItemSprite.material = null;
 			return;
 		}
-        else if (mItemIconSprite.material == null || mItemIconSprite.material.name != mCurrentCursor.GetItem().GetName()) 
-		{
-            mItemIconSprite.material = Resources.Load("Item/" + mCurrentCursor.GetItem().GetName(), typeof(Material)) as Material;
-		}
-
 		UdpateIconSpritePos ();
 	}
 
 	void ClearIconSprite()
 	{
-		if (mItemIconSprite.material != null)
-			mItemIconSprite.material = null;
+		if (mItemSprite.material != null)
+			mItemSprite.material = null;
 	}
 
 	void UpdateIconSprite()
 	{
 
 	}
-
-
+	
 	void UdpateIconSpritePos()
 	{
 

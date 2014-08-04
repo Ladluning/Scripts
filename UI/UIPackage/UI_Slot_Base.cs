@@ -4,17 +4,25 @@ using System.Collections;
 public class UI_Slot_Base : Controller 
 {
     protected UISprite mSlotBackground;
-    protected UITexture mItemSprite;
+	[HideInInspector]
+	public UITexture mItemSprite;
+	[HideInInspector]
+	public object mOwner;
 
-    public int mSlotType = -1;
+    public int  mSlotType = -1;
+	public int  mSlotPosID;
     public bool mIsAvailable = false;
-    public int mSlotPosID;
-
+    
     protected virtual void Awake()
     {
         mSlotBackground = transform.FindChild("Background").GetComponent<UISprite>();
         mItemSprite = transform.FindChild("Item").GetComponent<UITexture>();
     }
+
+	public virtual void Init(object Father,int SlotID)
+	{
+		mOwner = Father;
+	}
 
     public virtual bool GetIsPlaceWithItemType(int TargetType)
     {

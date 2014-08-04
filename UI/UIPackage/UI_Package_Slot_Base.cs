@@ -26,15 +26,17 @@ public class UI_Package_Slot_Base : UI_Slot_Base
         return mCurrentItem;
     }
 
-    public void InitWithID(Game_Storage_Manager_Base Father, int SlotID)
+    public override void Init(object Father, int SlotID)
     {
+		base.Init(Father,SlotID);
+
         mSlotPosID = SlotID;
-        mFather = Father;
+		mFather = (Game_Storage_Manager_Base)Father;
     }
 
     protected virtual void Update()
     {
-        Game_Item_Base tmp = mFather.GetItemWithSlotPos(mSlotPosID);
+		Game_Item_Base tmp = mFather.GetItemWithSlotPos(mSlotPosID);
         if (mCurrentItem != tmp && this != UI_Character_Package_Cursor.Singleton().GetCurrentCursor())
         {
             SetItem(tmp);

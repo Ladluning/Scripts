@@ -7,12 +7,12 @@ public class UI_Character_Package_Page : MonoBehaviour
 
 	public int mStoragePageMaxCount = 36;
 	public int mStartSlotID = -1;
-
 	public Transform mInstanceNode;
 	public GameObject mSlotPrefab;
-    Game_Storage_Manager_Base mFather;
-    UICenterOnChild mCurrentCenter;
-    bool IsCloseChild = false;
+	
+	private bool mIsCloseChild = false;
+    private UICenterOnChild mCurrentCenter;
+	private Game_Storage_Manager_Base mFather;
 	void Awake()
 	{
 
@@ -34,7 +34,7 @@ public class UI_Character_Package_Page : MonoBehaviour
 			tmpSolt.name = mSlotPrefab.name+i;
 			tmpSolt.transform.localScale = Vector3.one;
 			tmpSolt.transform.localEulerAngles = Vector3.zero;
-            tmpSolt.InitWithID(mFather,i);
+            tmpSolt.Init(mFather,i);
             tmpSolt.SetIsAvailable(true);
 			mSlotList.Add(i,tmpSolt);
 		}
@@ -83,10 +83,10 @@ public class UI_Character_Package_Page : MonoBehaviour
 
     void SetChildrenIsCouldTouch(bool IsTouch)
     {
-        if (IsTouch == !IsCloseChild)
+		if (IsTouch == !mIsCloseChild)
             return;
 
-        IsCloseChild = !IsTouch;
+		mIsCloseChild = !IsTouch;
 		foreach (int i in mSlotList.Keys)
         {
             mSlotList[i].collider.enabled = IsTouch;
