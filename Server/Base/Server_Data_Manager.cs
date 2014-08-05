@@ -55,6 +55,8 @@ namespace Server
             tmpNewUser.HP = 100;
             tmpNewUser.MP = 100;
             tmpNewUser.EXP = 0;
+			tmpNewUser.mStorageSlotCount = 60;
+			tmpNewUser.mStorageSlotMaxCount = 60;
 			tmpNewUser.MeshID = "Blade_Girl_M_Base_All";
             tmpNewUser.SceneID = "Scene_0001";
             tmpNewUser.WorldPos = new Vector3(185.5f,6.95f, 90);

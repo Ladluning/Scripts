@@ -22,5 +22,10 @@ namespace Server
 		{
 			return new Int2(SpawnPos);
 		}
+
+		public virtual Int2 GetEmptyRandomPos(Int2 CurrentPos)
+		{
+			return new Int2(SpawnPos);
+		}
 	}
 }

@@ -74,7 +74,7 @@ public class UI_Character_Package_Page : MonoBehaviour
     {
         if (mCurrentCenter == null)
             return;
-        Debug.Log(mCurrentCenter.centeredObject.name);
+        //Debug.Log(mCurrentCenter.centeredObject.name);
         if (mCurrentCenter.centeredObject == gameObject)
             SetChildrenIsCouldTouch(true);
         else

@@ -22,8 +22,8 @@ namespace Server
         {
             base.OnEnter();
 
-			Debug.Log (GetController<Server_Game_FSM_NPC_Base_Controller>());
-			Debug.Log (GetController<Server_Game_FSM_NPC_Base_Controller>().GetFather());
+//			Debug.Log (GetController<Server_Game_FSM_NPC_Base_Controller>());
+//			Debug.Log (GetController<Server_Game_FSM_NPC_Base_Controller>().GetFather());
 
 			mStandTimer = 0;
             mStandTime = GetController<Server_Game_FSM_NPC_Base_Controller>().GetFather().GetDataComponent<Server_Game_NPC_Data_Property>().mIdleStandTime;
@@ -45,7 +45,7 @@ namespace Server
             {
                 mController.SwitchState((int)E_State_Enemy_General.Idle_Move);
 
-                Debug.Log(mController.name + "--Switch State--Idle_Move");
+//                Debug.Log(mController.name + "--Switch State--Idle_Move");
             }
         }
 

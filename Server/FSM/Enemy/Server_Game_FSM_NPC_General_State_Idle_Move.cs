@@ -26,16 +26,22 @@ namespace Server
         {
             base.OnEnter();
 
-            Int2 TmpTargetPos = mEnemyController.mFather.GetSpawnPoint().GetEmptyRandomPos();
             Int2 TmpCurrentPos = mEnemyController.mFather.GetManager().ConvertWorldPosToMapPos(mEnemyController.transform.localPosition);
-            if (mEnemyController.mFather.GetManager().StartFindPath(TmpCurrentPos, TmpTargetPos))
+			Int2 TmpTargetPos = mEnemyController.mFather.GetSpawnPoint().GetEmptyRandomPos(TmpCurrentPos);
+			if (mEnemyController.mFather.GetManager().StartFindPath(TmpCurrentPos, TmpTargetPos))
             {
                 for (int i = 0; i < mEnemyController.mFather.GetManager().MovePath.Count; ++i)
                 {
                     mMovePath.Add(mEnemyController.mFather.GetManager().MovePath[i]);
                 }
             }
-            GetComponent<Server_Game_Object_Move>().MoveToTarget(mMovePath, OnActionOver, 1);
+			Debug.Log (mEnemyController.name);
+			Debug.Log (mEnemyController.mFather.GetManager().GetPointIsInMap(TmpCurrentPos)+TmpCurrentPos.Printf()+" "+mEnemyController.transform.localPosition+" "+mEnemyController.mFather.GetManager().ConvertMapPosToWorldPos(TmpCurrentPos));
+			Debug.Log (mEnemyController.mFather.GetManager().GetPointIsInMap(TmpTargetPos)+TmpTargetPos.Printf());
+			if (!mEnemyController.mFather.GetManager ().GetPointIsInMap (TmpTargetPos) ||! mEnemyController.mFather.GetManager ().GetPointIsInMap (TmpCurrentPos)) {
+				Debug.LogError ("Error Pos");	
+			}
+			GetComponent<Server_Game_Object_Move>().MoveToTarget(mMovePath, OnActionOver, 1);
             GetComponent<Server_Game_Object_Animation>().PlayAnimation("walk");
             
 			Debug.Log(mMovePath.Count+" Find Path Form" + TmpCurrentPos.x + " " + TmpCurrentPos.y + " To" + TmpTargetPos.x + " " + TmpTargetPos.y);

@@ -4,8 +4,8 @@ using System.Collections.Generic;
 public class Game_Storage_Manager_Base : Controller
 {
 
-    public int mStorageSlotMaxCount;
-    public int mStorageSlotCount;
+    public int mStorageSlotMaxCount = 60;
+    public int mStorageSlotCount = 60;
 
     public List<Game_Item_Base> mItemList = new List<Game_Item_Base>();
 

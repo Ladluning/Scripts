@@ -112,12 +112,12 @@ namespace Server
 
         public Int2 ConvertWorldPosToMapPos(Vector3 TargetPos)
         {
-            return new Int2(TargetPos.x / mMapNodeSize.x, TargetPos.z / mMapNodeSize.y);
+			return new Int2((TargetPos.x+(mMapNodeSize.x/2))/ mMapNodeSize.x, (TargetPos.z+(mMapNodeSize.y/2))/ mMapNodeSize.y);
         }
 
         public Int2 ConvertWorldPosToMapPos(Vector2 TargetPos)
         {
-            return new Int2(TargetPos.x / mMapNodeSize.x, TargetPos.y / mMapNodeSize.y);
+			return new Int2((TargetPos.x+(mMapNodeSize.x/2)) / mMapNodeSize.x, (TargetPos.y+(mMapNodeSize.y/2))/ mMapNodeSize.y);
         }
 
         public Vector3 ConvertMapPosToWorldPos(Int2 Pos)
@@ -148,6 +148,8 @@ namespace Server
 			{
 				if (mMapData[i][j] != null)
 					Gizmos.DrawWireCube(transform.TransformPoint(mMapData[i][j].WorldPos), Vector3.one * 0.3f);
+				//if (mMapData[i][j] != null)
+				//	Gizmos.DrawWireCube(transform.TransformPoint(new Vector3((mMapOriOffect.x+i)*0.5f,mMapData[i][j].WorldPos.y+1f,(mMapOriOffect.y+j)*0.5f)), Vector3.one * 0.15f);
 			}
 		}
     }

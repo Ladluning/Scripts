@@ -36,6 +36,8 @@ public class UI_Package_Slot_Base : UI_Slot_Base
 
     protected virtual void Update()
     {
+		if (mFather == null)
+			return;
 		Game_Item_Base tmp = mFather.GetItemWithSlotPos(mSlotPosID);
         if (mCurrentItem != tmp && this != UI_Character_Package_Cursor.Singleton().GetCurrentCursor())
         {

@@ -88,7 +88,11 @@ public class Int2
 	{
 		return !(One==Other);
 	}
-	
+
+	public string Printf()
+	{
+		return "(" + x.ToString () + "," + y.ToString()+")";
+	}
 }
 [System.Serializable]
 public class Int3
