@@ -81,7 +81,7 @@ namespace Server
             tmpUser.mDataInfo.WorldRotate = tmpTargetTransmit.transform.localEulerAngles;
             this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_PLAYER,tmpUser);
 
-            tmpUser.RequireUserData();
+            tmpUser.RequireLoginData();
             return null;
         }
 
@@ -90,7 +90,7 @@ namespace Server
             for (int i = 0; i < mSceneList.Count; ++i)
                 for (int j = 0; j < mSceneList[i].mPlayerList.Count; ++j)
                 {
-                    if (mSceneList[i].mPlayerList[j].ID == ID)
+                    if (mSceneList[i].mPlayerList[j].mID == ID)
                         return mSceneList[i].mPlayerList[j];
                 }
             return null;

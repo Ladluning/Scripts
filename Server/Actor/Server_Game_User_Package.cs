@@ -3,21 +3,45 @@ using System.Collections;
 using System.Collections.Generic;
 namespace Server
 {
-    public class Server_Game_User_Package : Server_Game_User_Serialize
+    public class Server_Game_User_Package : Server_Game_User_Component
     {
         List<Struct_Item_Base> mItemList = new List<Struct_Item_Base>();
+		[HideInInspector] 
+		public int mPackageSize;
+		[HideInInspector] 
+		public int mPackageMaxSize;
+
+		public override void Init (Server_Game_User Father)
+		{
+			base.Init (Father);
+
+			mPackageSize = Father.mDataInfo.mStorageSlotCount;
+			mPackageMaxSize = Father.mDataInfo.mStorageSlotMaxCount;
+			InitPackage();
+		}
+
         public void InitPackage()
         {
-            for (int i = 0; i < mDataInfo.mItemList.Count; i++)
+            for (int i = 0; i < mUser.mDataInfo.mItemList.Count; i++)
             {
-                mItemList.Add(mDataInfo.mItemList[i]);
+				mItemList.Add(mUser.mDataInfo.mItemList[i]);
             }
-            for (int i = 0; i < mDataInfo.mEquipList.Count; i++)
+			for (int i = 0; i < mUser.mDataInfo.mEquipList.Count; i++)
             {
-                mItemList.Add(mDataInfo.mEquipList[i]);
+				mItemList.Add(mUser.mDataInfo.mEquipList[i]);
             }
         }
 
+		public void ApplyEquipment()
+		{
+			for(int i=0;i<mItemList.Count;++i)
+			{
+				if (mItemList[i].GetType() == typeof(Struct_Item_Equip)&&mItemList[i].mItemPosID<100)
+				{
+					((Struct_Item_Equip)mItemList[i]).ApplyProperty(mUser.GetProperty().mOriginProperty,ref mUser.GetProperty().mCurrentProperty);
+				}
+			}
+		}
 
         public List<Struct_Item_Base> GetItemList()
         {
@@ -63,9 +87,20 @@ namespace Server
         {
             mItemList.Remove(Target);
             RemoveStorageData(Target);
-
-
         }
+
+		public virtual void RemoveItemWithStorage(Struct_Item_Base Target,int RemoveCount)
+		{
+			if(RemoveCount>=Target.mCurrentCount)
+			{
+				RemoveItemWithStorage(Target);
+			}
+			else
+			{
+				Target.mCurrentCount -= RemoveCount;
+
+			}
+		}
 
         public Struct_Item_Base GetSameItemWithType(E_Main_Item_Type MainType, int SubType, int Count)
         {
@@ -98,9 +133,20 @@ namespace Server
             return null;
         }
 
+		public Struct_Item_Base GetItemWithID(long ID)
+		{
+			for (int i = 0; i < mItemList.Count; ++i)
+			{
+				if (mItemList[i].mItemID == ID)
+					return mItemList[i];
+			}
+			
+			return null;
+		}
+
         public virtual int GetEmptySlotWithStorage()
         {
-            for (int key = 100; key < mDataInfo.mStorageSlotMaxCount; key++)
+			for (int key = 100; key < mUser.mDataInfo.mStorageSlotMaxCount; key++)
             {
                 if (GetItemWithSlotPos(key) == null)
                     return key;
@@ -110,25 +156,21 @@ namespace Server
 
         void AddStorageData(Struct_Item_Base Target)
         {
-            if (Target.GetType() == typeof(Struct_Item_Base))
-                mDataInfo.mItemList.Add(Target);
-            else if (Target.GetType() == typeof(Struct_Item_Equip))
-                mDataInfo.mEquipList.Add((Struct_Item_Equip)Target);
-
-			Dictionary<string, object> tmpSend = SerializeAddItemData (Target);
+			Dictionary<string, object> tmpSend = SerializeItemData (Target,GameEvent.WebEvent.EVENT_WEB_SEND_Add_USER_STORAGE);
 			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_SEND_Add_USER_STORAGE,tmpSend);
         }
 
         void RemoveStorageData(Struct_Item_Base Target)
         {
-            if (Target.GetType() == typeof(Struct_Item_Base))
-                mDataInfo.mItemList.Remove(Target);
-            else if (Target.GetType() == typeof(Struct_Item_Equip))
-                mDataInfo.mEquipList.Remove((Struct_Item_Equip)Target);
-
-			Dictionary<string, object> tmpSend = SerializeRemoveItemData (Target);
+			Dictionary<string, object> tmpSend = SerializeItemData (Target,GameEvent.WebEvent.EVENT_WEB_SEND_REMOVE_USER_STORAGE);
 			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_SEND_REMOVE_USER_STORAGE,tmpSend);
         }
+
+		void UpdateStorageData(Struct_Item_Base Target)
+		{
+			Dictionary<string, object> tmpSend = SerializeItemData (Target,GameEvent.WebEvent.EVENT_WEB_SEND_UPDATE_USER_STORAGE);
+			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_SEND_UPDATE_USER_STORAGE,tmpSend);
+		}
 
         protected bool SwipStorageSlot(int PosA,int PosB)
         {
@@ -150,5 +192,71 @@ namespace Server
 
             return true;
         }
+
+		public override void UpdateData ()
+		{
+			base.UpdateData ();
+
+			mUser.mDataInfo.mItemList.Clear();
+			mUser.mDataInfo.mEquipList.Clear();
+
+			for(int i=0;i<mItemList.Count;++i)
+			{
+				if (mItemList[i].GetType() == typeof(Struct_Item_Base))
+					mUser.mDataInfo.mItemList.Add(mItemList[i]);
+				else if (mItemList[i].GetType() == typeof(Struct_Item_Equip))
+					mUser.mDataInfo.mEquipList.Add((Struct_Item_Equip)mItemList[i]);
+			}
+
+		}
+
+		public Dictionary<string, object> RequireStorageData()
+		{
+			Dictionary<string, object> tmpSend = SerializeStorageData();
+			((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
+			((Dictionary<string, object>)tmpSend["results"]).Add("size",mPackageSize);
+			((Dictionary<string, object>)tmpSend["results"]).Add("maxSize",mPackageMaxSize);
+			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_STORAGE, tmpSend);
+			return tmpSend;
+		}
+
+		Dictionary<string, object> SerializeStorageData()
+		{
+			Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_USER_STORAGE);
+			List<object> tmpItemData = new List<object>();
+			for (int i = 0; i < mItemList.Count; ++i)
+			{
+				tmpItemData.Add(Server_Item_Serialize.ConvertItemToJson(mItemList[i]));
+			}
+			((Dictionary<string, object>)tmpSend["results"]).Add("packages", tmpItemData);
+			
+			return tmpSend;
+		}
+
+		public Dictionary<string, object> SerializeItemData(Struct_Item_Base Target,uint EventID)
+		{
+			Dictionary<string, object> tmpSend = ServerCommand.NewCommand(EventID);
+			List<object> tmpItemData = new List<object>();
+			for (int i = 0; i < 1; ++i)
+			{
+				tmpItemData.Add(Target.mItemID);
+			}
+			((Dictionary<string, object>)tmpSend["results"]).Add("packages", tmpItemData);
+			
+			return tmpSend;
+		}
+
+		public Dictionary<string, object> SerializeItemData(Struct_Item_Base[] Target,uint EventID)
+		{
+			Dictionary<string, object> tmpSend = ServerCommand.NewCommand(EventID);
+			List<object> tmpItemData = new List<object>();
+			for (int i = 0; i < Target.Length; ++i)
+			{
+				tmpItemData.Add(Target[i].mItemID);
+			}
+			((Dictionary<string, object>)tmpSend["results"]).Add("packages", tmpItemData);
+			
+			return tmpSend;
+		}
     }
 }

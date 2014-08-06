@@ -52,8 +52,12 @@ namespace Server
 
             Struct_Game_User_Info tmpNewUser = new Struct_Game_User_Info();
             tmpNewUser.ID = ID;
-            tmpNewUser.HP = 100;
-            tmpNewUser.MP = 100;
+			tmpNewUser.LosePropertyCount = 5;
+			tmpNewUser.PropertyAdd_Strength = 5;
+			tmpNewUser.PropertyAdd_Constitution = 5;
+			tmpNewUser.PropertyAdd_Agility = 5;
+			tmpNewUser.PropertyAdd_Intelligence = 5;
+			tmpNewUser.MaxLevel = 60;
             tmpNewUser.EXP = 0;
 			tmpNewUser.mStorageSlotCount = 60;
 			tmpNewUser.mStorageSlotMaxCount = 60;

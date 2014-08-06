@@ -31,8 +31,11 @@ namespace Server
         public uint EVENT_WEB_SEND_UDPATE_USER_TASK = 0x100002c;
         public uint EVENT_WEB_RECEIVE_UDPATE_USER_TASK = 0x100002e;
 
-        public uint EVENT_WEB_SEND_UDPATE_USER_STORAGE = 0x1000030;
-        public uint EVENT_WEB_RECEIVE_UDPATE_USER_STORAGE = 0x1000032;
+		public uint EVENT_WEB_SEND_INIT_USER_STORAGE = 0x1000030;
+		public uint EVENT_WEB_RECEIVE_INIT_USER_STORAGE = 0x1000031;
+
+        public uint EVENT_WEB_SEND_UPDATE_USER_STORAGE = 0x1000032;
+        public uint EVENT_WEB_RECEIVE_UPDATE_USER_STORAGE = 0x1000033;
 
         public uint EVENT_WEB_SEND_Add_USER_STORAGE = 0x1000034;
         public uint EVENT_WEB_RECEIVE_Add_USER_STORAGE = 0x1000036;
@@ -56,6 +59,8 @@ namespace Server
         public uint EVENT_WEB_RECEIVE_REQUEST_NPC_DATA = 0x1200002;
 
         public uint EVENT_WEB_SEND_BUY_ITEM = 0x1200004;
+
+		public uint EVENT_WEB_SEND_SELL_ITEM = 0x1200006;
 
         public uint EVENT_WEB_SEND_ACCEPT_TASK = 0x1200010;
 

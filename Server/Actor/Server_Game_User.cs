@@ -4,9 +4,29 @@ using System.Collections.Generic;
 
 namespace Server
 {
-    public class Server_Game_User : Server_Game_User_Package
+    public class Server_Game_User : Server_Game_User_Serialize
     {
-        
+		private Server_Game_User_Property mProperty;
+		private Server_Game_User_Transform mTransform;
+		private Server_Game_User_Package mPackage;
+		private Server_Game_User_Visible mVisible;
+		public Server_Game_User_Property GetProperty()
+		{
+			return mProperty;
+		}
+		public Server_Game_User_Transform GetTransform()
+		{
+			return mTransform;
+		}
+		public Server_Game_User_Package GetPackage()
+		{
+			return mPackage;
+		}
+		public Server_Game_User_Visible GetVisible()
+		{
+			return mVisible;
+		}
+
         protected override void Awake()
         {
             base.Awake();
@@ -14,72 +34,56 @@ namespace Server
             SetSelf(this);
         }
 
-        protected override void OnEnable()
-        {
-            base.OnEnable();
-
-            this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_UPDATE_POS,OnHandleUpdatePos);
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
-
-            this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_UPDATE_POS, OnHandleUpdatePos);
-        }
-
-        public void AddVisiblePlayer(Server_Game_User Target)
-        {
-            mVisiblePlayerList.Add(Target);
-        }
-
-        public void AddVisibleEnemy(Server_Game_Enemy Target)
-        {
-            mVisibleEnemyList.Add(Target);
-        }
-
         public void InitWithID(string Target)
         {
-            if (ID == null || ID != Target)
+            if (mID == null || mID != Target)
             {
                 LoadData(Target);
             }
-            ID = Target;
-            //mCurrentTransform.position = mDataInfo.WorldPos;
+            mID = Target;
+			mProperty = gameObject.AddComponent<Server_Game_User_Property>();
+			mComponentList.Add(mProperty);
+			mTransform = gameObject.AddComponent<Server_Game_User_Transform>();
+			mComponentList.Add(mTransform);
+			mPackage = gameObject.AddComponent<Server_Game_User_Package>();
+			mComponentList.Add(mPackage);
+			mVisible = gameObject.AddComponent<Server_Game_User_Visible>();
+			mComponentList.Add(mVisible);
+
+			for(int i=0;i<mComponentList.Count;++i)
+			{
+				mComponentList[i].Init(this);
+			}
+            //
             RequireLoginData();
+			mPackage.RequireStorageData();
         }
 
         void OnDestroy()
         {
+			for(int i=0;i<mComponentList.Count;++i)
+			{
+				mComponentList[i].UpdateData();
+			}
             SaveData();
         }
 
-        protected override void FixedUpdate()
-        {
-            base.FixedUpdate();
+		public bool GetIsChanged()
+		{
+			for(int i=0;i<mComponentList.Count;++i)
+			{
+				if(mComponentList[i].GetIsChanged())
+					return true;
+			}
+			return false;
+		}
 
-            RequireVisibleData();
+		public void GetVisibleData(ref Dictionary<string,object> Target)
+		{
+			for(int i=0;i<mComponentList.Count;++i)
+			{
 
-            mVisibleEnemyList.Clear();
-            mVisiblePlayerList.Clear();
-        }
-
-
-        object OnHandleUpdatePos(object pSender)
-        {
-            Debug.Log(MiniJSON.Json.Serialize(pSender));
-            JsonData tmpJson = new JsonData(pSender);
-            mCurrentTransform.localPosition = new Vector3((float)(tmpJson["results"]["pos_x"]), (float)(tmpJson["results"]["pos_y"]), (float)(tmpJson["results"]["pos_z"]));
-			mCurrentTransform.localEulerAngles = new Vector3((float)(tmpJson["results"]["rotate_x"]), (float)(tmpJson["results"]["rotate_y"]), (float)(tmpJson["results"]["rotate_z"]));
-            SetChanged();
-            RequirePosData();
-			RequireStorageData ();
-            return null;
-        }
-
-        protected override void UpdateBoard()
-        {
-            
-        }
+			}
+		}
     }
 }

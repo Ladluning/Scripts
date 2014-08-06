@@ -75,7 +75,7 @@ namespace Server
             Server_User tmpUser = (Server_User)pSender;
             for (int i = 0; i < mPlayerList.Count; i++)
             {
-                if (mPlayerList[i].ID == tmpUser.ID)
+                if (mPlayerList[i].mID == tmpUser.ID)
                 {
                     mPlayerList[i].SetServer(tmpUser);
                     return null;

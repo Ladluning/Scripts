@@ -66,6 +66,8 @@ namespace Server
         Crit,
         Armor,
         Health,
+		HP,
+		MP,
         SP,
         Other,
 
@@ -145,6 +147,14 @@ namespace Server
         public int mEquipMaxLevel;
         public int mEquipSoltType;
         public int mEquipQualityType;
+
+		public void ApplyProperty(Server_Struct_User_Property Origin,ref Server_Struct_User_Property Current)
+		{
+			for(int i=0;i<mStats.Count;++i)
+			{
+				mStats[i].ApplyProperty(Origin,ref Current);
+			}
+		}
     }
 
     [System.Serializable]
@@ -161,5 +171,59 @@ namespace Server
         public E_Sub_Equip_Stat_Identifier_Type mIdentifier;
         public E_Sub_Equip_Stat_Modifier_Type mModifier;
         public int mAmount;
+
+		public void ApplyProperty(Server_Struct_User_Property Origin,ref Server_Struct_User_Property Current)
+		{
+			switch(mIdentifier)
+			{
+			case E_Sub_Equip_Stat_Identifier_Type.Strength:break;
+			case E_Sub_Equip_Stat_Identifier_Type.Constitution:
+			{
+				Current.mPropertyAdd_Constitution += GetModify(Origin.mPropertyAdd_Constitution);
+				Current.mMaxHP += GetModify(Origin.mPropertyAdd_Constitution)*10;
+			}
+				break;
+			case E_Sub_Equip_Stat_Identifier_Type.Agility:break;
+			case E_Sub_Equip_Stat_Identifier_Type.Intelligence:break;
+			case E_Sub_Equip_Stat_Identifier_Type.Damage:break;
+			case E_Sub_Equip_Stat_Identifier_Type.Crit:break;
+			case E_Sub_Equip_Stat_Identifier_Type.Armor:break;
+			case E_Sub_Equip_Stat_Identifier_Type.Health:
+			{
+
+			}
+				break;
+			case E_Sub_Equip_Stat_Identifier_Type.HP:
+			{
+				Current.mMaxHP += GetModify(Origin.mMaxHP);
+			}
+				break;
+			case E_Sub_Equip_Stat_Identifier_Type.MP:
+			{
+				Current.mMaxMP += GetModify(Origin.mMaxMP);
+			}
+				break;
+			default:break;
+			}
+		}
+
+		private int GetModify(int Target)
+		{
+			switch(mModifier)
+			{
+			case E_Sub_Equip_Stat_Modifier_Type.Added:return Target+mAmount;
+			case E_Sub_Equip_Stat_Modifier_Type.Percent:return Target+(int)(Target*mAmount*0.01f);
+			default:return Target;
+			}
+		}
+		private float GetModify(float Target)
+		{
+			switch(mModifier)
+			{
+			case E_Sub_Equip_Stat_Modifier_Type.Added:return Target+(float)mAmount*0.01f;
+			case E_Sub_Equip_Stat_Modifier_Type.Percent:return Target+(float)(Target*(float)mAmount*0.01f);
+			default:return Target;
+			}
+		}
     }
 }

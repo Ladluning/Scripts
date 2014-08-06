@@ -8,9 +8,14 @@ namespace Server
     public class Struct_Game_User_Info
     {
         public string ID;
-        public int HP;
-        public int MP;
         public ulong EXP;
+		public int MaxLevel;
+		public int LosePropertyCount;
+		public int PropertyAdd_Strength;
+		public int PropertyAdd_Intelligence;
+		public int PropertyAdd_Agility;
+		public int PropertyAdd_Constitution;
+
         public int mStorageSlotMaxCount;
         public int mStorageSlotCount;
 

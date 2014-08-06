@@ -84,8 +84,8 @@ namespace Server
 					
 					if ((mPlayerList[j].transform.position - mPlayerList[i].transform.position).sqrMagnitude < PlayerVisibleRange)
 					{
-						mPlayerList[j].AddVisiblePlayer(mPlayerList[i]);
-						mPlayerList[i].AddVisiblePlayer(mPlayerList[j]);
+						mPlayerList[j].GetVisible().AddVisiblePlayer(mPlayerList[i]);
+						mPlayerList[i].GetVisible().AddVisiblePlayer(mPlayerList[j]);
 					}
 				}
 
@@ -95,7 +95,7 @@ namespace Server
 					{
                     	if ((mEnemyList[j].transform.position - mPlayerList[i].transform.position).sqrMagnitude < PlayerVisibleRange)
                    		{
-                       	 	mPlayerList[i].AddVisibleEnemy(mEnemyList[j]);
+							mPlayerList[i].GetVisible().AddVisibleEnemy(mEnemyList[j]);
                     	}
 					}
                 }
@@ -119,7 +119,7 @@ namespace Server
             }
             else
             {
-                Debug.LogError("Already Add Player: " + tmpUser.ID);
+                Debug.LogError("Already Add Player: " + tmpUser.mID);
             }
             return null; 
         }

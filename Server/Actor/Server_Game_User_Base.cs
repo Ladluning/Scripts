@@ -3,26 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 namespace Server
 {
-    public class Server_Game_User_Base : Controller
+	public class Server_Game_User_Base : Controller
     {
         [HideInInspector]
         public Server_User mServer;
         [HideInInspector]
         public Struct_Game_User_Info mDataInfo;
 
-        public string ID;
+        public string mID;
 
-        protected bool mMarkAsChanged = true;
+		protected List<Server_Game_User_Component> mComponentList = new List<Server_Game_User_Component>();
         protected Transform mCurrentTransform;
         protected Server_Manager mManager;
         protected Server_Game_User mSelf;
 
-        protected List<Server_Game_User> mVisiblePlayerList = new List<Server_Game_User>();
-        protected List<Server_Game_Enemy> mVisibleEnemyList = new List<Server_Game_Enemy>();
-
-        protected virtual void Awake()
-        {
-            mManager = Server_Manager.Singleton();
+		protected virtual void Awake()
+		{
+			mManager = Server_Manager.Singleton();
             mCurrentTransform = transform;
         }
 
@@ -36,15 +33,7 @@ namespace Server
             
         }
 
-        public void SetChanged()
-        {
-            mMarkAsChanged = true;
-        }
 
-        public bool GetIsChanged()
-        {
-            return mMarkAsChanged;
-        }
 
         protected void SetSelf(Server_Game_User Target)
         {
@@ -61,35 +50,10 @@ namespace Server
         protected virtual void FixedUpdate()
         {
             UpdateMessage();
-            UpdateChanged();
             UpdateDestroy();
         }
 
         protected virtual void UpdateMessage()
-        {
-
-        }
-
-        protected virtual void UpdateChanged()
-        {
-            if (!mMarkAsChanged)
-            {
-                return;
-            }
-
-            mMarkAsChanged = false;
-
-            UpdateData();
-            UpdateBoard();
-        }
-
-        protected void UpdateData()
-        {
-            mDataInfo.WorldPos = mCurrentTransform.localPosition;
-			mDataInfo.WorldRotate = mCurrentTransform.localEulerAngles;
-        }
-
-        protected virtual void UpdateBoard()
         {
 
         }

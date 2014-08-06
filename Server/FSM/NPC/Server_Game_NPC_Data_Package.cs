@@ -18,6 +18,7 @@ namespace Server
 		{
 			this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_REQUEST_NPC_DATA,OnHandleRequestNPCData);
 			this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_BUY_ITEM,OnHandleBuyItem);
+			this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_SELL_ITEM, OnHandleSellItem);
 			this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_EXIT_NPC, OnHandleExitNPC);
 			this.RegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_PLAYER,OnHandleDestroyPlayer);
 		}
@@ -26,6 +27,7 @@ namespace Server
 		{
 			this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_REQUEST_NPC_DATA, OnHandleRequestNPCData);
 			this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_BUY_ITEM, OnHandleBuyItem);
+			this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_SELL_ITEM, OnHandleSellItem);
 			this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_EXIT_NPC, OnHandleExitNPC);
 			this.UnRegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_PLAYER, OnHandleDestroyPlayer);
 		}
@@ -64,7 +66,43 @@ namespace Server
 			
 			return null;
 		}
-		
+
+		object OnHandleSellItem(object pSender)
+		{
+			JsonData tmpJson = (JsonData)pSender;
+
+			if ((string)tmpJson["results"]["npc"] != mFather.mID)
+				return null;
+
+			Server_Game_User tmpUser = mFather.mGameManager.GetServerUserWithID ((string)tmpJson["results"]["id"]);
+			if (tmpUser == null) 
+			{	
+				this.SendEvent(GameEvent.SysEvent.EVENT_SYS_ERROR, ServerCommand.NewError(GameEvent.SysEvent.EVENT_SYS_ERROR, 100));//Error User ID
+				return null;    
+			}
+
+			Struct_Item_Base tmpTarget = tmpUser.GetPackage().GetItemWithID((long)tmpJson["results"]["target"]);
+			if (tmpTarget == null)
+			{
+				this.SendEvent(GameEvent.SysEvent.EVENT_SYS_ERROR, ServerCommand.NewError(GameEvent.SysEvent.EVENT_SYS_ERROR,701));//Not find Shop Item
+				return null;
+			}
+
+			int tmpSellCount = (int)tmpJson["results"]["count"];
+			if(tmpSellCount > tmpTarget.mCurrentCount)
+			{
+				this.SendEvent(GameEvent.SysEvent.EVENT_SYS_ERROR, ServerCommand.NewError(GameEvent.SysEvent.EVENT_SYS_ERROR, 702));//Item not Enough
+				return null;
+			}
+
+			if(tmpSellCount == tmpTarget.mCurrentCount)
+			{
+				tmpUser.GetPackage().RemoveItemWithStorage(tmpTarget);
+			}
+
+			return null;
+		}
+
 		object OnHandleBuyItem(object pSender)
 		{
 			JsonData tmpJson = (JsonData)pSender;
@@ -99,7 +137,7 @@ namespace Server
 				return null;    
 			}
 			
-			if (tmpUser.GetEmptySlotWithStorage () == -1) 
+			if (tmpUser.GetPackage().GetEmptySlotWithStorage () == -1) 
 			{
 				this.SendEvent(GameEvent.SysEvent.EVENT_SYS_ERROR, ServerCommand.NewError(GameEvent.SysEvent.EVENT_SYS_ERROR, 105));//package full
 				return null;   					
@@ -107,7 +145,7 @@ namespace Server
 			
 			Struct_Item_Base tmpInster = tmpTarget.Copy ();
 			tmpInster.mCurrentCount = tmpBuyCount;
-			tmpUser.InsertItemWithInStorage (tmpInster);
+			tmpUser.GetPackage().InsertItemWithInStorage (tmpInster);
 			//InsertItemWithInStorage();
 			
 			tmpTarget.mCurrentCount -= tmpBuyCount;
