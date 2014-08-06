@@ -216,7 +216,7 @@ namespace Server
 			((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
 			((Dictionary<string, object>)tmpSend["results"]).Add("size",mPackageSize);
 			((Dictionary<string, object>)tmpSend["results"]).Add("maxSize",mPackageMaxSize);
-			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_STORAGE, tmpSend);
+			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_USER_STORAGE, tmpSend);
 			return tmpSend;
 		}
 

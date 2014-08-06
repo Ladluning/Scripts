@@ -59,8 +59,8 @@ namespace Server
 	}
 	public class Server_Game_User_Property : Server_Game_User_Component {
 
-		public Server_Struct_User_Property mOriginProperty;
-		public Server_Struct_User_Property mCurrentProperty;
+		public Server_Struct_User_Property mOriginProperty = new Server_Struct_User_Property();
+		public Server_Struct_User_Property mCurrentProperty = new Server_Struct_User_Property();
 		public string mMeshID;
 		public ulong mExp;
 		public int mLevel;

@@ -26,7 +26,8 @@ public class UI_Character_Package_Slot : UI_Package_Slot_Base
     {
         if (mCurrentItem != null)
         {
-            UICamera.currentTouch.clickNotification = UICamera.ClickNotification.BasedOnDelta;
+			//Debug.Log(UICamera.currentTouch.clickNotification.GetHashCode()+" :"+UICamera.currentTouch.clickNotification);
+            UICamera.currentTouch.clickNotification = UICamera.ClickNotification.Always;
             UI_Character_Package_Cursor.Singleton().SetCurrentCursor(this);
             SetItem(null);
         }

@@ -13,7 +13,7 @@ public class UI_Package_Slot_Base : UI_Slot_Base
 
         if (Target != null)
         {
-            mItemSprite.material = Resources.Load("Item/" + Target.mItemMainType, typeof(Material)) as Material;
+			mItemSprite.material = Resources.Load("Item/Icon/" + Target.mItemMainType+"_"+Target.mItemSubType, typeof(Material)) as Material;
         }
         else
         {
