@@ -62,10 +62,10 @@ namespace Server
         Constitution,
         Agility,
         Intelligence,
-        Damage,
+        Attack,
         Crit,
-        Armor,
-        Health,
+        Defend,
+        Hit,
 		HP,
 		MP,
         SP,
@@ -176,21 +176,54 @@ namespace Server
 		{
 			switch(mIdentifier)
 			{
-			case E_Sub_Equip_Stat_Identifier_Type.Strength:break;
+			case E_Sub_Equip_Stat_Identifier_Type.Strength:
+			{
+				Current.mAttack += (int)(GetModify(Origin.mPropertyAdd_Strength)*2.5f);
+				Current.mMaxAttack = Current.mAttack;
+
+				Current.mDefend += (int)(GetModify(Origin.mPropertyAdd_Strength)*0.5f);
+				Current.mMaxDefend = Current.mDefend;
+			}
+				break;
 			case E_Sub_Equip_Stat_Identifier_Type.Constitution:
 			{
 				Current.mPropertyAdd_Constitution += GetModify(Origin.mPropertyAdd_Constitution);
-				Current.mMaxHP += GetModify(Origin.mPropertyAdd_Constitution)*10;
+				Current.mMaxHP += GetModify(Origin.mPropertyAdd_Constitution)*20;
+				Current.mHPRecover += GetModify(Origin.mPropertyAdd_Constitution);
+				Current.mMaxHPRecover = Current.mHPRecover;
+
+				Current.mDefend += (int)(GetModify(Origin.mPropertyAdd_Constitution)*2);
+				Current.mMaxDefend = Current.mDefend;
 			}
 				break;
 			case E_Sub_Equip_Stat_Identifier_Type.Agility:break;
-			case E_Sub_Equip_Stat_Identifier_Type.Intelligence:break;
-			case E_Sub_Equip_Stat_Identifier_Type.Damage:break;
-			case E_Sub_Equip_Stat_Identifier_Type.Crit:break;
-			case E_Sub_Equip_Stat_Identifier_Type.Armor:break;
-			case E_Sub_Equip_Stat_Identifier_Type.Health:
+			case E_Sub_Equip_Stat_Identifier_Type.Intelligence:
 			{
-
+				Current.mMaxMP += GetModify(Origin.mPropertyAdd_Intelligence)*10;
+				Current.mMPRecover += GetModify(Origin.mPropertyAdd_Intelligence)/2;
+				Current.mMaxMPRecover = Current.mMPRecover;
+			}
+				break;
+			case E_Sub_Equip_Stat_Identifier_Type.Hit:			
+			{
+				Current.mHit += GetModify(Origin.mHit);
+			}
+				break;
+			case E_Sub_Equip_Stat_Identifier_Type.Attack:
+			{
+				Current.mAttack += GetModify(Origin.mAttack);
+				Current.mMaxAttack = Current.mAttack;
+			}
+				break;
+			case E_Sub_Equip_Stat_Identifier_Type.Defend:
+			{
+				Current.mDefend += GetModify(Origin.mDefend);
+				Current.mMaxDefend = Current.mDefend;
+			}
+				break;
+			case E_Sub_Equip_Stat_Identifier_Type.Crit:
+			{
+				Current.mCrit += GetModify(Origin.mCrit);
 			}
 				break;
 			case E_Sub_Equip_Stat_Identifier_Type.HP:

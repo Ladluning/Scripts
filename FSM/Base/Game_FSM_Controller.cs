@@ -6,7 +6,7 @@ public class Game_FSM_Controller : Controller {
 	
 	protected Dictionary<int,Game_FSM_State_Base> mStateMap = new Dictionary<int, Game_FSM_State_Base>();
 	protected int  mCurrentState = -1;
-	protected bool mAIStop = false;
+	protected bool mAIStop = true;
 	protected virtual void Awake()
 	{
 

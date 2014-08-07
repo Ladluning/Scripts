@@ -27,6 +27,7 @@ namespace Server
 
         public List<Struct_Item_Base> mItemList = new List<Struct_Item_Base>();
         public List<Struct_Item_Equip> mEquipList = new List<Struct_Item_Equip>();
+		public Struct_Game_User_Talent mTalent;
     }
     [System.Serializable]
     public class Struct_Game_User

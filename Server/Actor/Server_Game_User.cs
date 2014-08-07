@@ -10,6 +10,7 @@ namespace Server
 		private Server_Game_User_Transform mTransform;
 		private Server_Game_User_Package mPackage;
 		private Server_Game_User_Visible mVisible;
+		private Server_Game_User_Talent mTalent;
 		public Server_Game_User_Property GetProperty()
 		{
 			return mProperty;
@@ -41,14 +42,16 @@ namespace Server
                 LoadData(Target);
             }
             mID = Target;
-			mProperty = gameObject.AddComponent<Server_Game_User_Property>();
-			mComponentList.Add(mProperty);
 			mTransform = gameObject.AddComponent<Server_Game_User_Transform>();
 			mComponentList.Add(mTransform);
 			mPackage = gameObject.AddComponent<Server_Game_User_Package>();
 			mComponentList.Add(mPackage);
 			mVisible = gameObject.AddComponent<Server_Game_User_Visible>();
 			mComponentList.Add(mVisible);
+			mTalent = gameObject.AddComponent<Server_Game_User_Talent>();
+			mComponentList.Add(mTalent);
+			mProperty = gameObject.AddComponent<Server_Game_User_Property>();
+			mComponentList.Add(mProperty);
 
 			for(int i=0;i<mComponentList.Count;++i)
 			{

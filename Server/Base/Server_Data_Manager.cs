@@ -17,16 +17,13 @@ namespace Server
         }
 
         Struct_Game_User mData;
-        Server_Data_IO mIO;
         //Server_Data_Map mMap;
-        static string Path = "/User_Info.xml";
+        static string UserDataPath = "/User_Info.xml";
         void Awake()
         {
-            mIO = new Server_Data_IO();
-            //mMap = new Server_Data_Map();
             object tmp = null;
-            mIO.LoadData(Application.persistentDataPath + Path, ref tmp, typeof(Struct_Game_User));
-
+			Server_Data_IO.Singleton().LoadData(Application.persistentDataPath + UserDataPath, ref tmp, typeof(Struct_Game_User));
+			Debug.Log (Application.persistentDataPath + UserDataPath);
             if (tmp != null)
             {
                 mData = (Struct_Game_User)tmp;
@@ -39,7 +36,7 @@ namespace Server
 
         void OnDestroy()
         {
-            mIO.SaveData(Application.persistentDataPath + Path, mData);
+			Server_Data_IO.Singleton().SaveData(Application.persistentDataPath + UserDataPath, mData);
         }
 
         public Struct_Game_User_Info GetUserDataWithID(string ID)
@@ -68,7 +65,9 @@ namespace Server
             tmpNewUser.mItemList.Add(Server_Item_Factory.RandomItem(100));
             tmpNewUser.mItemList.Add(Server_Item_Factory.RandomItem(101));
             tmpNewUser.mEquipList.Add(Server_Item_Factory.RandomEquip(102));
-            tmpNewUser.mEquipList.Add(Server_Item_Factory.RandomEquip(103));
+            tmpNewUser.mEquipList.Add(Server_Item_Factory.RandomEquip(1));
+			tmpNewUser.mTalent = Server_Data_Talent.Singleton().GetOriginData();
+
             mData.mUserList.Add(tmpNewUser);
             return tmpNewUser;
         }

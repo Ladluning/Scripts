@@ -12,7 +12,6 @@ namespace Server
 		public int mPropertyAdd_Intelligence;
 		public int mPropertyAdd_Agility;
 		public int mPropertyAdd_Constitution;
-		public int mMaxLevel;
 		public int mHP;
 		public int mMaxHP;
 		public int mHPRecover;
@@ -77,20 +76,20 @@ namespace Server
 			mMeshID = mUser.mDataInfo.MeshID;
 			mExp = mUser.mDataInfo.EXP;
 			mLevel = GetLevel();
-			mOriginProperty.mMaxLevel = mUser.mDataInfo.MaxLevel;
+			mMaxLevel = mUser.mDataInfo.MaxLevel;
 
-
+			ApplyCurrentProperty();
 		}
 
 		private void ApplyOriginProperty()
 		{
 			mOriginProperty.mHP = 100+mOriginProperty.mPropertyAdd_Constitution*20+mLevel*10;
-			mOriginProperty.mMaxHP = mOriginProperty.mMaxHP;
+			mOriginProperty.mMaxHP = mOriginProperty.mHP;
 			mOriginProperty.mHPRecover = 10+mOriginProperty.mPropertyAdd_Constitution;
 			mOriginProperty.mMaxHPRecover = mOriginProperty.mHPRecover;
 
 			mOriginProperty.mMP = 50+mOriginProperty.mPropertyAdd_Intelligence*10+mLevel*5;
-			mOriginProperty.mMaxMP = mOriginProperty.mMaxHP;
+			mOriginProperty.mMaxMP = mOriginProperty.mMP;
 			mOriginProperty.mMPRecover = 5+mOriginProperty.mPropertyAdd_Intelligence/2;
 			mOriginProperty.mMaxMPRecover = mOriginProperty.mMPRecover;
 
@@ -112,7 +111,7 @@ namespace Server
 			ApplyOriginProperty();
 			mOriginProperty.CopyTo(mCurrentProperty);
 
-
+			mUser.GetPackage().ApplyEquipment();
 		}
 
 		public override void UpdateData()
@@ -161,7 +160,7 @@ namespace Server
 			((Dictionary<string, object>)tmpSend["results"]).Add("hp",mCurrentProperty.mHP);
 			((Dictionary<string, object>)tmpSend["results"]).Add("maxHP",mCurrentProperty.mMaxHP);
 			((Dictionary<string, object>)tmpSend["results"]).Add("hpRecover",mCurrentProperty.mHPRecover);
-			((Dictionary<string, object>)tmpSend["results"]).Add("maxHPRecover",mCurrentProperty.mMaxHPRecover);
+			//((Dictionary<string, object>)tmpSend["results"]).Add("maxHPRecover",mCurrentProperty.mMaxHPRecover);
 			((Dictionary<string, object>)tmpSend["results"]).Add("mesh",mMeshID);
 			((Dictionary<string, object>)tmpSend["results"]).Add("defend",mCurrentProperty.mDefend);
 			((Dictionary<string, object>)tmpSend["results"]).Add("maxDefend",mCurrentProperty.mMaxDefend);
@@ -170,7 +169,7 @@ namespace Server
 			((Dictionary<string, object>)tmpSend["results"]).Add("mp",mCurrentProperty.mMP);
 			((Dictionary<string, object>)tmpSend["results"]).Add("maxMP",mCurrentProperty.mMaxMP);
 			((Dictionary<string, object>)tmpSend["results"]).Add("mpRecover",mCurrentProperty.mMPRecover);
-			((Dictionary<string, object>)tmpSend["results"]).Add("maxMPRecover",mCurrentProperty.mMaxMPRecover);
+			//((Dictionary<string, object>)tmpSend["results"]).Add("maxMPRecover",mCurrentProperty.mMaxMPRecover);
 			((Dictionary<string, object>)tmpSend["results"]).Add("attackSpeed",mCurrentProperty.mAttackSpeed);
 			((Dictionary<string, object>)tmpSend["results"]).Add("dodge",mCurrentProperty.mDodge);
 			((Dictionary<string, object>)tmpSend["results"]).Add("hit",mCurrentProperty.mHit);

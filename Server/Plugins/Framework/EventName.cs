@@ -69,7 +69,13 @@ namespace Server
 
 		public uint EVENT_WEB_SEND_UPDATE_NPC_POS = 0x1200014;
 		public uint EVENT_WEB_RECEIVE_UPDATE_NPC_POS = 0x1200016;
-    }
+
+		public uint EVENT_WEB_SEND_INIT_TALENT_DATA = 0x1200020;
+		public uint EVENT_WEB_RECEIVE_INIT_TALENT_DATA = 0x1200022;
+
+		public uint EVENT_WEB_SEND_UDPATE_TALENT_DATA = 0x1200020;
+		public uint EVENT_WEB_RECEIVE_UPDATE_TALENT_DATA = 0x1200022;
+	}
     public class EventWebView
     {
         public uint EVENT_WEBVIEW_OPEN_ANNOUNCEMENT = 0xe000000;
