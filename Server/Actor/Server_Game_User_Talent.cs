@@ -15,6 +15,7 @@ namespace Server
 			mTalentData = Server_Data_Talent.Singleton().GetCopyData();
 
 			Server_Data_Talent.Singleton().SerializeTalent(ref mTalentData,mUser.mDataInfo.mTalent);
+			ApplyTalent(mTalentData);
 		}
 
 		public Dictionary<string, object> RequireTalentData()
@@ -105,7 +106,7 @@ namespace Server
 			Target.Avaliable = true;
 			for(int i=0;i<Target.Child.Count;++i)
 			{
-				if(Target.CurrentCount<Target.ActiveCount)
+				if(Target.Child[i].CurrentCount<Target.Child[i].ActiveCount)
 				{
 					Target.Avaliable = false;
 				}
