@@ -8,6 +8,8 @@ public class UI_Slot_Base : Controller
 	public UITexture mItemSprite;
 	[HideInInspector]
 	public object mOwner;
+	[HideInInspector]
+	public Game_Item_Type mCurrentItem;
 
     public int  mSlotType = -1;
 	public int  mSlotPosID;

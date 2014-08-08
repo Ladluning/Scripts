@@ -3,27 +3,25 @@ using System.Collections;
 
 public class UI_Package_Slot_Base : UI_Slot_Base
 {
-    protected Game_Item_Base mCurrentItem;
+    //protected Game_Item_Base ;
     protected Game_Storage_Manager_Base mFather;
 
 
     public virtual void SetItem(Game_Item_Base Target)
     {
-        mCurrentItem = Target;
-
-        if (Target != null)
+		if (Target != null&&!mItemSprite.enabled)
         {
-			mItemSprite.material = Resources.Load("Item/Icon/" + Target.mItemMainType+"_"+Target.mItemSubType, typeof(Material)) as Material;
-        }
-        else
+			mItemSprite.enabled = true;
+		}
+		else if(Target == null&&mItemSprite.enabled)
         {
-            mItemSprite.material = null;
+			mItemSprite.enabled = false;
         }
     }
 
     public virtual Game_Item_Base GetItem()
     {
-        return mCurrentItem;
+		return (Game_Item_Base)mCurrentItem;
     }
 
     public override void Init(object Father, int SlotID)
@@ -39,10 +37,18 @@ public class UI_Package_Slot_Base : UI_Slot_Base
 		if (mFather == null)
 			return;
 		Game_Item_Base tmp = mFather.GetItemWithSlotPos(mSlotPosID);
-        if (mCurrentItem != tmp && this != UI_Character_Package_Cursor.Singleton().GetCurrentCursor())
+		if (mCurrentItem != tmp)
         {
-            SetItem(tmp);
+			mCurrentItem = tmp;
+			if(tmp!=null)
+			mItemSprite.material = Resources.Load("Item/Icon/" + tmp.mItemMainType+"_"+tmp.mItemSubType, typeof(Material)) as Material;
         }
+
+		if(this != UI_Character_Package_Cursor.Singleton().GetCurrentCursor())
+		{
+			SetItem(tmp);
+		}
+
     }
 
 

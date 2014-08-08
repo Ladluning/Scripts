@@ -148,7 +148,8 @@ function InitializeDreamWipe () {
 	var newTriangles = new int[18*planeResolution];
 	
 	var idx = 0;
-	for (i = 0; i <= planeResolution; i++) {
+
+	for (var i:int = 0; i <= planeResolution; i++) {
 		var add : float = 1.0/planeResolution*i;
 		newUV[idx] = Vector2(0.0, 1.0-add);
 		baseVertices[idx++] = Vector3(-1.0, .5-add, 0.0);
@@ -161,8 +162,8 @@ function InitializeDreamWipe () {
 	}
 	
 	idx = 0;
-	for (y = 0; y < planeResolution; y++) {
-		for (x = 0; x < 3; x++) {
+	for (var y:int = 0; y < planeResolution; y++) {
+		for (var x:int = 0; x < 3; x++) {
 			newTriangles[idx++] = (y*4	  )+x;
 			newTriangles[idx++] = (y*4	  )+x+1;
 			newTriangles[idx++] = ((y+1)*4)+x;
@@ -227,7 +228,7 @@ function DreamWipe (cam1 : Camera, cam2 : Camera, time : float, waveScale : floa
 
 	// Do the cross-fade
 	var rate = 1.0/time;
-	for (i = 0.0; i < 1.0; i += Time.deltaTime * rate) {
+	for (var i:float = 0.0; i < 1.0; i += Time.deltaTime * rate) {
 		planeMaterial.color.a = Mathf.SmoothStep(0.0, 1.0, Mathf.InverseLerp(.75, .15, i));
 		// Make plane undulate
 		for (var j = 0; j < newVertices.Length; j++) {

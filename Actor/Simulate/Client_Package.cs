@@ -38,6 +38,7 @@ public class Client_Package : Game_Storage_Manager_Base
 		for (int i = 0; i < tmpJson["results"]["packages"].Count; ++i)
 		{
 			Game_Item_Base tmpItem = Game_Item_Serialize.ConvertJsonToItem(tmpJson["results"]["packages"][i]);
+			tmpItem.mItemOwner = gameObject.name;
 			this.InsertItemWithInStorage(tmpItem);
 		}
 		
@@ -58,8 +59,23 @@ public class Client_Package : Game_Storage_Manager_Base
 
         for (int i = 0; i < tmpJson["results"]["packages"].Count; ++i)
         {
-            Game_Item_Base tmpItem = Game_Item_Serialize.ConvertJsonToItem(tmpJson["results"]["packages"][i]);
-            this.InsertItemWithInStorage(tmpItem);
+			if(GetItemWithID((long)tmpJson["results"]["packages"][i]["id"])!=null)
+			{
+				Game_Item_Base tmpItem = GetItemWithID((long)tmpJson["results"]["packages"][i]["id"]);
+				tmpItem.mItemMainType = (int)tmpJson["results"]["packages"][i]["type"];
+				tmpItem.mItemSubType = (int)tmpJson["results"]["packages"][i]["subtype"];
+				tmpItem.mItemID = (long)tmpJson["results"]["packages"][i]["id"];
+				tmpItem.mItemPosID = (int)tmpJson["results"]["packages"][i]["pos"];
+				tmpItem.mCurrentCount = (int)tmpJson["results"]["packages"][i]["num"];
+				tmpItem.mMaxCount = (int)tmpJson["results"]["packages"][i]["max"];
+				tmpItem.mUse = (int)tmpJson["results"]["packages"][i]["use"];
+			}
+			else
+			{
+           		Game_Item_Base tmpItem = Game_Item_Serialize.ConvertJsonToItem(tmpJson["results"]["packages"][i]);
+				tmpItem.mItemOwner = gameObject.name;
+				this.InsertItemWithInStorage(tmpItem);
+			}
         }
 
         return null;

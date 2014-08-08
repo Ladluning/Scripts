@@ -11,6 +11,16 @@ namespace Server
 		[HideInInspector] 
 		public int mPackageMaxSize;
 
+		void OnEnable()
+		{
+			this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM,OnHandleSwipItem);
+		}
+
+		void OnDisable()
+		{
+			this.UnRegistEvent (GameEvent.WebEvent.EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM,OnHandleSwipItem);
+		}
+
 		public override void Init (Server_Game_User Father)
 		{
 			base.Init (Father);
@@ -172,6 +182,18 @@ namespace Server
 			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_SEND_UPDATE_USER_STORAGE,tmpSend);
 		}
 
+		object OnHandleSwipItem(object pSender)
+		{
+			Debug.Log (MiniJSON.Json.Serialize(pSender));
+			JsonData tmpJson = new JsonData(pSender);
+			if((string)tmpJson["results"]["id"]!=mUser.mID)
+				return null;
+
+			SwipStorageSlot((int)tmpJson["results"]["current"],(int)(int)tmpJson["results"]["target"]);
+
+			return null;
+		}
+
         protected bool SwipStorageSlot(int PosA,int PosB)
         {
             Struct_Item_Base TmpA = GetItemWithSlotPos(PosA);
@@ -179,17 +201,21 @@ namespace Server
 
             if(TmpA == TmpB)
                 return false;
-
+			List<Struct_Item_Base> tmpList = new List<Struct_Item_Base> ();
             if (TmpA != null)
             {
                 TmpA.mItemPosID = PosB;
+				tmpList.Add(TmpA);
             }
 
             if (TmpB != null)
             {
                 TmpB.mItemPosID = PosA;
+				tmpList.Add(TmpB);
             }
-
+			Dictionary<string,object> tmpSend = SerializeItemData (tmpList.ToArray(),GameEvent.WebEvent.EVENT_WEB_RECEIVE_SWIP_PSTORAGE_ITEM);
+			((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
+			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_USER_STORAGE,tmpSend);
             return true;
         }
 
@@ -239,7 +265,7 @@ namespace Server
 			List<object> tmpItemData = new List<object>();
 			for (int i = 0; i < 1; ++i)
 			{
-				tmpItemData.Add(Target.mItemID);
+				tmpItemData.Add(Server_Item_Serialize.ConvertItemToJson(Target));
 			}
 			((Dictionary<string, object>)tmpSend["results"]).Add("packages", tmpItemData);
 			
@@ -252,7 +278,7 @@ namespace Server
 			List<object> tmpItemData = new List<object>();
 			for (int i = 0; i < Target.Length; ++i)
 			{
-				tmpItemData.Add(Target[i].mItemID);
+				tmpItemData.Add(Server_Item_Serialize.ConvertItemToJson(Target[i]));
 			}
 			((Dictionary<string, object>)tmpSend["results"]).Add("packages", tmpItemData);
 			

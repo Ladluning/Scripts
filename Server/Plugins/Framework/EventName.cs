@@ -75,6 +75,9 @@ namespace Server
 
 		public uint EVENT_WEB_SEND_UDPATE_TALENT_DATA = 0x1200020;
 		public uint EVENT_WEB_RECEIVE_UPDATE_TALENT_DATA = 0x1200022;
+
+		public uint EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM = 0x1200024;
+		public uint EVENT_WEB_RECEIVE_SWIP_PSTORAGE_ITEM = 0x1200026;
 	}
     public class EventWebView
     {

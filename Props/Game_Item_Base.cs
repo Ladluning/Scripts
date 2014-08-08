@@ -18,12 +18,12 @@ public enum E_Use_Item_Type
 }
 
 [System.Serializable]
-public class Game_Item_Base 
+public class Game_Item_Base : Game_Item_Type
 {
 	public int mUse;
 	public string mItemOwner;
-    public int mItemMainType;//User For Class of Object
-    public int mItemSubType;//User For Icon // Use for Description
+    //public int mItemMainType;//User For Class of Object
+    //public int mItemSubType;//User For Icon // Use for Description
     public int mMaxCount = 5;
     public int mCurrentCount = 1;
     public long mItemID;//uniform ID

@@ -22,6 +22,10 @@ public class Client_User : Controller
     {
         return mID;
     }
+	public void SetID(string ID)
+	{
+		mID = ID;
+	}
     private Client_Transform mClientTransform;
     private Client_Property mClientProperty;
     public Client_Property GetProperty()

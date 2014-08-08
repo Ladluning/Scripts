@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class UI_Character_Package_Cursor : MonoBehaviour {
+public class UI_Character_Package_Cursor : Controller {
 
     static private UI_Character_Package_Cursor m_pInterface;
     static public UI_Character_Package_Cursor Singleton()
@@ -33,6 +34,19 @@ public class UI_Character_Package_Cursor : MonoBehaviour {
 
     public void ReplaceCurrentCursor(UI_Slot_Base Target)
 	{
+		if(Target.GetIsPlaceWithItemType(mCurrentCursor.mCurrentItem.mItemMainType)&&
+		   ((Target.mCurrentItem!=null&&mCurrentCursor.GetIsPlaceWithItemType(Target.mCurrentItem.mItemMainType))
+		 ||Target.mCurrentItem==null
+		   ))
+		{
+			Dictionary<string,object> tmpSend = SendCommand.NewCommand (GameEvent.WebEvent.EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM);
+			((Dictionary<string, object>)tmpSend["results"]).Add("id",Client_User.Singleton().GetID());
+			((Dictionary<string, object>)tmpSend["results"]).Add("current", mCurrentCursor.mSlotPosID);
+			((Dictionary<string, object>)tmpSend["results"]).Add("target", Target.mSlotPosID);
+		
+			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM, tmpSend);
+		}
+
 		CancelCurrentCursor();
 	}
 
