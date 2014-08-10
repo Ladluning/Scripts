@@ -21,13 +21,24 @@ public class Client_Property : Controller
     public int mMaxAttack;
     public int mMP;
     public int mMaxMP;
-    //public int mMPRecover;
-    public int mMaxMPRecover;
+    public int mMPRecover;
+    //public int mMaxMPRecover;
     public float mAttackSpeed;
     public float mDodge;
     public float mHit;
     public float mCrit;
     public float mMoveSpeed;
+	public int mLuck = 10;
+	void OnEnable()
+	{
+		this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_USER_DATA,OnHandleReceiveUpdateProperty);
+		Debug.Log (Facade.Singleton().GetHashCode()+" "+GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_USER_DATA);
+	}
+
+	void OnDisable()
+	{
+		this.UnRegistEvent (GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_USER_DATA,OnHandleReceiveUpdateProperty);
+	}
 
     public int GetLevel()
     {
@@ -65,14 +76,14 @@ public class Client_Property : Controller
         mMaxHP = (int)tmpJson["results"]["maxHP"];
         mHPRecover = (int)tmpJson["results"]["hpRecover"];
         //mMaxHPRecover = (int)tmpJson["results"]["maxHPRecover"];
-        mDefend = (int)tmpJson["results"]["id"];
-        mMaxDefend = (int)tmpJson["results"]["id"];
-        mAttack = (int)tmpJson["results"]["id"];
-        mMaxAttack = (int)tmpJson["results"]["id"];
+        mDefend = (int)tmpJson["results"]["defend"];
+        mMaxDefend = (int)tmpJson["results"]["maxDefend"];
+        mAttack = (int)tmpJson["results"]["attack"];
+        mMaxAttack = (int)tmpJson["results"]["maxAttack"];
         mMP = (int)tmpJson["results"]["mp"];
         mMaxMP = (int)tmpJson["results"]["maxMP"];
-        //mMPRecover = (int)tmpJson["results"]["mpRecover"];
-        mMaxMPRecover = (int)tmpJson["results"]["maxMPRecover"];
+        mMPRecover = (int)tmpJson["results"]["mpRecover"];
+        //mMaxMPRecover = (int)tmpJson["results"]["maxMPRecover"];
         mAttackSpeed = (float)tmpJson["results"]["attackSpeed"];
         mDodge = (float)tmpJson["results"]["dodge"];
         mHit = (float)tmpJson["results"]["hit"];

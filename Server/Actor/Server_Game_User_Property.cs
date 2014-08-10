@@ -142,7 +142,8 @@ namespace Server
 		{
 			Dictionary<string, object> tmpSend = SerializeUserData();
 			((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
-			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UDPATE_USER_DATA, tmpSend);
+			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_USER_DATA, tmpSend);
+			Debug.Log (Facade.Singleton().GetHashCode()+" "+GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_USER_DATA);
 			return tmpSend;
 		}
 
