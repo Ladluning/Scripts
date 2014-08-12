@@ -64,6 +64,17 @@ namespace Server
 		public ulong mExp;
 		public int mLevel;
 		public int mMaxLevel = 60;
+
+		void OnEnable()
+		{
+			this.RegistListen(GameEvent.WebEvent.EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM,OnListenSwipItem);
+		}
+
+		void OnDisable()
+		{
+			this.UnRegistListen(GameEvent.WebEvent.EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM,OnListenSwipItem);
+		}
+
 		public override void Init (Server_Game_User Father)
 		{
 			base.Init (Father);
@@ -161,7 +172,6 @@ namespace Server
 			((Dictionary<string, object>)tmpSend["results"]).Add("hp",mCurrentProperty.mHP);
 			((Dictionary<string, object>)tmpSend["results"]).Add("maxHP",mCurrentProperty.mMaxHP);
 			((Dictionary<string, object>)tmpSend["results"]).Add("hpRecover",mCurrentProperty.mHPRecover);
-			//((Dictionary<string, object>)tmpSend["results"]).Add("maxHPRecover",mCurrentProperty.mMaxHPRecover);
 			((Dictionary<string, object>)tmpSend["results"]).Add("mesh",mMeshID);
 			((Dictionary<string, object>)tmpSend["results"]).Add("defend",mCurrentProperty.mDefend);
 			((Dictionary<string, object>)tmpSend["results"]).Add("maxDefend",mCurrentProperty.mMaxDefend);
@@ -170,13 +180,27 @@ namespace Server
 			((Dictionary<string, object>)tmpSend["results"]).Add("mp",mCurrentProperty.mMP);
 			((Dictionary<string, object>)tmpSend["results"]).Add("maxMP",mCurrentProperty.mMaxMP);
 			((Dictionary<string, object>)tmpSend["results"]).Add("mpRecover",mCurrentProperty.mMPRecover);
-			//((Dictionary<string, object>)tmpSend["results"]).Add("maxMPRecover",mCurrentProperty.mMaxMPRecover);
 			((Dictionary<string, object>)tmpSend["results"]).Add("attackSpeed",mCurrentProperty.mAttackSpeed);
 			((Dictionary<string, object>)tmpSend["results"]).Add("dodge",mCurrentProperty.mDodge);
 			((Dictionary<string, object>)tmpSend["results"]).Add("hit",mCurrentProperty.mHit);
 			((Dictionary<string, object>)tmpSend["results"]).Add("crit",mCurrentProperty.mCrit);
 			((Dictionary<string, object>)tmpSend["results"]).Add("moveSpeed",mCurrentProperty.mMoveSpeed);
 			return tmpSend;
+		}
+
+		object OnListenSwipItem(object pSender)
+		{
+			JsonData tmpJson = new JsonData(pSender);
+			if((string)tmpJson["results"]["id"]!=mUser.mID)
+				return null;
+
+			if((int)tmpJson["results"]["current"]<100||(int)(int)tmpJson["results"]["target"]<100)
+			{
+				ApplyCurrentProperty();
+				RequireUserData();
+			}
+
+			return null;
 		}
 	}
 }

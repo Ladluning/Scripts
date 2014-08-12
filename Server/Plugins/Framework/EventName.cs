@@ -81,6 +81,9 @@ namespace Server
 
 		public uint EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM = 0x1200024;
 		public uint EVENT_WEB_RECEIVE_SWIP_PSTORAGE_ITEM = 0x1200026;
+
+		public uint EVENT_WEB_SEND_INIT_SCENE_DATA = 0x1200028;
+		public uint EVENT_WEB_RECEIVE_INIT_SCENE_DATA = 0x120002a;
 	}
     public class EventWebView
     {

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Server
 {
@@ -106,6 +107,10 @@ namespace Server
 					return new Int2(0,0);
 				}
 			}
+		}
+		public override Dictionary<string,object> SerializeData()
+		{
+			return null;
 		}
 	}
 }

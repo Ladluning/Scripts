@@ -15,7 +15,7 @@ namespace Server
             mStateComponent.Add("Server_Game_Object_Animation");
             base.Init();
 
-            GetComponent<Server_Game_Object_SearchTarget>().InitSearchType((uint)E_Actor_Type.Enemy);
+            GetComponent<Server_Game_Object_SearchTarget>().InitSearchType((uint)E_Actor_Type.Enemy,10f);
         }
 
         public override void OnEnter()

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
 namespace Server
 {
 	public class Server_Game_Spawn_Point_Base : MonoBehaviour {
@@ -26,6 +28,11 @@ namespace Server
 		public virtual Int2 GetEmptyRandomPos(Int2 CurrentPos)
 		{
 			return new Int2(SpawnPos);
+		}
+
+		public virtual Dictionary<string,object> SerializeData()
+		{
+			return null;
 		}
 	}
 }

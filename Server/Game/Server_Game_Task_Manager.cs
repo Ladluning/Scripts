@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-public class Server_Game_Task_Manager : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+using System.Collections.Generic;
+namespace Server
+{
+	public class Server_Game_Task_Manager : Controller 
+	{
+		object OnListenGameEvent(object pSender)
+		{
+			return null;
+		}
 	}
 }

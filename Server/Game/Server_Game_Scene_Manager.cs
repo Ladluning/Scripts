@@ -22,6 +22,7 @@ namespace Server
             this.RegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_PLAYER,OnHandleDestroyPlayer);
             this.RegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_ENEMY,OnHandleNewEnemy);
             this.RegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_ENEMY,OnHandleDestroyEnemy);
+			this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_SCENE_DATA,OnHandleInitSceneData);
         }
 
         void OnDisable()
@@ -30,6 +31,7 @@ namespace Server
             this.UnRegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_PLAYER, OnHandleDestroyPlayer);
             this.UnRegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_ENEMY, OnHandleNewEnemy);
             this.UnRegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_ENEMY, OnHandleDestroyEnemy);
+			this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_SCENE_DATA,OnHandleInitSceneData);
         }
 
 		public override void Init()
@@ -166,6 +168,14 @@ namespace Server
             return null;
         }
 
+		object OnHandleInitSceneData(object pSender)
+		{
+			JsonData tmpJson = new JsonData(pSender);
+			if((string)tmpJson["results"]["target"]!=mSceneID)
+				return null;
+
+			return null;
+		}
 
     }
 }
