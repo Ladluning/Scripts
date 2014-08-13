@@ -13,6 +13,9 @@ public class Game_ObjectAnimation : Game_ObjectBase {
 	{
 		StopAllCoroutines ();
 
+		if(mAnimation==null)
+			return;
+
 		mAnimationName = Name;
 		mCallback = CallBack;
 		mAnimation.CrossFade (mAnimationName,0.2f);

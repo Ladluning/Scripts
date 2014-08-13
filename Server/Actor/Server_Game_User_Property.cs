@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Server
 {
 	[System.Serializable]
-	public class Server_Struct_User_Property
+	public class Server_Struct_User_Property : Server_Game_User_Component
 	{
 		public int mLosePropertyCount;
 		public int mPropertyAdd_Strength;
@@ -56,15 +56,16 @@ namespace Server
 			Target.mMoveSpeed = mMoveSpeed;
 		}
 	}
+
 	public class Server_Game_User_Property : Server_Game_User_Component {
 
 		public Server_Struct_User_Property mOriginProperty = new Server_Struct_User_Property();
 		public Server_Struct_User_Property mCurrentProperty = new Server_Struct_User_Property();
+		public string mName;
 		public string mMeshID;
 		public ulong mExp;
 		public int mLevel;
 		public int mMaxLevel = 60;
-
 		void OnEnable()
 		{
 			this.RegistListen(GameEvent.WebEvent.EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM,OnListenSwipItem);
@@ -202,5 +203,53 @@ namespace Server
 
 			return null;
 		}
+
+		public override void SerializeVisibleData(ref Dictionary<string, object> Father)
+		{
+			if(!GetIsChanged())
+				return;
+			
+			Dictionary<string, object> tmpSend = new Dictionary<string, object>();
+			tmpSend.Add("hp", mCurrentProperty.mHP);
+			tmpSend.Add("maxHP", mCurrentProperty.mMaxHP);
+			tmpSend.Add("mp", mCurrentProperty.mMP);
+			tmpSend.Add("maxMP", mCurrentProperty.mMaxMP);
+			tmpSend.Add("exp", mExp);
+			tmpSend.Add("name", mName);
+			tmpSend.Add("id", mUser.mID);
+			tmpSend.Add("mesh", mMeshID);
+			Father.Add("property",tmpSend);
+		}
+
+		public override void Update()
+		{
+
+		}
+
+		float mLastTime = 0;
+		private void UdpateRecover()
+		{
+			if(Time.realtimeSinceStartup-mLastTime<5f)
+				return;
+
+
+			if(mCurrentProperty.mHP<mCurrentProperty.mMaxHP)
+			{
+				mCurrentProperty.mHP = Mathf.Clamp(mCurrentProperty.mHP+(int)((float)mCurrentProperty.mHPRecover*((Time.realtimeSinceStartup-mLastTime)/5f)),0,mCurrentProperty.mMaxHP);
+			}
+
+			if(mCurrentProperty.mMP<mCurrentProperty.mMaxMP)
+			{
+				mCurrentProperty.mMP = Mathf.Clamp(mCurrentProperty.mMP+(int)((float)mCurrentProperty.mMPRecover*((Time.realtimeSinceStartup-mLastTime)/5f)),0,mCurrentProperty.mMaxMP);
+			}
+			mLastTime = Time.realtimeSinceStartup;
+
+			Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UDPATE_USER_DATA);
+			((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
+			((Dictionary<string, object>)tmpSend["results"]).Add("hp",mCurrentProperty.mHP);
+			((Dictionary<string, object>)tmpSend["results"]).Add("mp",mCurrentProperty.mMP);
+			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UDPATE_USER_DATA, tmpSend);
+		}
+
 	}
 }

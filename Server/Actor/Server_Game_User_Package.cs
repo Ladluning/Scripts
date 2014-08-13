@@ -216,6 +216,8 @@ namespace Server
 			Dictionary<string,object> tmpSend = SerializeItemData (tmpList.ToArray(),GameEvent.WebEvent.EVENT_WEB_RECEIVE_SWIP_PSTORAGE_ITEM);
 			((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
 			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_USER_STORAGE,tmpSend);
+
+
             return true;
         }
 

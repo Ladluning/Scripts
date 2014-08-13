@@ -60,7 +60,7 @@ namespace Server
 			return MiniJSON.Json.Serialize(tmpSend);
 		}
 
-		public override void SerializeVisiblePosData(ref Dictionary<string, object> Father)
+		public override void SerializeVisibleData(ref Dictionary<string, object> Father)
 		{
 			if(!GetIsChanged())
 				return;

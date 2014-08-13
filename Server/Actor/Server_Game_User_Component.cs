@@ -48,7 +48,12 @@ namespace Server
 
 		}
 
-		public virtual void SerializeVisiblePosData(ref Dictionary<string, object> Father)
+		public virtual void SerializeVisibleData(ref Dictionary<string, object> Father)
+		{
+			return;
+		}
+
+		public virtual void Update()
 		{
 			return;
 		}

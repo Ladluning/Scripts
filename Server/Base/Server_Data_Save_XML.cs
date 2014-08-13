@@ -70,7 +70,7 @@ namespace Server
 
         public object DeserializeObject(string pXmlizedString, Type classType)
         {
-            XmlSerializer xs = new XmlSerializer(classType);
+			XmlSerializer xs = new XmlSerializer(classType);
             MemoryStream memoryStream = new MemoryStream(StringToUTF8ByteArray(pXmlizedString));
             return xs.Deserialize(memoryStream);
         }

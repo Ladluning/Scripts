@@ -59,8 +59,8 @@ namespace Server
 			}
             //
             RequireLoginData();
-			mPackage.RequireStorageData();
-			mProperty.RequireUserData ();
+			//mPackage.RequireStorageData();
+			//mProperty.RequireUserData ();
         }
 
         void OnDestroy()
