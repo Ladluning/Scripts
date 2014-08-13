@@ -25,7 +25,7 @@ public class EventDispathcer {
 	}
 	public object HandleEvent(uint EventID,object pSender)
 	{
-		Debug.Log (m_dispathcerMap.ContainsKey(EventID)+" "+EventID+" "+m_dispathcerMap.Count);
+//		Debug.Log (m_dispathcerMap.ContainsKey(EventID)+" "+EventID+" "+m_dispathcerMap.Count);
 		if(m_dispathcerMap.ContainsKey(EventID)&&m_dispathcerMap[EventID]!=null)
 		{	
 			return m_dispathcerMap[EventID](pSender);

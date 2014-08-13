@@ -10,6 +10,7 @@ public enum E_State_MainPlayer
 public class Game_FSM_MainPlayer_Controller: Game_FSM_Controller {
 
 	// Use this for initialization
+	GameObject mMainCharacterMesh;
 	void OnEnable()
 	{
 		this.RegistEvent (GameEvent.FightingEvent.EVENT_FIGHT_CLICK_POS, OnHandleClickPos);
@@ -27,11 +28,21 @@ public class Game_FSM_MainPlayer_Controller: Game_FSM_Controller {
 
 	public void InitMainPlayer(string MeshID,Vector3 Pos,Vector3 Rotate)
 	{
-		GameObject TmpMesh = Instantiate(Resources.Load ("ActorMesh/"+MeshID,typeof(GameObject))) as GameObject;
-		TmpMesh.transform.parent = transform;
-		TmpMesh.transform.localPosition = Vector3.zero;
-		TmpMesh.transform.localRotation = Quaternion.identity;
-		TmpMesh.transform.localScale = Vector3.one;
+		if (mMainCharacterMesh != null && mMainCharacterMesh.name != MeshID) 
+		{
+			Destroy(mMainCharacterMesh);
+			mMainCharacterMesh = null;
+		}
+		if (mMainCharacterMesh == null) 
+		{
+			mMainCharacterMesh = Instantiate(Resources.Load ("ActorMesh/"+MeshID,typeof(GameObject))) as GameObject;
+		}
+
+		mMainCharacterMesh.name = MeshID;
+		mMainCharacterMesh.transform.parent = transform;
+		mMainCharacterMesh.transform.localPosition = Vector3.zero;
+		mMainCharacterMesh.transform.localRotation = Quaternion.identity;
+		mMainCharacterMesh.transform.localScale = Vector3.one;
 
 		Transform TmpHeadCameraPos = OtherTool.GetChildWithName ("Bip001 Neck", transform);//TmpMesh.transform.FindChild ("Bip001 Neck");
 

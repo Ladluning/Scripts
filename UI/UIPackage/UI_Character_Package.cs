@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class UI_Character_Package : UIBase {
+public class UI_Character_Package : Controller {
 
     private Dictionary<int, UI_Character_Package_Page> mPageList = new Dictionary<int, UI_Character_Package_Page>();
 

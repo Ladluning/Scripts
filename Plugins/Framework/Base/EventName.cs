@@ -146,6 +146,7 @@ public class EventFighting
 
 	public uint EVENT_FIGHT_INIT_LEVEL = 0x3000020;//Hide MainCamera
 	public uint EVENT_FIGHT_INIT_LEVEL_FINISH = 0x3000021;
+	public uint EVENT_FIGHT_INIT_LEVEL_START = 0x3000022;//Create Player
 
 	public uint EVENT_FIGHT_INIT_NPC = 0x3000030;//Hide MainCamera
 	public uint EVENT_FIGHT_HIDE_NPC = 0x3000031;

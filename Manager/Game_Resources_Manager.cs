@@ -13,6 +13,12 @@ public class Game_Resources_Manager : MonoBehaviour
 		m_pInterface = this;
 	}
 
+	public GameObject mMainCharacter;
+	public GameObject GetCharacterPrefab()
+	{
+		return mMainCharacter;
+	}
+
 	public GameObject[] mActorList;
 	public GameObject GetActorWithID(string ActorID)
 	{

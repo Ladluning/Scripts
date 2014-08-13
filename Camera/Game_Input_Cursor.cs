@@ -42,6 +42,7 @@ public class Game_Input_Cursor : Controller {
 		if(!mCursorTween.gameObject.activeSelf)
 			mCursorTween.gameObject.SetActive(true);
 		mCursorTween.ResetToBeginning ();
+		mCursorTween.PlayForward ();
 		return null;
 	}
 

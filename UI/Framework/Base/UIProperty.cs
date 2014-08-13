@@ -1,12 +1,6 @@
 using UnityEngine;
 using System.Collections;
-public enum ELoadingUIType
-{
-	eLT_None,
-	eLT_Alpha,
-	eLT_Block,
-	eLT_Transparent,
-}
+
 public enum EShowUIAction
 {
 	eUA_None = 0,
@@ -34,7 +28,6 @@ public class UIProperty : Controller {
 	public int  CameraLayer;
 	
 	public UIBase TargetUI = null;
-	public ELoadingUIType eLoadingType;
 
 	private UIManager m_pUIManager;
 	private Transform  m_pCurrentTransform;

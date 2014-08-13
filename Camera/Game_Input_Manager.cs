@@ -20,9 +20,10 @@ public class Game_Input_Manager : Controller {
 	private bool mIsInit = false;
 	private bool mIsMakeInput = false;
 
+	protected Transform mCurrentTransform;
 	protected Transform mCenterTransform;
 	protected Transform mTargetTransform;
-	protected Camera mMainCamera;
+	//protected Camera mMainCamera;
 	void OnEnable()
 	{
 		FingerGestures.OnTap += OnFingerTap;
@@ -53,8 +54,8 @@ public class Game_Input_Manager : Controller {
 	
 	void Awake()
 	{
-		mMainCamera = gameObject.GetComponent<Camera>();
-		
+		//mMainCamera = gameObject.GetComponent<Camera>();
+		mCurrentTransform = transform;
 
 		//Reset ();
 	}
@@ -70,11 +71,11 @@ public class Game_Input_Manager : Controller {
 		GameTools.getLayerPosFromScreenViewPort (out HitPos, "Background", new Vector2 (0.5f, 0.5f));
 		mCenterTransform.position = HitPos;
 
-		Vector3 tmpDirector = (mMainCamera.transform.position - mCenterTransform.position);
+		Vector3 tmpDirector = (mCurrentTransform.position - mCenterTransform.position);
 		
 		mCenterTransform.position = mTargetTransform.position;
 		
-		mMainCamera.transform.position = mCenterTransform.position + tmpDirector;
+		mCurrentTransform.position = mCenterTransform.position + tmpDirector;
 
 		Init ();
 	}
@@ -82,9 +83,9 @@ public class Game_Input_Manager : Controller {
 	
 	void Init()
 	{
-		mCurrentAngle = mMainCamera.transform.eulerAngles.y;
+		mCurrentAngle = mCurrentTransform.eulerAngles.y;
 		mTargetAngle = mCurrentAngle;
-		mTargetPinch = (mCenterTransform.position - mMainCamera.transform.position).magnitude;
+		mTargetPinch = (mCenterTransform.position - mCurrentTransform.position).magnitude;
 		mCurrentPinch = mTargetPinch;
 	}
 	
@@ -184,11 +185,11 @@ public class Game_Input_Manager : Controller {
 		if ((mTargetTransform.position-mCenterTransform.position).sqrMagnitude < 0.001f)
 			return;
 		
-		Vector3 tmpDirector = (mMainCamera.transform.position - mCenterTransform.position);
+		Vector3 tmpDirector = (mCurrentTransform.position - mCenterTransform.position);
 		
 		mCenterTransform.position = Vector3.Lerp (mCenterTransform.position,mTargetTransform.position,Time.deltaTime*mFactorMove);
 		
-		mMainCamera.transform.position = mCenterTransform.position + tmpDirector;
+		mCurrentTransform.position = mCenterTransform.position + tmpDirector;
 
 	}
 	
@@ -204,7 +205,7 @@ public class Game_Input_Manager : Controller {
 
 		mCurrentPinch = Mathf.Lerp(mCurrentPinch,mTargetPinch,Time.deltaTime*mPinchFactor);
 		
-		mMainCamera.transform.position = mTargetTransform.position+(mMainCamera.transform.position-mTargetTransform.position ).normalized*mCurrentPinch;
+		mCurrentTransform.position = mTargetTransform.position+(mCurrentTransform.position-mTargetTransform.position ).normalized*mCurrentPinch;
 
 	}
 	
@@ -216,8 +217,8 @@ public class Game_Input_Manager : Controller {
 		float tmpOriginAngle = mCurrentAngle;
 		mCurrentAngle = Mathf.Lerp (mCurrentAngle,mTargetAngle,Time.deltaTime*mFactorSwipe);
 		//tmpCurrentSwipe *= Time.deltaTime;//Mathf.Lerp (tmpCurrentSwipe,0,Time.deltaTime*mFactorSwipe);
-		mMainCamera.transform.RotateAround (mTargetTransform.position,Vector3.up,mCurrentAngle-tmpOriginAngle);
-		//mMainCamera.transform.eulerAngles = new Vector3(mMainCamera.transform.eulerAngles.x,mCurrentAngle%360,mMainCamera.transform.eulerAngles.z);
+		mCurrentTransform.RotateAround (mTargetTransform.position,Vector3.up,mCurrentAngle-tmpOriginAngle);
+		//mCurrentTransform.eulerAngles = new Vector3(mCurrentTransform.eulerAngles.x,mCurrentAngle%360,mCurrentTransform.eulerAngles.z);
 
 	}
 	void OnDrawGizmos()

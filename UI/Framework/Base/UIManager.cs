@@ -188,14 +188,6 @@ public class UIManager : Controller {
 		if(TmpProperty.TargetUI!=null)
 			return;
 
-		switch(TmpProperty.eLoadingType)
-		{
-		case ELoadingUIType.eLT_Alpha: this.SendEvent(GameEvent.UIEvent.EVENT_UI_SHOW_LOADING_ALPHA, null); break;
-		case ELoadingUIType.eLT_Block: this.SendEvent(GameEvent.UIEvent.EVENT_UI_SHOW_LOADING_BLOCK, null); break;
-		case ELoadingUIType.eLT_Transparent: this.SendEvent(GameEvent.UIEvent.EVENT_UI_SHOW_LOADING_TRANSPARENT, null); break;
-		default: break;
-		}
-
 		TmpProperty.ShowCurrentUI();
 		
 		UIBase Tmp = InstantiatedUI(TmpProperty);
@@ -205,19 +197,10 @@ public class UIManager : Controller {
 		else
 			OnHandleCantTouchUI(ShowUIName);
 		
-		LogManager.Log("ShowUI:" + (string)ShowUIName + " With Layer:" + Tmp.gameObject.layer + " With Loading " + TmpProperty.eLoadingType.ToString());
 		Tmp.ShowUI(SendInfo==null?null:SendInfo.pSender);
 		if(Tmp!=null)
 		{
 			TmpProperty.SetCurrentUI(Tmp);
-		}
-		
-		switch(TmpProperty.eLoadingType)
-		{
-		case ELoadingUIType.eLT_Alpha: this.SendEvent(GameEvent.UIEvent.EVENT_UI_HIDE_LOADING_ALPHA, null); break;
-		case ELoadingUIType.eLT_Block: this.SendEvent(GameEvent.UIEvent.EVENT_UI_HIDE_LOADING_BLOCK, 1f); break;
-		case ELoadingUIType.eLT_Transparent: this.SendEvent(GameEvent.UIEvent.EVENT_UI_HIDE_LOADING_TRANSPARENT ,null); break;
-		default: break;
 		}
 
 		if(!m_pRetainCount.IsRetain())

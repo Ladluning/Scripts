@@ -27,7 +27,7 @@ public class OtherTool : MonoBehaviour
 
 	static public Transform GetChildWithName(string Name ,Transform Target)
 	{
-		Debug.Log (Target.name);
+		//Debug.Log (Target.name);
 		if (Target.name == Name)
 			return Target;
 

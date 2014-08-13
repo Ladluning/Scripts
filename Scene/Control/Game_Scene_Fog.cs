@@ -25,8 +25,8 @@ public class Game_Scene_Fog : MonoBehaviour {
 			RenderSettings.fogStartDistance = mOriginFog.FogStartPos;
 			RenderSettings.fogEndDistance = mOriginFog.FogEndPos;
 
-			if(gameObject.GetComponent<Camera>())
-				gameObject.GetComponent<Camera>().farClipPlane = mOriginFog.CameraCullFar;
+			if(Camera.main)
+				Camera.main.farClipPlane = mOriginFog.CameraCullFar;
 		}
 	}
 }
