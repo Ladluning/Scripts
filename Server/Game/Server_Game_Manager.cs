@@ -18,12 +18,12 @@ namespace Server
 
         void OnEnable()
         { 
-        
+			this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_SEND_SWITCH_SCENE,OnHandleSwitchLevel);
         }
 
         void OnDisable()
         {
-        
+			this.UnRegistEvent (GameEvent.WebEvent.EVENT_WEB_SEND_SWITCH_SCENE,OnHandleSwitchLevel);
         }
 
         void Awake()
@@ -57,20 +57,20 @@ namespace Server
 
         object OnHandleSwitchLevel(object pSender)
         {
-            JsonData tmpData = (JsonData)pSender;
+			JsonData tmpData = new JsonData(pSender);
 
             Server_Game_User tmpUser = GetServerUserWithID((string)tmpData["results"]["id"]);
             if (tmpUser == null)
                 return null;
 
-            Server_Game_Transmit_Point tmpCurrentTransmit = GetServerTransmitWithID((string)tmpData["results"]["transmit"]);
+            Server_Game_Transmit_Point tmpCurrentTransmit = GetServerTransmitWithID((string)tmpData["results"]["current"]);
             if (tmpCurrentTransmit == null)
                 return null;
 
             if (!tmpCurrentTransmit.IsAvailable)
                 return null;
 
-            Server_Game_Transmit_Point tmpTargetTransmit = GetServerTransmitWithID((string)tmpData["results"]["transmit"]);
+            Server_Game_Transmit_Point tmpTargetTransmit = GetServerTransmitWithID((string)tmpData["results"]["target"]);
             if (tmpTargetTransmit == null)
                 return null;
 

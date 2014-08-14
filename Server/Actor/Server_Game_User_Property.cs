@@ -124,7 +124,7 @@ namespace Server
 			mOriginProperty.CopyTo(mCurrentProperty);
 
 			mUser.GetPackage().ApplyEquipment();
-			mUser.GetBuff().ApplyBuff();
+			//mUser.GetBuff().ApplyBuff();
 		}
 
 		public override void UpdateData()

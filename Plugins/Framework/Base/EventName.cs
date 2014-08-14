@@ -116,6 +116,10 @@ public class EventWeb
 	
 	public uint EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM = 0x1200024;
 	public uint EVENT_WEB_RECEIVE_SWIP_PSTORAGE_ITEM = 0x1200026;
+
+	
+	public uint EVENT_WEB_SEND_SWITCH_SCENE = 0x1200030;
+	public uint EVENT_WEB_RECEIVE_SWITCH_SCENE= 0x1200032;
 }
 
 //0x2000000//
@@ -192,17 +196,8 @@ public class EventData
 //0x5000031//
 public class EventInput
 {
-	public uint EVENT_INPUT_ENABLE_MAP_MOVE = 0x5000000;
-	public uint EVENT_INPUT_DISABLE_MAP_MOVE = 0x5000001;
-
-	public uint EVENT_INPUT_CLICK_OBJECT = 0x5000010;
-
-	public uint EVENT_INPUT_MOVE_MAP = 0x5000020;
-
-	public uint EVENT_INPUT_ENABLE_BUILDING_MOVE = 0x5000030;
-	public uint EVENT_INPUT_DISABLE_BUILDING_MOVE = 0x5000031;
-
-
+	public uint EVENT_INPUT_STOP_INPUT = 0x5000000;
+	public uint EVENT_INPUT_RESUME_INPUT = 0x5000001;
 }
 
 public class GameEvent

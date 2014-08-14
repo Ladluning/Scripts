@@ -25,11 +25,6 @@ public class Game_Scene_Manager : Controller {
 	{
 //		Struct_Scene_Init TmpReceive = (Struct_Scene_Init)pSender;
 		StartCoroutine(CreateSceneWithName ((JsonData)pSender));
-//
-//		if (TmpReceive.TargetPassPointID != null || TmpReceive.TargetPassPointID != "") 
-//		{
-//			TmpTarget.GetComponent<Game_Scene_Controller>().
-//		}
 		return null;
 	}
 
@@ -38,6 +33,7 @@ public class Game_Scene_Manager : Controller {
 		Debug.Log (gameObject.name + " "+m_pRelationship);
 		Game_Scene_Property tmpProperty = m_pRelationship.GetScenePropertyWithSceneName ((string)LoginData["results"]["scene"]);
 		this.SendEvent (GameEvent.UIEvent.EVENT_UI_SHOW_LOADING_BLOCK,new Struct_Loading_Info(true,tmpProperty.DelayLoadingTime,null));
+		this.SendEvent (GameEvent.InputEvent.EVENT_INPUT_STOP_INPUT,null);
 		yield return new WaitForSeconds (tmpProperty.DelayLoadingTime);
 
 		//Init MainCharacter
@@ -54,35 +50,46 @@ public class Game_Scene_Manager : Controller {
 		//Init UI
 		this.SendEvent (GameEvent.UIEvent.EVENT_UI_SHOW_UI,"UIMainGame");
 
+		//Init Scene
+		InitSceneWithName(tmpProperty,(string)LoginData["results"]["scene"]);
+
+		Camera.main.GetComponent<Game_Input_Manager> ().Reset ();
+
+		this.SendEvent (GameEvent.InputEvent.EVENT_INPUT_RESUME_INPUT,null);
+		this.SendEvent (GameEvent.UIEvent.EVENT_UI_HIDE_LOADING_BLOCK,new Struct_Loading_Info(false,tmpProperty.DelayLoadingTime,null));
+		yield return new WaitForSeconds (tmpProperty.DelayLoadingTime);
+
+		//return mCurrentActiveScene;
+	}
+
+	void InitSceneWithName(Game_Scene_Property Property,string SceneName)
+	{
+		if (mCurrentActiveScene != null && SceneName == mCurrentActiveScene.name)
+			return;
 
 		//Init CurrentScene
 		if (mCurrentActiveScene != null) 
 		{
 			mCurrentActiveScene.SetActive (false);
 		}
-
-		if (tmpProperty.IsCloseOther)
-			m_pRelationship.CloseBrother ((string)LoginData["results"]["scene"]);
-
-		m_pRelationship.CloseChild ((string)LoginData["results"]["scene"]);
-
-		if (tmpProperty.FatherObject != null) 
+		
+		if (Property.IsCloseOther)
+			m_pRelationship.CloseBrother (SceneName);
+		
+		m_pRelationship.CloseChild (SceneName);
+		
+		if (Property.FatherObject != null) 
 		{
-			mCurrentActiveScene = tmpProperty.FatherObject;
+			mCurrentActiveScene = Property.FatherObject;
 			mCurrentActiveScene.SetActive(true);
-			return mCurrentActiveScene;
 		}
-
-		mCurrentActiveScene = Instantiate(Game_Resources_Manager.Singleton ().GetSceneWithID ((string)LoginData["results"]["scene"])) as GameObject;
+		
+		mCurrentActiveScene = Instantiate(Game_Resources_Manager.Singleton ().GetSceneWithID (SceneName)) as GameObject;
+		mCurrentActiveScene.name = SceneName;
 		mCurrentActiveScene.transform.parent = transform;
 		mCurrentActiveScene.transform.localPosition = Vector3.zero;
 		mCurrentActiveScene.transform.localRotation = Quaternion.identity;
 		mCurrentActiveScene.transform.localScale = Vector3.one;
-		tmpProperty.ShowCurrent (mCurrentActiveScene);
-		Camera.main.GetComponent<Game_Input_Manager> ().Reset ();
-		this.SendEvent (GameEvent.UIEvent.EVENT_UI_HIDE_LOADING_BLOCK,new Struct_Loading_Info(false,tmpProperty.DelayLoadingTime,null));
-		yield return new WaitForSeconds (tmpProperty.DelayLoadingTime);
-
-		//return mCurrentActiveScene;
+		Property.ShowCurrent (mCurrentActiveScene);
 	}
 }

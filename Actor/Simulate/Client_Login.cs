@@ -9,12 +9,14 @@ public class Client_Login : Controller {
 	void OnEnable()
 	{
 		this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, OnHandleLogin);
+		this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_RECEIVE_SWITCH_SCENE,OnHandleLogin);
 		//this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_VISIBLE_DATA,OnHandleUpdateVisibleData);
 	}
 	
 	void OnDisable()
 	{
 		this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_LOGIN, OnHandleLogin);
+		this.UnRegistEvent (GameEvent.WebEvent.EVENT_WEB_RECEIVE_SWITCH_SCENE,OnHandleLogin);
 		//this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_VISIBLE_DATA, OnHandleUpdateVisibleData);
 	}
 	public void InitWithID(string Target)

@@ -84,6 +84,9 @@ namespace Server
 
 		public uint EVENT_WEB_SEND_INIT_SCENE_DATA = 0x1200028;
 		public uint EVENT_WEB_RECEIVE_INIT_SCENE_DATA = 0x120002a;
+
+		public uint EVENT_WEB_SEND_SWITCH_SCENE = 0x1200030;
+		public uint EVENT_WEB_RECEIVE_SWITCH_SCENE= 0x1200032;
 	}
     public class EventWebView
     {
