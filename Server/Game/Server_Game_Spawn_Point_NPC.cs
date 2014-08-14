@@ -36,7 +36,6 @@ namespace Server
 
 		public override Dictionary<string,object> SerializeData()
 		{
-
 			return null;
 		}
     }

@@ -11,6 +11,7 @@ namespace Server
 		private Server_Game_User_Package mPackage;
 		private Server_Game_User_Visible mVisible;
 		private Server_Game_User_Talent mTalent;
+		private Server_Game_User_Buff mBuff;
 		public Server_Game_User_Property GetProperty()
 		{
 			return mProperty;
@@ -27,7 +28,14 @@ namespace Server
 		{
 			return mVisible;
 		}
-
+		public Server_Game_User_Buff GetBuff()
+		{
+			return mBuff;
+		}
+		public Server_Game_User_Talent GetTalent()
+		{
+			return mTalent;
+		}
         protected override void Awake()
         {
             base.Awake();
