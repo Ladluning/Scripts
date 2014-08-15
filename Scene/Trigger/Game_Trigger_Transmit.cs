@@ -7,10 +7,10 @@ public class Game_Trigger_Transmit : Controller {
 	public bool mIsActive = false;
 	public float mWaitTime = 0.2f;
 	public string mTargetTransmitID;
-
-	public static bool mIsActiveTrigger = false;
+	
 	private bool  mIsEnter;
 	private float mWaitTimer;
+
 	void Start()
 	{
 		if (!mIsActive)
@@ -21,10 +21,12 @@ public class Game_Trigger_Transmit : Controller {
 
 	void OnTriggerEnter(Collider Col)
 	{
-		if (Game_Trigger_Transmit.mIsActiveTrigger)
+		if (Col.gameObject.tag != "MainCharacter")
 			return;
 
-		Game_Trigger_Transmit.mIsActiveTrigger = true;
+		if (!Col.gameObject.GetComponent<Client_Transform> ().mIsTransmit)
+			return;
+
 		mIsEnter = true;
 		mWaitTimer = 0f;
 
@@ -33,9 +35,7 @@ public class Game_Trigger_Transmit : Controller {
 
 	void OnTriggerExit(Collider Col)
 	{
-		Game_Trigger_Transmit.mIsActiveTrigger = false;
-
-		mIsEnter = true;
+		mIsEnter = false;
 		mWaitTimer = 0f;
 	}
 

@@ -43,7 +43,8 @@ public class Game_FSM_State_Base {
 				tmpComponent = mController.gameObject.AddComponent(tmpComponentName) as Game_ObjectBase;
 			}
 
-			mStateComonentList.Add(tmpComponent.GetType(),tmpComponent);
+			if(!mStateComonentList.ContainsKey(tmpComponent.GetType()))
+				mStateComonentList.Add(tmpComponent.GetType(),tmpComponent);
 		}
 
 		foreach(Type types in mStateComonentList.Keys)

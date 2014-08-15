@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Client_Package : Game_Storage_Manager_Base 
+public class Client_Package : Game_Storage_Manager_Base ,Client_Component
 {
     void OnEnable()
     {
@@ -23,6 +23,11 @@ public class Client_Package : Game_Storage_Manager_Base
 		Dictionary<string, object> tmpSend = SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_STORAGE);
 		((Dictionary<string, object>)tmpSend["results"]).Add("id", Client_User.Singleton().GetID());
 		this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_STORAGE,tmpSend);
+	}
+
+	public void Init()
+	{
+
 	}
 
 	object OnHandleReceiveInitPackage(object pSender)
