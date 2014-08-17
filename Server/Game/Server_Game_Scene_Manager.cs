@@ -116,7 +116,7 @@ namespace Server
             {
                 mPlayerList.Add(tmpUser);
 				tmpUser.transform.parent = mPlayerListNode;
-				tmpUser.transform.localPosition = tmpUser.mDataInfo.WorldPos;
+				//tmpUser.transform.localPosition = tmpUser.mDataInfo.WorldPos;
 				//Debug.LogError("Add Player: " + tmpUser.ID);
             }
             else

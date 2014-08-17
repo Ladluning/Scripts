@@ -21,9 +21,16 @@ namespace Server
 		{
 			base.Init (Father);
 
-			mCurrentTransform.localPosition = Father.mDataInfo.WorldPos;
-			mCurrentTransform.localEulerAngles = Father.mDataInfo.WorldRotate;
-			mSceneID = Father.mDataInfo.SceneID;
+			SetPosition (Father.mDataInfo.WorldPos,Father.mDataInfo.WorldRotate,Father.mDataInfo.SceneID);
+		}
+
+		public void SetPosition(Vector3 Pos,Vector3 Rotate ,string SceneID)
+		{
+			mCurrentTransform.localPosition = Pos;
+			mCurrentTransform.localEulerAngles = Rotate;
+			mSceneID = SceneID;	
+
+			UpdateData ();
 		}
 
 		public override void UpdateData()

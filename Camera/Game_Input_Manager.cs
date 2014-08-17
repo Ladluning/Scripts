@@ -9,6 +9,12 @@ public class Game_Input_Manager : Controller {
 	public Vector2 mPinchRect = new Vector2(3.5f,15);
 	public float   mPinchSpeed = 0.006f;
 	public float   mPinchFactor = 4f;
+
+	[HideInInspector]
+	public Vector3 mDefaultRotate = new Vector3(44.2f,0,0);
+	[HideInInspector]
+	public float mDefaultPinch = 8.52f;
+
 	private float   mTargetPinch;
 	private float   mCurrentPinch;
 	
@@ -26,6 +32,12 @@ public class Game_Input_Manager : Controller {
 
 	bool mIsStop = true;
 	//protected Camera mMainCamera;
+	private static Game_Input_Manager m_pInterface;
+	public  static Game_Input_Manager Singleton()
+	{
+		return m_pInterface;
+	}
+
 	void OnEnable()
 	{
 		FingerGestures.OnTap += OnFingerTap;
@@ -62,6 +74,7 @@ public class Game_Input_Manager : Controller {
 	void Awake()
 	{
 		//mMainCamera = gameObject.GetComponent<Camera>();
+		m_pInterface = this;
 		mCurrentTransform = transform;
 
 		//Reset ();
@@ -70,18 +83,14 @@ public class Game_Input_Manager : Controller {
 	public void Reset()
 	{
 		mIsInit = true;
+		mCurrentTransform.eulerAngles = mDefaultRotate;
 
 		mTargetTransform = GameObject.Find ("_Camera_Player_Target").transform;
 		mCenterTransform = GameObject.Find ("_Camera_Player_Center").transform;
-		
-		Vector3 HitPos;
-		GameTools.getLayerPosFromScreenViewPort (out HitPos, "Background", new Vector2 (0.5f, 0.5f));
-		mCenterTransform.position = HitPos;
 
-		Vector3 tmpDirector = (mCurrentTransform.position - mCenterTransform.position);
+		Vector3 tmpDirector = -mCurrentTransform.transform.forward*mDefaultPinch;
 		
 		mCenterTransform.position = mTargetTransform.position;
-		
 		mCurrentTransform.position = mCenterTransform.position + tmpDirector;
 
 		Init ();

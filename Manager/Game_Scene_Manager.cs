@@ -52,7 +52,8 @@ public class Game_Scene_Manager : Controller {
 		//Init Scene
 		InitSceneWithName(tmpProperty,(string)LoginData["results"]["scene"]);
 
-		Camera.main.GetComponent<Game_Input_Manager> ().Reset ();
+		Game_Input_Manager.Singleton().Reset ();
+		//Camera.main.GetComponent<Game_Input_Manager> ().Reset ();
 
 		this.SendEvent (GameEvent.InputEvent.EVENT_INPUT_RESUME_INPUT,null);
 		this.SendEvent (GameEvent.UIEvent.EVENT_UI_HIDE_LOADING_BLOCK,new Struct_Loading_Info(false,tmpProperty.DelayLoadingTime,null));

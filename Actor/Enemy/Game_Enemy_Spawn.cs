@@ -87,6 +87,7 @@ public class Game_Enemy_Spawn : Controller
 	
 	void HandleEnemyVisible(JsonData Target)
 	{
+		Debug.Log (MiniJSON.Json.Serialize(Target));
 		GameObject tmpObject;
 		if (mEnemyList.ContainsKey((string)Target["id"]))
 		{
