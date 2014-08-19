@@ -2,23 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class UIBubbleManager : MonoBehaviour {
-
-	private static UIBubbleManager m_pInterface;
-	public static UIBubbleManager Singleton()
-	{
-		return m_pInterface;
-	}
-	void Awake()
-	{
-		m_pInterface = this;
-	}
+public class UI_Story_Bubble_Manager : MonoBehaviour {
 
 	public GameObject mBubblePrefab;
-	public List<UIBubbleNode> mBubbleList = new List<UIBubbleNode> ();
+	public List<UI_Story_Bubble_Node> mBubbleList = new List<UI_Story_Bubble_Node> ();
 	public void ShowBubbleWithTarget(GameObject target,string Said,float SaidWidth,float SaidHeight)
 	{
-		UIBubbleNode tmpTarget = GetBubbleWithFather (target);
+		UI_Story_Bubble_Node tmpTarget = GetBubbleWithFather (target);
 
 		if (tmpTarget != null) {
 			tmpTarget.SetSaid (Said,SaidWidth,SaidHeight);
@@ -26,7 +16,7 @@ public class UIBubbleManager : MonoBehaviour {
 			return;
 		}
 
-		tmpTarget = (Instantiate (mBubblePrefab) as GameObject).GetComponent<UIBubbleNode>();
+		tmpTarget = (Instantiate (mBubblePrefab) as GameObject).GetComponent<UI_Story_Bubble_Node>();
 		tmpTarget.mFather = target;
 		tmpTarget.transform.parent = transform;
 		tmpTarget.transform.position = target.transform.localPosition + Vector3.up*2;
@@ -37,7 +27,7 @@ public class UIBubbleManager : MonoBehaviour {
 
 	}
 
-	UIBubbleNode GetBubbleWithFather(GameObject target)
+	UI_Story_Bubble_Node GetBubbleWithFather(GameObject target)
 	{
 		for (int i=0; i<mBubbleList.Count; ++i) 
 		{

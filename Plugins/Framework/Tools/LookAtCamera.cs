@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Game_Story_LookAtCamera : MonoBehaviour
+public class LookAtCamera : MonoBehaviour
 {
 	Camera cacheMainCamera;
 	Transform mMainCameraTrans;
@@ -9,7 +9,19 @@ public class Game_Story_LookAtCamera : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		cacheMainCamera = Camera.main;
+		foreach (Camera tmp in Camera.allCameras) 
+		{
+			if((tmp.cullingMask&gameObject.layer)!=0)
+			{
+				Debug.Log ("Init Bubble Camera Success:"+tmp.name);
+				cacheMainCamera = Camera.main;
+				break;
+			}
+		}
+
+		if(cacheMainCamera== null)
+			Debug.LogError("!Init Bubble Camera Error:"+gameObject.name);
+
 		mMainCameraTrans = cacheMainCamera.transform;
 		mTrans = transform;
 

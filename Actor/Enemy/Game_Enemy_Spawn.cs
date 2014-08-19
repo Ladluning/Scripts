@@ -77,7 +77,7 @@ public class Game_Enemy_Spawn : Controller
 		}
 		tmpObject.transform.position = new Vector3((float)Target["pos_x"], (float)Target["pos_y"], (float)Target["pos_z"]);
 		//tmpObject.transform.localEulerAngles = new Vector3((float)Target["rotate_x"], (float)Target["rotate_y"], (float)Target["rotate_z"]);
-		
+
 		//Target["id"];
 		//Target["hp"];
 		//Target["mp"];

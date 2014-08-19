@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UIBubbleNode:MonoBehaviour
+public class UI_Story_Bubble_Node:MonoBehaviour
 {
 	public GameObject mFather;
 	public TweenAlpha mTweenAnimation;
@@ -26,7 +26,7 @@ public class UIBubbleNode:MonoBehaviour
 	
 	public void StartHide()
 	{
-		mTweenAnimation.Reset ();
+		mTweenAnimation.ResetToBeginning ();
 		mTweenAnimation.Play (false);
 		mBubbleLabel.text = "";
 		StartCoroutine (WaitDestroy(0.4f));

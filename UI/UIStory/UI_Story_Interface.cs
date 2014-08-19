@@ -3,17 +3,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-public class Game_Story_Controller : MonoBehaviour {
+public class UI_Story_Interface: MonoBehaviour {
 
 	private Camera mStoryCamera;
 	private List<GameObject> mObjectList = new List<GameObject>();
-	public GameObject mUIStory;
-	private UIBubbleManager mUIBubble;
-
+	private UI_Story_Bubble_Manager mUIBubble;
+	private Transform mInitPrefabNode;
 	void Awake()
 	{
 		LuaManager.Singleton ().RegistFile ("Story_01.txt");
 
+		mUIBubble = gameObject.GetComponentInChildren<UI_Story_Bubble_Manager>();
+		mInitPrefabNode = transform.FindChild ("UIStory_Prefab");
 
 		MethodInfo method_InitPrefab = this.GetType().GetMethod("InitPrefab", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string) ,typeof(Vector3),typeof(Vector3)}, null);
 		MethodInfo method_SetObjectAnimation = this.GetType().GetMethod("SetObjectAnimation", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string)}, null);
@@ -90,7 +91,7 @@ public class Game_Story_Controller : MonoBehaviour {
 		{
 			if(mObjectList[i].name == name)
 			{
-				UIBubbleManager.Singleton().ShowBubbleWithTarget(mObjectList[i],SaidString,SaidWidth,SaidHeight);
+				mUIBubble.ShowBubbleWithTarget(mObjectList[i],SaidString,SaidWidth,SaidHeight);
 
 				return;
 			}
