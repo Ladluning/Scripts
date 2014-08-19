@@ -25,7 +25,7 @@ public class LuaManager : MonoBehaviour
 			return mLuaList[Path];
 
 		Lua l = new Lua();
-		l.DoFile(mLuaRootPath+Path);
+		l.DoFile(Application.streamingAssetsPath + mLuaRootPath+Path);
 
 		mLuaList.Add(Path,l);
 		return l;
