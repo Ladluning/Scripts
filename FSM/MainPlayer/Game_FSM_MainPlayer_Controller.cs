@@ -54,13 +54,17 @@ public class Game_FSM_MainPlayer_Controller: Game_FSM_Controller {
 			TmpCamera.transform.localRotation = Quaternion.identity;
 			TmpCamera.transform.localScale = Vector3.one;
 		}
+		if(!mStateMap.ContainsKey((int)E_State_MainPlayer.Idle))
+		{
+			mStateMap.Add((int)E_State_MainPlayer.Idle,new Game_FSM_MainPlayer_State_Idle(this));
+			mStateMap [(int)E_State_MainPlayer.Idle].AddTranslate ((int)E_State_MainPlayer.Move);
+		}
 
-		mStateMap.Add((int)E_State_MainPlayer.Idle,new Game_FSM_MainPlayer_State_Idle(this));
-		mStateMap [(int)E_State_MainPlayer.Idle].AddTranslate ((int)E_State_MainPlayer.Move);
-		
-		mStateMap.Add((int)E_State_MainPlayer.Move,new Game_FSM_MainPlayer_State_Move(this));
-		mStateMap [(int)E_State_MainPlayer.Move].AddTranslate ((int)E_State_MainPlayer.Idle);
-		
+		if(!mStateMap.ContainsKey((int)E_State_MainPlayer.Move))
+		{
+			mStateMap.Add((int)E_State_MainPlayer.Move,new Game_FSM_MainPlayer_State_Move(this));
+			mStateMap [(int)E_State_MainPlayer.Move].AddTranslate ((int)E_State_MainPlayer.Idle);
+		}
 		
 		this.InitState();
 		this.StartState((int)E_State_MainPlayer.Idle);

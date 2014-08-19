@@ -1,19 +1,25 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class Game_Trigger_Transmit : Controller {
 
 	public bool mIsActive = false;
+	public bool mIsShow = true;
 	public float mWaitTime = 0.2f;
-	public string mTargetTransmitID;
+	//public string mTargetTransmitID;
 
-	public static bool mIsActiveTrigger = false;
+	public bool mIsSetCameraDefault;
+	public Vector3 mCameraDefaultRotate;
+	public Vector3 mCameraDefaultPinch;
+
 	private bool  mIsEnter;
 	private float mWaitTimer;
+
 	void Start()
 	{
-		if (!mIsActive)
+		if (!mIsShow)
 			transform.GetChild (0).gameObject.SetActive (false);
 		else
 			transform.GetChild (0).gameObject.SetActive (true);
@@ -21,10 +27,15 @@ public class Game_Trigger_Transmit : Controller {
 
 	void OnTriggerEnter(Collider Col)
 	{
-		if (Game_Trigger_Transmit.mIsActiveTrigger)
+		if (!mIsActive)
 			return;
 
-		Game_Trigger_Transmit.mIsActiveTrigger = true;
+		if (Col.gameObject.tag != "MainCharacter")
+			return;
+
+		if (!Col.gameObject.GetComponent<Client_Transform> ().mIsTransmit)
+			return;
+
 		mIsEnter = true;
 		mWaitTimer = 0f;
 
@@ -33,9 +44,7 @@ public class Game_Trigger_Transmit : Controller {
 
 	void OnTriggerExit(Collider Col)
 	{
-		Game_Trigger_Transmit.mIsActiveTrigger = false;
-
-		mIsEnter = true;
+		mIsEnter = false;
 		mWaitTimer = 0f;
 	}
 
@@ -52,8 +61,10 @@ public class Game_Trigger_Transmit : Controller {
 			Dictionary<string,object> tmpSend = SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_SWITCH_SCENE);
 			((Dictionary<string, object>)tmpSend["results"]).Add("id", Client_User.Singleton().GetID());
 			((Dictionary<string, object>)tmpSend["results"]).Add("current", gameObject.name);
-			((Dictionary<string, object>)tmpSend["results"]).Add("target", mTargetTransmitID);
+			//((Dictionary<string, object>)tmpSend["results"]).Add("target", mTargetTransmitID);
 			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_SWITCH_SCENE,tmpSend);
+
+
 
 			//Struct_Scene_Init TmpInit = new Struct_Scene_Init ();
 			//TmpInit.TargetPassPointID = mTargetTransmitID;

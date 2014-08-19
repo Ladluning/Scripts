@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Client_Property : Controller
+public class Client_Property : Controller,Client_Component
 {
     public int mLosePropertyCount;
     public int mPropertyAdd_Strength;
@@ -28,6 +28,7 @@ public class Client_Property : Controller
     public float mCrit;
     public float mMoveSpeed;
 	public int mLuck = 10;
+
 	void OnEnable()
 	{
 		this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_USER_DATA,OnHandleReceiveUpdateProperty);
@@ -44,6 +45,11 @@ public class Client_Property : Controller
 		Dictionary<string, object> tmpSend = SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_DATA);
 		((Dictionary<string, object>)tmpSend["results"]).Add("id", Client_User.Singleton().GetID());
 		this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_DATA,tmpSend);
+	}
+
+	public void Init()
+	{
+		
 	}
 
     public int GetLevel()

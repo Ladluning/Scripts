@@ -45,7 +45,8 @@ public class Editor_PathFinder_Init_Data : EditorWindow
 			MinOffect_Y = 999999;
 			MaxOffect_X = 0;
 			MaxOffect_Y = 0;
-
+			Game_MapData_Manager.mMapSize = new Int2(1000,1000);
+			Game_MapData_Manager.mMapOriOffect = new Int2(0, 0);
 			int beginTime = DateTime.Now.Millisecond+DateTime.Now.Second*1000;
 			BackgroundLayer = LayerMask.NameToLayer("Background");
 			ColliderLayer = LayerMask.NameToLayer("SceneCollider");
@@ -56,7 +57,7 @@ public class Editor_PathFinder_Init_Data : EditorWindow
 			Int2 tmpStart = Game_MapData_Manager.ConvertWorldPosToMapPos(TargetStartPoint.transform.position);
 			RaycastHit(tmpStart.x,tmpStart.y);
 
-			Editor_MapData_Save.Save(Application.dataPath+"/Resources/MapDate/"+TargetName+".date",
+			Editor_MapData_Save.Save(Application.dataPath+"/Resources/MapData/"+TargetName+".date",
 			                         0,(uint)mMapData.Count,(short)MinOffect_X,(short)MinOffect_Y,(short)(MaxOffect_X-MinOffect_X),(short)(MaxOffect_Y-MinOffect_Y),mMapData.ToArray());
 
 			Debug.Log ("Init Over"+Count+": "+MinOffect_X+" :"+MinOffect_Y+" :"+(MaxOffect_X-MinOffect_X)+" :"+(MaxOffect_Y-MinOffect_Y)+" :"+(DateTime.Now.Millisecond+DateTime.Now.Second*1000-beginTime));
@@ -64,7 +65,7 @@ public class Editor_PathFinder_Init_Data : EditorWindow
 		if (GUILayout.Button ("Load")) 
 		{
 			//Game_MapData_Manager.Singleton().InitMapData();
-			Editor_MapData_Save.Load(Application.dataPath+"/Resources/MapDate/"+TargetName+".date");
+			Editor_MapData_Save.Load(Application.dataPath+"/Resources/MapData/"+TargetName+".date");
 		}
 		GUILayout.EndVertical();
 	}
@@ -128,6 +129,7 @@ public class Editor_PathFinder_Init_Data : EditorWindow
 		if (Physics.Raycast (StartPos+Vector3.up*100, Director, out hit, Mathf.Infinity,nLayerMask)) 
 		{
 			HitPos = hit.point;
+
 			if(hit.collider.gameObject.layer == BackgroundLayer)
 				return true;	
 			else

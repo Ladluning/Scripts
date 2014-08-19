@@ -70,15 +70,13 @@ namespace Server
             if (!tmpCurrentTransmit.IsAvailable)
                 return null;
 
-            Server_Game_Transmit_Point tmpTargetTransmit = GetServerTransmitWithID((string)tmpData["results"]["target"]);
+			Server_Game_Transmit_Point tmpTargetTransmit = GetServerTransmitWithID(tmpCurrentTransmit.mTransmitTarget);
             if (tmpTargetTransmit == null)
                 return null;
 
             this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_DESTROY_PLAYER, tmpUser);
 
-            tmpUser.mDataInfo.SceneID = tmpTargetTransmit.mFather.mSceneID;
-            tmpUser.mDataInfo.WorldPos = tmpTargetTransmit.transform.localPosition;
-            tmpUser.mDataInfo.WorldRotate = tmpTargetTransmit.transform.localEulerAngles;
+			tmpUser.GetTransform ().SetPosition (tmpTargetTransmit.transform.localPosition,tmpTargetTransmit.transform.localEulerAngles,tmpTargetTransmit.mFather.mSceneID);
             this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_NEW_PLAYER,tmpUser);
 
             tmpUser.RequireLoginData();

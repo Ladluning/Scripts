@@ -23,9 +23,13 @@ public class Client_User : Controller
     {
         return mID;
     }
-	public void SetID(string ID)
+	public void InitWithID(string ID)
 	{
 		mID = ID;
+
+		mClientProperty.Init ();
+		mClientTransform.Init ();
+		mClientPackage.Init ();
 	}
     private Client_Transform mClientTransform;
     private Client_Property mClientProperty;

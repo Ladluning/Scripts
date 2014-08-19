@@ -44,16 +44,16 @@ public class Game_Scene_Manager : Controller {
 		Vector3 tmpPos = new Vector3((float)(LoginData["results"]["pos_x"]), (float)(LoginData["results"]["pos_y"]), (float)(LoginData["results"]["pos_z"]));
 		Vector3 tmpRotate = new Vector3((float)(LoginData["results"]["rotate_x"]), (float)(LoginData["results"]["rotate_y"]), (float)(LoginData["results"]["rotate_z"]));
 		mMainCharacter.transform.parent = transform;
-		mMainCharacter.GetComponent<Client_User>().SetID(mMainCharacter.name);
 		mMainCharacter.InitMainPlayer ((string)LoginData["results"]["mesh"],tmpPos,tmpRotate);
-
+		mMainCharacter.GetComponent<Client_User>().InitWithID(mMainCharacter.name);
 		//Init UI
 		this.SendEvent (GameEvent.UIEvent.EVENT_UI_SHOW_UI,"UIMainGame");
 
 		//Init Scene
 		InitSceneWithName(tmpProperty,(string)LoginData["results"]["scene"]);
 
-		Camera.main.GetComponent<Game_Input_Manager> ().Reset ();
+		Game_Input_Manager.Singleton().Reset ();
+		//Camera.main.GetComponent<Game_Input_Manager> ().Reset ();
 
 		this.SendEvent (GameEvent.InputEvent.EVENT_INPUT_RESUME_INPUT,null);
 		this.SendEvent (GameEvent.UIEvent.EVENT_UI_HIDE_LOADING_BLOCK,new Struct_Loading_Info(false,tmpProperty.DelayLoadingTime,null));

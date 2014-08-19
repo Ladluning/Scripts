@@ -2,9 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Client_Transform : Controller
+public class Client_Transform : Controller,Client_Component
 {
-    private Vector3 LastPosition;
+	[HideInInspector]
+    public Vector3 LastPosition;
+	[HideInInspector]
+	public bool mIsTransmit = false;
+
+	public void Init()
+	{
+		LastPosition = transform.position;
+		mIsTransmit = false;
+	}
+
     void Update()
     {
         if (LastPosition != transform.position)
@@ -17,6 +27,8 @@ public class Client_Transform : Controller
             ((Dictionary<string, object>)tmpCmd["results"]).Add("rotate_y", transform.eulerAngles.y);
             ((Dictionary<string, object>)tmpCmd["results"]).Add("rotate_z", transform.eulerAngles.z);
             this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_UPDATE_POS, tmpCmd);
+
+			mIsTransmit = true;
         }
         LastPosition = transform.position;
     }

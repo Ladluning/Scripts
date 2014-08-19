@@ -6,12 +6,19 @@ public class Game_ObjectAction : Game_ObjectBase
 	private Vector3 mTargetPos;
 	private RegistFunction mCallBack;
 	private bool IsStartMove;
-
 	private CharacterController mCharacterController;
 	void Awake()
 	{
 		mCharacterController = gameObject.GetComponent<CharacterController> ();
 	}
+
+	public override void Init()
+	{
+		base.Init ();
+		IsStartMove = false;
+		mCallBack = null;
+	}
+
 	public void MoveToTarget(Vector3 TargetPos,RegistFunction CallBack)
 	{
 		mTargetPos = TargetPos;
@@ -36,35 +43,36 @@ public class Game_ObjectAction : Game_ObjectBase
 		if (!IsStartMove)
 			return;
 
-		Vector3 moveDirection = (mTargetPos - mCurrentTransform.position).normalized;
-		moveDirection.y = 0;
+		Vector3 moveDirection = (mTargetPos - mCurrentTransform.position);
 
-		if (moveDirection.sqrMagnitude < 0.01f)
+		if (moveDirection.sqrMagnitude < 0.01f) 
 		{
 			IsStartMove = false;
 			if(mCallBack!=null)mCallBack(true);
-			return;
+			return;	
 		}
 
-
+		moveDirection = moveDirection.normalized;
+		moveDirection.y = 0;
 		moveDirection *= 3f* Time.deltaTime;
+		moveDirection += Physics.gravity;// * Time.deltaTime;
 
-		if (RaycastWall (mCurrentTransform.position, moveDirection, 1f * Time.deltaTime)) 
+		Vector3 tmpLast = mCharacterController.transform.localPosition;
+		mCharacterController.Move (moveDirection);
+
+		if ((mCharacterController.transform.localPosition-tmpLast).sqrMagnitude<0.001f) 
 		{
 			IsStartMove = false;
 			if(mCallBack!=null)mCallBack(false);
 			return;
 		}
-
-		moveDirection += Physics.gravity * Time.deltaTime;
-		mCharacterController.Move(moveDirection);
 	}
 
 	bool RaycastWall(Vector3 CurrentPos,Vector3 Director,float MoveDistance)
 	{
 		Ray tmpRay = new Ray (CurrentPos+Vector3.up, Director);
 
-		if (Physics.Raycast (tmpRay, MoveDistance, 1 << LayerMask.NameToLayer ("SceneCollider"))) 
+		if (Physics.Raycast (tmpRay, MoveDistance*2+mCharacterController.radius, 1 << LayerMask.NameToLayer ("SceneCollider"))) 
 		{
 			return true;
 		}
