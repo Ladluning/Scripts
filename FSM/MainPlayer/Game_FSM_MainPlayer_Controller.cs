@@ -14,11 +14,13 @@ public class Game_FSM_MainPlayer_Controller: Game_FSM_Controller {
 	void OnEnable()
 	{
 		this.RegistEvent (GameEvent.FightingEvent.EVENT_FIGHT_CLICK_POS, OnHandleClickPos);
+        this.RegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_STOP_MAINCHARACTER,OnHandleStopMaincharacter);
 	}
 	
 	void OnDisable()
 	{
 		this.UnRegistEvent (GameEvent.FightingEvent.EVENT_FIGHT_CLICK_POS,OnHandleClickPos);
+        this.UnRegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_STOP_MAINCHARACTER, OnHandleStopMaincharacter);
 	}
 	protected override void Awake () 
 	{
@@ -85,8 +87,14 @@ public class Game_FSM_MainPlayer_Controller: Game_FSM_Controller {
 
 		return null;
 	}
-	
-	
+
+
+    object OnHandleStopMaincharacter(object pSender)
+    {
+        this.SwitchState((int)E_State_MainPlayer.Idle);
+        return null;
+    }
+
 	protected override void Update ()
 	{
 		base.Update ();

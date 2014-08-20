@@ -30,17 +30,31 @@ namespace Server
 		{
 			Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_TALENT_DATA);
 			List<object> tmpData = new List<object>();
-			for (int i = 0; i < mUser.mDataInfo.mTalent.TalentNode.Count; ++i)
+            for (int i = 0; i < mTalentData.Talent.Count; ++i)
 			{
-				Dictionary<string,object> tmpTalentNode = new Dictionary<string, object>();
-				tmpTalentNode.Add("id",mUser.mDataInfo.mTalent.TalentNode[i].NodeID);
-				tmpTalentNode.Add("count",mUser.mDataInfo.mTalent.TalentNode[i].CurrentCount);
-				tmpData.Add(tmpTalentNode);
+                SerializeTalentNodeData(ref tmpData, mTalentData.Talent[i].Top);
 			}
+            ((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
 			((Dictionary<string, object>)tmpSend["results"]).Add("talent", tmpData);
 			
 			return tmpSend;
 		}
+
+        void SerializeTalentNodeData(ref List<object> TargetList,Server_Struct_Data_Talent_Node TargetNode)
+        {
+            for (int i = 0; i < TargetNode.Child.Count; i++)
+            {
+                SerializeTalentNodeData(ref TargetList, TargetNode.Child[i]);
+            }
+
+
+            Dictionary<string,object> tmpTalentNode = new Dictionary<string, object>();
+			tmpTalentNode.Add("id",TargetNode.NodeID);
+			tmpTalentNode.Add("count",TargetNode.CurrentCount);
+            tmpTalentNode.Add("max",TargetNode.MaxCount);
+            tmpTalentNode.Add("active", TargetNode.Avaliable);
+			TargetList.Add(tmpTalentNode);
+        }
 
 		object OnHandleClearTalent(object pSender)
 		{

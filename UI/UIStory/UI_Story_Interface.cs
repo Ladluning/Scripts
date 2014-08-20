@@ -9,10 +9,17 @@ public class UI_Story_Interface: MonoBehaviour {
 	private List<GameObject> mObjectList = new List<GameObject>();
 	private UI_Story_Bubble_Manager mUIBubble;
 	private Transform mInitPrefabNode;
+
+
+
+    MethodInfo method_InitPrefab;
+    MethodInfo method_SetObjectAnimation;
+    MethodInfo method_SetObjectMove; 
+    MethodInfo method_SetShowActorBubble; 
+    MethodInfo method_SetNextStepTime;
+
 	void Awake()
 	{
-		LuaManager.Singleton ().RegistFile ("Story_01.txt");
-
 		mUIBubble = gameObject.GetComponentInChildren<UI_Story_Bubble_Manager>();
 		mInitPrefabNode = transform.FindChild ("UIStory_Prefab");
 
@@ -22,17 +29,27 @@ public class UI_Story_Interface: MonoBehaviour {
 		MethodInfo method_SetShowActorBubble = this.GetType().GetMethod("SetShowActorBubble", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string),typeof(float),typeof(float)}, null);
 		MethodInfo method_SetNextStepTime = this.GetType().GetMethod("SetNextStepTime", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(float),typeof(int)}, null);
 
-		LuaManager.Singleton().RegistFunction("Story_01.txt", "InitPrefab", this, method_InitPrefab);
-		LuaManager.Singleton().RegistFunction("Story_01.txt", "SetObjectAnimation",this,method_SetObjectAnimation);
-		LuaManager.Singleton().RegistFunction("Story_01.txt", "SetObjectMove", this, method_SetObjectMove);
-		LuaManager.Singleton().RegistFunction("Story_01.txt", "SetShowActorBubble", this, method_SetShowActorBubble);
-		LuaManager.Singleton().RegistFunction("Story_01.txt", "SetNextStepTime", this, method_SetNextStepTime);
-
 	}
+
+    public void RegistFile(string FileName)
+    {
+        LuaManager.Singleton().RegistFile(FileName);
+
+        LuaManager.Singleton().RegistFunction(FileName, "InitPrefab", this, method_InitPrefab);
+        LuaManager.Singleton().RegistFunction(FileName, "SetObjectAnimation", this, method_SetObjectAnimation);
+        LuaManager.Singleton().RegistFunction(FileName, "SetObjectMove", this, method_SetObjectMove);
+        LuaManager.Singleton().RegistFunction(FileName, "SetShowActorBubble", this, method_SetShowActorBubble);
+        LuaManager.Singleton().RegistFunction(FileName, "SetNextStepTime", this, method_SetNextStepTime);
+    }
+
+    public void StartStory(string FileName)
+    {
+        LuaManager.Singleton().GetFunction(FileName, "Start").Call();
+    }
 
 	void Start()
 	{
-        LuaManager.Singleton().GetFunction("Story_01.txt", "Start").Call();
+        
 	}
 
 	public void SetCameraPos(Vector3 Pos,Vector3 Rotate)

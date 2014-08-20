@@ -29,6 +29,7 @@ public class Game_FSM_MainPlayer_State_Move : Game_FSM_State_Base {
 	public virtual void OnExit()
 	{
 		base.OnExit ();
+
 	}
 
 	public void SetTargetPos(Vector3 TargetPos)

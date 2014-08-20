@@ -16,6 +16,7 @@ public class Client_User : Controller
         mClientTransform = gameObject.AddComponent<Client_Transform>();
 		mClientPackage   = gameObject.AddComponent<Client_Package>();
 		mClientProperty  = gameObject.AddComponent<Client_Property>();
+        mClientTalent = gameObject.AddComponent<Client_Talent>();
     }
 
     private string mID;
@@ -30,6 +31,7 @@ public class Client_User : Controller
 		mClientProperty.Init ();
 		mClientTransform.Init ();
 		mClientPackage.Init ();
+        mClientTalent.Init();
 	}
     private Client_Transform mClientTransform;
     private Client_Property mClientProperty;
@@ -41,5 +43,10 @@ public class Client_User : Controller
     public Client_Package GetPackage()
     {
         return mClientPackage;
+    }
+    private Client_Talent mClientTalent;
+    public Client_Talent GetTalent()
+    {
+        return mClientTalent;
     }
 }
