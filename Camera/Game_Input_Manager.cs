@@ -114,8 +114,8 @@ public class Game_Input_Manager : Controller {
 		GameObject HitObject;
 		if((HitObject = GameTools.getGameObjectFromScreenPos ("NPC", fingerPos))!=null)
 		{
-			//this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_CLICK_POS,HitPos);
-			//this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_CLICK_NPC,HitObject);
+			this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_CLICK_POS,HitPos);
+			this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_CLICK_NPC,HitObject);
 		}
 		else if (GameTools.getLayerPosFromScreenPos (out HitPos, "Background", fingerPos)) 
 		{

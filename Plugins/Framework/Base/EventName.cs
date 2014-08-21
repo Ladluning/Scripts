@@ -193,6 +193,9 @@ public class EventFighting
 
     public uint EVENT_FIGHT_START_STORY = 0x3002000;
     public uint EVENT_FIGHT_END_STORY = 0x3002002;
+
+	public uint EVENT_FIGHT_TRIGGER_ENTER_NPC = 0x3002004;
+	public uint EVENT_FIGHT_TRIGGER_EXIT_NPC = 0x3002006;
 }
 
 //0x400000c//
