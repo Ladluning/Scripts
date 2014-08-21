@@ -93,6 +93,18 @@ namespace Server
 
         public uint EVENT_WEB_SEND_OVER_STORY = 0x1200044;
         public uint EVENT_WEB_RECEIVE_OVER_STORY = 0x1200046;
+
+        public uint EVENT_WEB_SEND_INIT_SCENE_NPC = 0x1200044;
+        public uint EVENT_WEB_RECEIVE_INIT_SCENE_NPC = 0x1200046;
+
+        public uint EVENT_WEB_SEND_UPDATE_NPC = 0x1200050;
+        public uint EVENT_WEB_RECEIVE_UPDATE_NPC = 0x1200052;
+
+        public uint EVENT_WEB_SEND_UPDATE_NPC_PACKAGE = 0x1200054;
+        public uint EVENT_WEB_RECEIVE_UPDATE_NPC_PACKAGE = 0x1200056;
+
+        public uint EVENT_WEB_SEND_UPDATE_NPC_TASK = 0x1200058;
+        public uint EVENT_WEB_RECEIVE_UPDATE_NPC_TASK = 0x120005a;
 	}
     public class EventWebView
     {

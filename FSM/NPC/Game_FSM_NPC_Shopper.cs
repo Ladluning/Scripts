@@ -1,15 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class Game_FSM_NPC_Shopper : MonoBehaviour {
+public class Game_FSM_NPC_Shopper : Game_FSM_NPC_Base {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public override void ActiveNPC()
+    {
+        base.ActiveNPC();
+    }
+
 }

@@ -1,43 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Game_Scene_Controller : Controller 
 {
+    List<Game_FSM_NPC_Base> mNPCList = new List<Game_FSM_NPC_Base>();
 	void OnEnable()
 	{
-		//this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_INIT_TRANSMIT_POINT,OnHandleInitTransmitPoint);
-		//this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_ININT_NPC,OnHandleInitNPC);
-		//this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_INIT_MAINPLAYER,OnHandleInitMainPlayer);
-		//this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_INIT_OTHERPLAYER,OnHandleInitOtherPlayer);
-		//this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_ADD_OTHERPLAYER,OnHandleAddOtherPlayer);
-		//this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_REMOVE_OTHERPLAYER,OnHandleRemoveOtherPlayer);
-		//this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_FINISH_INIT_SCENE,OnHandleFinishInitScene);
+        this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_SCENE_NPC,OnHandleInitNPC);
 	}
 
 	void OnDisable()
 	{
-
+        this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_SCENE_NPC, OnHandleInitNPC);
 	}
 
-	public virtual void Init(string SceneID,string CurrentTransmitID)
+    void Awake()
+    {
+
+    }
+
+	public virtual void Init()
 	{
-		//this.SendEvent (GameEvent.WebEvent.EVENT_WEB_REQUAIR_INIT_SCENE,SceneID);
+        Dictionary<string, object> tmpSend = SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_SCENE_DATA);
+        ((Dictionary<string, object>)tmpSend["results"]).Add("id", Client_User.Singleton().GetID());
+        ((Dictionary<string, object>)tmpSend["results"]).Add("target", gameObject.name);
+        this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_SCENE_DATA, tmpSend);
 	}
 
-	void InitPlayer()
-	{
-
-	}
-
-	void InitNPC()//Server
-	{
-
-	}
-
-	void InitEnemySpawn()//Server
-	{
-
-	}
-
-
+    object OnHandleInitNPC(object pSender)
+    {
+        JsonData tmpJson = new JsonData(pSender);
+        for (int i = 0; i < tmpJson["results"]["npc"].Count; ++i)
+        {
+            //Game_Resources_Pool.Singleton().GetUnusedActorWithID((string)tmpJson["results"]["npc"][i]["id"]);
+        }
+        return null;
+    }
 }

@@ -40,7 +40,7 @@ public class Client_Package : Game_Storage_Manager_Base ,Client_Component
 		if(tmpJson["results"].Dictionary.ContainsKey("size"))
 			mStorageSlotCount = (int)tmpJson["results"]["size"];
 		if(tmpJson["results"].Dictionary.ContainsKey("maxSize"))
-			mStorageSlotCount = (int)tmpJson["results"]["maxSize"];
+			mStorageSlotMaxCount = (int)tmpJson["results"]["maxSize"];
 		
 		for (int i = 0; i < tmpJson["results"]["packages"].Count; ++i)
 		{

@@ -19,6 +19,8 @@ namespace Server
         public string mID;
         [HideInInspector]
         public string mSceneID;
+      
+        public bool mIsActive = true;
 		[HideInInspector]
 		public E_Actor_Type mActorType = E_Actor_Type.None;
 		[HideInInspector]
