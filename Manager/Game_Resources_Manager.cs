@@ -29,6 +29,17 @@ public class Game_Resources_Manager : MonoBehaviour
 		}
 		return null;
 	}
+    public GameObject[] mNPCList;
+    public GameObject GetNPCWithID(string NPCID)
+    {
+        for (int i = 0; i < mNPCList.Length; ++i)
+        {
+            if (mNPCList[i].name == NPCID)
+                return mNPCList[i];
+        }
+        return null;
+    }
+
 
 	public GameObject[] mSceneList;
 	public GameObject GetSceneWithID(string SceneID)

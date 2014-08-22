@@ -45,6 +45,12 @@ namespace Server
 
                 tmpNode.Add("id", mNPCList[key].name);
                 tmpNode.Add("active",mNPCList[key].mIsActive);
+                tmpNode.Add("pos_x", mNPCList[key].transform.localPosition.x);
+                tmpNode.Add("pos_y", mNPCList[key].transform.localPosition.y);
+                tmpNode.Add("pos_z", mNPCList[key].transform.localPosition.z);
+                tmpNode.Add("rotate_x", mNPCList[key].transform.localEulerAngles.x);
+                tmpNode.Add("rotate_y", mNPCList[key].transform.localEulerAngles.y);
+                tmpNode.Add("rotate_z", mNPCList[key].transform.localEulerAngles.z);
             }
             ((Dictionary<string, object>)tmpSend["results"]).Add("id", (string)tmpJson["results"]["id"]);
             ((Dictionary<string, object>)tmpSend["results"]).Add("npc", tmpNPCList);

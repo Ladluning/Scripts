@@ -15,11 +15,13 @@ public class Game_FSM_NPC_Base : Controller
 	protected virtual void OnEnable()
 	{
         this.RegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_NPC,OnHandleNPCUpdate);
+        this.RegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_TRIGGER_ENTER_NPC, OnHandleActiveNPC);
 	}
 
 	protected virtual void OnDisable()
 	{
         this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_NPC, OnHandleNPCUpdate);
+        this.UnRegistEvent(GameEvent.FightingEvent.EVENT_FIGHT_TRIGGER_ENTER_NPC, OnHandleActiveNPC);
 	}
 
 	protected virtual void Awake()
@@ -36,6 +38,13 @@ public class Game_FSM_NPC_Base : Controller
 		mUI = transform.FindChild ("UI");
 	}
 
+    public virtual void InitWithID(string ID)
+    {
+        mNPCID = ID;
+        gameObject.name = ID;
+    }
+
+
 	protected virtual object OnHandleNPCUpdate(object pSender)
 	{
         JsonData tmpJson = new JsonData(pSender);
@@ -44,6 +53,12 @@ public class Game_FSM_NPC_Base : Controller
 
 		return null;
 	}
+
+    protected object OnHandleActiveNPC(object pSender)
+    {
+        ActiveNPC();
+        return null;
+    }
 
     public virtual void ActiveNPC()
     {

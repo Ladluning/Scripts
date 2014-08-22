@@ -5,7 +5,7 @@ public class Game_Trigger_NPC : Controller {
 
 	SphereCollider mCollider;
 	bool IsEnable = false;
-
+    bool IsClick = false;
 	public GameObject mFather;
 
 	void Awake()
@@ -25,13 +25,16 @@ public class Game_Trigger_NPC : Controller {
 	
 	object OnHandleClickNPC(object pSender)
 	{
-		return null;
-		
-		if (IsEnable) 
-		{
-			IsEnable = false;
-			this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_TRIGGER_ENTER_NPC,mFather);	
-		}
+        if (pSender == mFather)
+        {
+            IsClick = true;
+        }
+        else
+        {
+            IsClick = false;
+        }
+        ActiveTrigger();
+        return null;
 	}
 	
 	void OnTriggerEnter(Collider Col)
@@ -40,6 +43,8 @@ public class Game_Trigger_NPC : Controller {
 		{
 			IsEnable = true;
 		}
+
+        ActiveTrigger();
 	}
 	
 	void OnTriggerExit(Collider Col)
@@ -47,7 +52,17 @@ public class Game_Trigger_NPC : Controller {
 		IsEnable = false;
 		this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_TRIGGER_EXIT_NPC,mFather);	
 	}
-	
+
+    void ActiveTrigger()
+    {
+        if (IsEnable && IsClick)
+        {
+            IsEnable = false;
+            IsClick = false;
+            this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_TRIGGER_ENTER_NPC, mFather);	
+        }
+    }
+
 	void OnDrawGizmos()
 	{
 		if (mCollider == null)

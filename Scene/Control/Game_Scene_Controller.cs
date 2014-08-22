@@ -33,7 +33,14 @@ public class Game_Scene_Controller : Controller
         JsonData tmpJson = new JsonData(pSender);
         for (int i = 0; i < tmpJson["results"]["npc"].Count; ++i)
         {
-            //Game_Resources_Pool.Singleton().GetUnusedActorWithID((string)tmpJson["results"]["npc"][i]["id"]);
+            GameObject tmpNPC = Instantiate(Game_Resources_Manager.Singleton().GetNPCWithID ((string)tmpJson["results"]["npc"][i]["id"])) as GameObject;
+            tmpNPC.SendMessage("InitWithID", (string)tmpJson["results"]["npc"][i]["id"]);
+            tmpNPC.transform.parent = transform;
+            Vector3 tmpPos = new Vector3((float)(tmpJson["results"]["pos_x"]), (float)(tmpJson["results"]["pos_y"]), (float)(tmpJson["results"]["pos_z"]));
+            Vector3 tmpRotate = new Vector3((float)(tmpJson["results"]["rotate_x"]), (float)(tmpJson["results"]["rotate_y"]), (float)(tmpJson["results"]["rotate_z"]));
+            tmpNPC.transform.localPosition = tmpPos;
+            tmpNPC.transform.localEulerAngles = tmpRotate;
+
         }
         return null;
     }

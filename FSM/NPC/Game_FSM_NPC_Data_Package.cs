@@ -50,6 +50,5 @@ public class Game_FSM_NPC_Data_Package : Game_Storage_Manager_Base
 
         return null;
 
-		return null;
 	}
 }

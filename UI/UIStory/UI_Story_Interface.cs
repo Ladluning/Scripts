@@ -5,18 +5,18 @@ using System.Collections.Generic;
 using System.Reflection;
 public class UI_Story_Interface: MonoBehaviour {
 
-	private Camera mStoryCamera;
+    private Camera mStoryCamer = null;
 	private List<GameObject> mObjectList = new List<GameObject>();
-	private UI_Story_Bubble_Manager mUIBubble;
-	private Transform mInitPrefabNode;
+    private UI_Story_Bubble_Manager mUIBubble = null;
+	private Transform mInitPrefabNode = null;
 
 
 
-    MethodInfo method_InitPrefab;
-    MethodInfo method_SetObjectAnimation;
-    MethodInfo method_SetObjectMove; 
-    MethodInfo method_SetShowActorBubble; 
-    MethodInfo method_SetNextStepTime;
+    MethodInfo method_InitPrefab = null;
+    MethodInfo method_SetObjectAnimation = null;
+    MethodInfo method_SetObjectMove = null;
+    MethodInfo method_SetShowActorBubble = null;
+    MethodInfo method_SetNextStepTime = null;
 
 	void Awake()
 	{
