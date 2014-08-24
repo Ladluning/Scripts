@@ -8,6 +8,8 @@ namespace Server
 		protected List<Server_Game_User> mConnectList = new List<Server_Game_User>();
 		public List<Struct_Item_Base> mItemList = new List<Struct_Item_Base>();
 		public List<Struct_Item_Equip> mEquipList = new List<Struct_Item_Equip>();
+		public int mPackageSize=20;
+		public int mPackageMaxSize=20;
 		public override void Init(Server_Game_NPC_Base Father)
 		{
 			base.Init(Father);
@@ -34,7 +36,7 @@ namespace Server
 		
 		object OnHandleRequestNPCData(object pSender)
 		{
-			JsonData tmpJson = (JsonData)pSender;
+			JsonData tmpJson = new JsonData(pSender);
 			if ((string)tmpJson ["results"] ["npc"] != mFather.mID)
 				return null;
 			
@@ -48,10 +50,12 @@ namespace Server
 			{
 				tmpItemData.Add(Server_Item_Serialize.ConvertItemToJson(mEquipList[i]));
 			}
-			((Dictionary<string, object>)tmpSend["results"]).Add("target", mFather.mID);
+			((Dictionary<string, object>)tmpSend["results"]).Add("id", mFather.mID);
+			((Dictionary<string, object>)tmpSend["results"]).Add("size",mPackageSize);
+			((Dictionary<string, object>)tmpSend["results"]).Add("maxSize", mPackageMaxSize);
 			((Dictionary<string, object>)tmpSend["results"]).Add("packages", tmpItemData);
 
-			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_REQUEST_NPC_DATA, tmpItemData);
+			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_NPC_PACKAGE, tmpSend);
 			
 			Server_Game_User tmpUser = mFather.mGameManager.GetServerUserWithID ((string)tmpJson["results"]["id"]);
 			if (tmpUser == null) 
@@ -105,7 +109,7 @@ namespace Server
 
 		object OnHandleBuyItem(object pSender)
 		{
-			JsonData tmpJson = (JsonData)pSender;
+			JsonData tmpJson = new JsonData(pSender);
 			
 			if ((string)tmpJson["results"]["npc"] != mFather.mID)
 				return null;
@@ -150,8 +154,13 @@ namespace Server
 			
 			tmpTarget.mCurrentCount -= tmpBuyCount;
 			
-			Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_Add_USER_STORAGE);
-			
+			Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_NPC_PACKAGE);
+			((Dictionary<string, object>)tmpSend["results"]).Add("id", mFather.mID);
+
+			List<object> tmpItemData = new List<object>();
+			tmpItemData.Add(Server_Item_Serialize.ConvertItemToJson(tmpTarget));
+			((Dictionary<string, object>)tmpSend["results"]).Add("packages", tmpItemData);
+			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_RECEIVE_UPDATE_NPC_PACKAGE,tmpSend);
 			return null;
 		}
 		

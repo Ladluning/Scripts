@@ -82,6 +82,7 @@ public class Game_Scene_Manager : Controller {
 		{
 			mCurrentActiveScene = Property.FatherObject;
 			mCurrentActiveScene.SetActive(true);
+			return;
 		}
 		
 		mCurrentActiveScene = Instantiate(Game_Resources_Manager.Singleton ().GetSceneWithID (SceneName)) as GameObject;
@@ -90,6 +91,7 @@ public class Game_Scene_Manager : Controller {
 		mCurrentActiveScene.transform.localPosition = Vector3.zero;
 		mCurrentActiveScene.transform.localRotation = Quaternion.identity;
 		mCurrentActiveScene.transform.localScale = Vector3.one;
+		mCurrentActiveScene.GetComponent<Game_Scene_Controller> ().Init ();
 		Property.ShowCurrent (mCurrentActiveScene);
 	}
 }

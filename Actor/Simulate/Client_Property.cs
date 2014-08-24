@@ -42,14 +42,14 @@ public class Client_Property : Controller,Client_Component
 
 	void Awake()
 	{
-		Dictionary<string, object> tmpSend = SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_DATA);
-		((Dictionary<string, object>)tmpSend["results"]).Add("id", Client_User.Singleton().GetID());
-		this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_DATA,tmpSend);
+
 	}
 
 	public void Init()
 	{
-		
+		Dictionary<string, object> tmpSend = SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_DATA);
+		((Dictionary<string, object>)tmpSend["results"]).Add("id", Client_User.Singleton().GetID());
+		this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_DATA,tmpSend);
 	}
 
     public int GetLevel()

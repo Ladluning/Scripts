@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 public class UI_Character_Package_Slot : UI_Package_Slot_Base 
 {
+
     protected override void OnClick()
     {
         Debug.Log("Click");

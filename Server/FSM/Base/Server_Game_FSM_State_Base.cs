@@ -59,7 +59,7 @@ namespace Server
                 ((Server_Game_Object_Base)mStateComonentList[types]).Init();
             }
 
-            Debug.Log("InitState");
+//            Debug.Log("InitState");
         }
         public virtual void OnEnter()
         {

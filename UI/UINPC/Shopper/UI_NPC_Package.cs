@@ -25,11 +25,13 @@ public class UI_NPC_Package : Controller {
 
 	public void InitPackageWithStroage(Game_Storage_Manager_Base Target)
     {
+		mFather = Target;
 		for (int i = 0; i <= mFather.mStorageSlotCount / (mPageSlotMaxCount + 1); i++)
         {
             UI_Character_Package_Page tmpPage = (Instantiate(mPagePrefab) as GameObject).GetComponent<UI_Character_Package_Page>();
             tmpPage.transform.parent = mInstanceNode;
             tmpPage.name = i + "";
+			tmpPage.transform.localPosition = Vector3.zero;
             tmpPage.transform.localScale = Vector3.one;
             tmpPage.transform.localEulerAngles = Vector3.zero;
 			tmpPage.InitWithStartSlotID(Target, i * mPageSlotMaxCount, mPageSlotMaxCount);

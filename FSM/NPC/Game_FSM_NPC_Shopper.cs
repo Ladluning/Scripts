@@ -10,6 +10,7 @@ public class Game_FSM_NPC_Shopper : Game_FSM_NPC_Base {
     public override void ActiveNPC()
     {
         base.ActiveNPC();
+
     }
 
     public override void InitWithID(string ID)
@@ -17,7 +18,9 @@ public class Game_FSM_NPC_Shopper : Game_FSM_NPC_Base {
         base.InitWithID(ID);
 
         mPackage = gameObject.AddComponent<Game_FSM_NPC_Data_Package>();
-
+		mPackage.mStorageSlotMaxCount = 20;
+		mPackage.mStorageSlotCount = 20;
+		mUIPackage.InitPackageWithStroage (mPackage);
 		//mPackage.InitPackageWithStroage ();
 	}
 

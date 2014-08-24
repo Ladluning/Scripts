@@ -50,5 +50,10 @@ namespace Server
 
             return tmpItem;
         }
+
+		public static long RandomItemID()
+		{
+			return DateTime.Now.Ticks + UnityEngine.Random.Range(0, 1000);
+		}
     }
 }

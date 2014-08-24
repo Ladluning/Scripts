@@ -20,14 +20,14 @@ public class Client_Package : Game_Storage_Manager_Base ,Client_Component
 
 	void Awake()
 	{
-		Dictionary<string, object> tmpSend = SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_STORAGE);
-		((Dictionary<string, object>)tmpSend["results"]).Add("id", Client_User.Singleton().GetID());
-		this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_STORAGE,tmpSend);
+
 	}
 
 	public void Init()
 	{
-
+		Dictionary<string, object> tmpSend = SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_STORAGE);
+		((Dictionary<string, object>)tmpSend["results"]).Add("id", Client_User.Singleton().GetID());
+		this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_STORAGE,tmpSend);
 	}
 
 	object OnHandleReceiveInitPackage(object pSender)

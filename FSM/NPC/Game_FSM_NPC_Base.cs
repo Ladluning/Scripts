@@ -7,8 +7,6 @@ public class Game_FSM_NPC_Base : Controller
 	public string mNPCID;
 
 	public bool mIsFadeCamera;
-	public Vector3 mFadePos;
-	public Vector3 mFadeRotate;
 	protected Camera mFadeCamera;
 	protected Transform mUI;
 	 
@@ -26,14 +24,7 @@ public class Game_FSM_NPC_Base : Controller
 
 	protected virtual void Awake()
 	{
-		foreach (Camera tmp in Camera.allCameras) 
-		{
-			if(tmp.tag == "NPC")
-			{
-				mFadeCamera = tmp;
-				return;
-			}
-		}
+		mFadeCamera = Game_Camera_Fade_Manager.Singleton ().GetCameraWithType (E_Camera_Type.NPC);
 
 		mUI = transform.FindChild ("UI");
 	}
@@ -56,6 +47,7 @@ public class Game_FSM_NPC_Base : Controller
 
     protected object OnHandleActiveNPC(object pSender)
     {
+//		Debug.Log ("Active");
         ActiveNPC();
         return null;
     }
@@ -63,16 +55,21 @@ public class Game_FSM_NPC_Base : Controller
     public virtual void ActiveNPC()
     {
         Dictionary<string, object> tmpSend = SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_REQUEST_NPC_DATA);
-        ((Dictionary<string, object>)tmpSend["results"]).Add("id", mNPCID);
-        this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_REQUEST_NPC_DATA, tmpSend);
+        ((Dictionary<string, object>)tmpSend["results"]).Add("id", Client_User.Singleton().GetID());
+		((Dictionary<string, object>)tmpSend["results"]).Add("npc", mNPCID);
+        this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_REQUEST_NPC_DATA, tmpSend);
 
 		if (mIsFadeCamera) 
 		{
-			this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_STOP_MAINCHARACTER,null);	
-			Game_Camera_Fade_Manager.Singleton().CrossFadeCamera(Camera.main,mFadeCamera);
+			this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_STOP_MAINCHARACTER,null);
+			mFadeCamera.transform.position = transform.FindChild("CameraPos").position;
+			mFadeCamera.transform.eulerAngles = transform.FindChild("CameraPos").eulerAngles;
+			Game_Camera_Fade_Manager.Singleton().CrossFadeCamera(E_Camera_Type.Main,E_Camera_Type.NPC);
 
 			if(mUI!=null)
+			{
 				mUI.gameObject.SetActive(true);
+			}
 		}
     }
 
@@ -81,7 +78,7 @@ public class Game_FSM_NPC_Base : Controller
 		if (mIsFadeCamera) 
 		{
 			this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_RESUME_MAINCHARACTER,null);	
-			Game_Camera_Fade_Manager.Singleton().CrossFadeCamera(mFadeCamera,Camera.main);
+			Game_Camera_Fade_Manager.Singleton().CrossFadeCamera(E_Camera_Type.NPC,E_Camera_Type.Main);
 			
 			if(mUI!=null)
 				mUI.gameObject.SetActive(false);

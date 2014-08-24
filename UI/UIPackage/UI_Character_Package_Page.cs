@@ -32,6 +32,7 @@ public class UI_Character_Package_Page : MonoBehaviour
             UI_Package_Slot_Base tmpSolt = (Instantiate(mSlotPrefab) as GameObject).GetComponent<UI_Package_Slot_Base>();
 			tmpSolt.transform.parent = mInstanceNode;
 			tmpSolt.name = mSlotPrefab.name+i;
+			tmpSolt.transform.localPosition = Vector3.zero;
 			tmpSolt.transform.localScale = Vector3.one;
 			tmpSolt.transform.localEulerAngles = Vector3.zero;
             tmpSolt.Init(mFather,i);

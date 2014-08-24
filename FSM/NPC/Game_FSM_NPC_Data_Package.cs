@@ -18,7 +18,7 @@ public class Game_FSM_NPC_Data_Package : Game_Storage_Manager_Base
 	protected object OnHandleUpdateNPCPackage(object pSender)
 	{
         JsonData tmpJson = new JsonData(pSender);
-
+		Debug.Log (MiniJSON.Json.Serialize(pSender));
         if ((string)tmpJson["results"]["id"] != gameObject.name)
             return null;
 

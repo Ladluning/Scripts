@@ -5,17 +5,23 @@ public class UI_Package_Slot_Base : UI_Slot_Base
 {
     //protected Game_Item_Base ;
     protected Game_Storage_Manager_Base mFather;
-
-
+	protected UILabel mNumberLabel;
+	protected override void Awake()
+	{
+		base.Awake ();
+		mNumberLabel = transform.FindChild("Label").GetComponent<UILabel>();
+	}
     public virtual void SetItem(Game_Item_Base Target)
     {
 		if (Target != null&&!mItemSprite.enabled)
         {
 			mItemSprite.enabled = true;
+			mNumberLabel.enabled = true;
 		}
 		else if(Target == null&&mItemSprite.enabled)
         {
 			mItemSprite.enabled = false;
+			mNumberLabel.enabled = false;
         }
     }
 
@@ -40,9 +46,17 @@ public class UI_Package_Slot_Base : UI_Slot_Base
 		if (mCurrentItem != tmp)
         {
 			mCurrentItem = tmp;
+
 			if(tmp!=null)
-			mItemSprite.material = Resources.Load("Item/Icon/" + tmp.mItemMainType+"_"+tmp.mItemSubType, typeof(Material)) as Material;
-        }
+			{
+				mItemSprite.material = Resources.Load("Item/Icon/" + tmp.mItemMainType+"_"+tmp.mItemSubType, typeof(Material)) as Material;
+        	}
+		}
+
+		if (tmp != null) 
+		{
+			mNumberLabel.text = tmp.mCurrentCount>1?tmp.mCurrentCount.ToString():"";		
+		}
 
 		if(this != UI_Character_Package_Cursor.Singleton().GetCurrentCursor())
 		{

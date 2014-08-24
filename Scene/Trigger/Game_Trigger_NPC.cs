@@ -39,7 +39,7 @@ public class Game_Trigger_NPC : Controller {
 	
 	void OnTriggerEnter(Collider Col)
 	{
-		if (Col.gameObject.tag == "Player") 
+		if (Col.gameObject.tag == "MainCharacter") 
 		{
 			IsEnable = true;
 		}

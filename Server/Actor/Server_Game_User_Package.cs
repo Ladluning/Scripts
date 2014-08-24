@@ -14,11 +14,13 @@ namespace Server
 		void OnEnable()
 		{
 			this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM,OnHandleSwipItem);
+			this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_STORAGE, OnHandleInitUserStorage);
 		}
 
 		void OnDisable()
 		{
 			this.UnRegistEvent (GameEvent.WebEvent.EVENT_WEB_SEND_SWIP_PSTORAGE_ITEM,OnHandleSwipItem);
+			this.UnRegistEvent (GameEvent.WebEvent.EVENT_WEB_SEND_INIT_USER_STORAGE, OnHandleInitUserStorage);
 		}
 
 		public override void Init (Server_Game_User Father)
@@ -28,6 +30,12 @@ namespace Server
 			mPackageSize = Father.mDataInfo.mStorageSlotCount;
 			mPackageMaxSize = Father.mDataInfo.mStorageSlotMaxCount;
 			InitPackage();
+		}
+
+		object OnHandleInitUserStorage(object pSender)
+		{
+			RequireStorageData ();
+			return null;
 		}
 
         public void InitPackage()
@@ -83,6 +91,7 @@ namespace Server
             if (tmpItem == null)
             {
                 Target.mItemPosID = pos;
+				Target.mItemID = Server_Item_Factory.RandomItemID();
                 mItemList.Add(Target);
                 AddStorageData(Target);
             }
@@ -156,7 +165,7 @@ namespace Server
 
         public virtual int GetEmptySlotWithStorage()
         {
-			for (int key = 100; key < mUser.mDataInfo.mStorageSlotMaxCount; key++)
+			for (int key = 100; key < mUser.mDataInfo.mStorageSlotMaxCount+100; key++)
             {
                 if (GetItemWithSlotPos(key) == null)
                     return key;
@@ -167,18 +176,21 @@ namespace Server
         void AddStorageData(Struct_Item_Base Target)
         {
 			Dictionary<string, object> tmpSend = SerializeItemData (Target,GameEvent.WebEvent.EVENT_WEB_SEND_Add_USER_STORAGE);
-			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_SEND_Add_USER_STORAGE,tmpSend);
+			((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
+			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_RECEIVE_Add_USER_STORAGE,tmpSend);
         }
 
         void RemoveStorageData(Struct_Item_Base Target)
         {
 			Dictionary<string, object> tmpSend = SerializeItemData (Target,GameEvent.WebEvent.EVENT_WEB_SEND_REMOVE_USER_STORAGE);
-			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_SEND_REMOVE_USER_STORAGE,tmpSend);
+			((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
+			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_RECEIVE_REMOVE_USER_STORAGE,tmpSend);
         }
 
 		void UpdateStorageData(Struct_Item_Base Target)
 		{
 			Dictionary<string, object> tmpSend = SerializeItemData (Target,GameEvent.WebEvent.EVENT_WEB_SEND_UPDATE_USER_STORAGE);
+			((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
 			this.SendEvent (GameEvent.WebEvent.EVENT_WEB_SEND_UPDATE_USER_STORAGE,tmpSend);
 		}
 
