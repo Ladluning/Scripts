@@ -12,6 +12,7 @@ namespace Server
 		private Server_Game_User_Visible mVisible;
 		private Server_Game_User_Talent mTalent;
 		private Server_Game_User_Buff mBuff;
+        private Server_Game_User_Task mTask;
 		public Server_Game_User_Property GetProperty()
 		{
 			return mProperty;
@@ -36,6 +37,10 @@ namespace Server
 		{
 			return mTalent;
 		}
+        public Server_Game_User_Task GetTask()
+        {
+            return mTask;
+        } 
         protected override void Awake()
         {
             base.Awake();

@@ -1,0 +1,27 @@
+luanet.load_assembly('mscorlib')
+luanet.load_assembly('Assembly-CSharp')
+luanet.load_assembly('UnityEngine')
+Vector3=luanet.import_type('UnityEngine.Vector3')
+
+function Start()
+  InitPrefab("One","Hero_0001",Vector3(4.7,0,30),Vector3(0,0,0))
+  SetObjectAnimation("One","Run")
+  SetObjectMove("One",Vector3(4.7,0,30),Vector3(7.85,0,39.5),4)
+  SetNextStepTime(4,0)
+end
+
+function MoveNext(CurrentStep)
+	
+	if CurrentStep == 0 then
+		SetObjectAnimation("One","Rest")
+		SetNextStepTime(0.2,1)
+	elseif CurrentStep == 1 then
+		SetShowActorBubble("One","这是哪里,我好想迷路了,该怎么办呢?",650,130)
+		SetNextStepTime(1.5,2)
+	elseif CurrentStep == 2 then
+		SetShowActorBubble("One","快来个人救救我吧,谁来帮帮我呢?",650,130)
+		SetNextStepTime(1.5,3)
+	end
+end
+
+

@@ -17,10 +17,15 @@ namespace Server
 			mManager = GameTools.FindComponentInHierarchy<Server_Game_Scene_Manager>(transform);
         }
 
+		public void Update()
+		{
+	
+		}
+
         public List<string> GetTargetList()
         {
-            mSearchList.Clear();
-
+			mSearchList.Clear();
+			
 			for(int i=0;i<mManager.mEnemyList.Count;++i)
 			{
 				if(GetIsSearch(mManager.mEnemyList[i].mActorType)&&GetIsInRange(mManager.mEnemyList[i].transform))
@@ -34,7 +39,8 @@ namespace Server
 				{
 					mSearchList.Add(mManager.mPlayerList[i].mID);
 				}
-			}
+			}	
+
             return mSearchList;
         }
 

@@ -43,7 +43,7 @@ namespace Server
 			}
 			GetComponent<Server_Game_Object_Move>().MoveToTarget(mMovePath, OnActionOver, 1);
             GetComponent<Server_Game_Object_Animation>().PlayAnimation("walk");
-            
+            //更新地图数据
 //			Debug.Log(mMovePath.Count+" Find Path Form" + TmpCurrentPos.x + " " + TmpCurrentPos.y + " To" + TmpTargetPos.x + " " + TmpTargetPos.y);
         }
 

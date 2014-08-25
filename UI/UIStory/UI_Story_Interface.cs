@@ -27,7 +27,7 @@ public class UI_Story_Interface: MonoBehaviour {
 		MethodInfo method_SetObjectAnimation = this.GetType().GetMethod("SetObjectAnimation", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string)}, null);
 		MethodInfo method_SetObjectMove = this.GetType().GetMethod("SetObjectMove", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(Vector3) ,typeof(Vector3),typeof(float)}, null);
 		MethodInfo method_SetShowActorBubble = this.GetType().GetMethod("SetShowActorBubble", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string),typeof(float),typeof(float)}, null);
-		MethodInfo method_SetNextStepTime = this.GetType().GetMethod("SetNextStepTime", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(float),typeof(int)}, null);
+		MethodInfo method_SetNextStepTime = this.GetType().GetMethod("SetNextStepTime", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string),typeof(float),typeof(int)}, null);
 
 	}
 
@@ -115,12 +115,12 @@ public class UI_Story_Interface: MonoBehaviour {
 		}
 	}
 
-	public void SetNextStepTime(float StepTime,int TargetStep)
+    public void SetNextStepTime(string FileName, float StepTime, int TargetStep)
 	{
-		StartCoroutine (NextStep(StepTime,TargetStep));
+        StartCoroutine(NextStep(FileName,StepTime, TargetStep));
 	}
 
-	IEnumerator NextStep(float WaitTime,int TargetStep)
+	IEnumerator NextStep(string FileName,float WaitTime,int TargetStep)
 	{
 		yield return new WaitForSeconds (WaitTime);
 		LuaManager.Singleton().GetFunction("Story_01.txt", "MoveNext").Call(TargetStep);
