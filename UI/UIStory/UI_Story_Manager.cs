@@ -38,6 +38,7 @@ public class UI_Story_Manager : Controller {
 
         mStoryInterface.StartStory((string)pSender);
         this.SendEvent(GameEvent.FightingEvent.EVENT_FIGHT_STOP_MAINCHARACTER, null);
+		Game_Camera_Fade_Manager.Singleton ().CrossFadeCamera (E_Camera_Type.Main, E_Camera_Type.Story);
         return null;
     }
 

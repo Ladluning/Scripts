@@ -25,6 +25,7 @@ namespace Server
         public string SceneID;
         public string MeshID;
 
+		public List<string> mStoryList = new List<string> ();
         public List<Struct_Item_Base> mItemList = new List<Struct_Item_Base>();
         public List<Struct_Item_Equip> mEquipList = new List<Struct_Item_Equip>();
 		public Struct_Game_User_Talent mTalent;

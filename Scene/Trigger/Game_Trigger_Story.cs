@@ -41,6 +41,7 @@ public class Game_Trigger_Story : Controller {
 
     protected virtual object OnHandleReceiveActiveStory(object pSender)
     {
+		Debug.Log (MiniJSON.Json.Serialize(pSender));
         JsonData tmpJson = new JsonData(pSender);
         if ((string)tmpJson["results"]["id"] != Client_User.Singleton().GetID() && (string)tmpJson["results"]["target"] != mTriggerID)
             return null;

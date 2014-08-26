@@ -12,6 +12,7 @@ namespace Server
 		private Server_Game_User_Visible mVisible;
 		private Server_Game_User_Talent mTalent;
 		private Server_Game_User_Buff mBuff;
+		private Server_Game_User_Story mStory;
         private Server_Game_User_Task mTask;
 		public Server_Game_User_Property GetProperty()
 		{
@@ -32,6 +33,10 @@ namespace Server
 		public Server_Game_User_Buff GetBuff()
 		{
 			return mBuff;
+		}
+		public Server_Game_User_Story GetStory()
+		{
+			return mStory;
 		}
 		public Server_Game_User_Talent GetTalent()
 		{
@@ -65,7 +70,8 @@ namespace Server
 			mComponentList.Add(mTalent);
 			mProperty = gameObject.AddComponent<Server_Game_User_Property>();
 			mComponentList.Add(mProperty);
-
+			mStory = gameObject.AddComponent<Server_Game_User_Story>();
+			mComponentList.Add (mStory);
 			for(int i=0;i<mComponentList.Count;++i)
 			{
 				mComponentList[i].Init(this);

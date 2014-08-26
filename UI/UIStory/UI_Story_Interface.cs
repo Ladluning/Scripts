@@ -17,17 +17,18 @@ public class UI_Story_Interface: MonoBehaviour {
     MethodInfo method_SetObjectMove = null;
     MethodInfo method_SetShowActorBubble = null;
     MethodInfo method_SetNextStepTime = null;
-
+	MethodInfo method_SetCameraPos = null;
 	void Awake()
 	{
 		mUIBubble = gameObject.GetComponentInChildren<UI_Story_Bubble_Manager>();
 		mInitPrefabNode = transform.FindChild ("UIStory_Prefab");
 
-		MethodInfo method_InitPrefab = this.GetType().GetMethod("InitPrefab", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string) ,typeof(Vector3),typeof(Vector3)}, null);
-		MethodInfo method_SetObjectAnimation = this.GetType().GetMethod("SetObjectAnimation", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string)}, null);
-		MethodInfo method_SetObjectMove = this.GetType().GetMethod("SetObjectMove", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(Vector3) ,typeof(Vector3),typeof(float)}, null);
-		MethodInfo method_SetShowActorBubble = this.GetType().GetMethod("SetShowActorBubble", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string),typeof(float),typeof(float)}, null);
-		MethodInfo method_SetNextStepTime = this.GetType().GetMethod("SetNextStepTime", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string),typeof(float),typeof(int)}, null);
+		method_InitPrefab = this.GetType().GetMethod("InitPrefab", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string) ,typeof(Vector3),typeof(Vector3)}, null);
+		method_SetObjectAnimation = this.GetType().GetMethod("SetObjectAnimation", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string)}, null);
+		method_SetObjectMove = this.GetType().GetMethod("SetObjectMove", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(Vector3) ,typeof(Vector3),typeof(float)}, null);
+		method_SetShowActorBubble = this.GetType().GetMethod("SetShowActorBubble", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string),typeof(float),typeof(float)}, null);
+		method_SetNextStepTime = this.GetType().GetMethod("SetNextStepTime", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string),typeof(float),typeof(int)}, null);
+		method_SetCameraPos = this.GetType().GetMethod("SetCameraPos", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(Vector3),typeof(Vector3)}, null);
 
 	}
 
@@ -40,6 +41,7 @@ public class UI_Story_Interface: MonoBehaviour {
         LuaManager.Singleton().RegistFunction(FileName, "SetObjectMove", this, method_SetObjectMove);
         LuaManager.Singleton().RegistFunction(FileName, "SetShowActorBubble", this, method_SetShowActorBubble);
         LuaManager.Singleton().RegistFunction(FileName, "SetNextStepTime", this, method_SetNextStepTime);
+		LuaManager.Singleton().RegistFunction(FileName, "SetCameraPos", this, method_SetCameraPos);
     }
 
     public void StartStory(string FileName)
@@ -54,7 +56,8 @@ public class UI_Story_Interface: MonoBehaviour {
 
 	public void SetCameraPos(Vector3 Pos,Vector3 Rotate)
 	{
-
+		Game_Camera_Fade_Manager.Singleton ().GetCameraWithType (E_Camera_Type.Story).transform.position = Pos;
+		Game_Camera_Fade_Manager.Singleton ().GetCameraWithType (E_Camera_Type.Story).transform.eulerAngles = Rotate;
 	}
 
 	public void SetCameraMove(Vector3 StartPos,Vector3 EndPos,float MoveSpeed)
@@ -64,7 +67,7 @@ public class UI_Story_Interface: MonoBehaviour {
 
 	public void InitPrefab(string name,string MeshID,Vector3 Pos,Vector3 Rotate)
 	{
-		GameObject tmpTarget = Instantiate( Resources.Load("Prefab/Hero/"+MeshID)) as GameObject;
+		GameObject tmpTarget = Instantiate( Resources.Load("Story/"+MeshID)) as GameObject;
 		tmpTarget.name = name;
 		tmpTarget.transform.position = Pos;
 		tmpTarget.transform.localEulerAngles = Rotate;

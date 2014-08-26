@@ -18,6 +18,13 @@ namespace Server
             this.UnRegistEvent(GameEvent.WebEvent.EVENT_WEB_SEND_ACTIVE_STORY, OnHandleActiveStory);
         }
 
+		public override void Init (Server_Game_User Father)
+		{
+			base.Init (Father);
+			
+			mActiveStoryList = Father.mDataInfo.mStoryList;
+		}
+
         object OnHandleActiveStory(object pSender)
         {
             JsonData tmpJson = new JsonData(pSender);
