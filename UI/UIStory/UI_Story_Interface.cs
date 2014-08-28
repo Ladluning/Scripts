@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-public class UI_Story_Interface: MonoBehaviour {
+public class UI_Story_Interface: Controller {
 
     private Camera mStoryCamer = null;
 	private List<GameObject> mObjectList = new List<GameObject>();
@@ -18,18 +18,19 @@ public class UI_Story_Interface: MonoBehaviour {
     MethodInfo method_SetShowActorBubble = null;
     MethodInfo method_SetNextStepTime = null;
 	MethodInfo method_SetCameraPos = null;
+	MethodInfo method_SetStoryEnd = null;
 	void Awake()
 	{
 		mUIBubble = gameObject.GetComponentInChildren<UI_Story_Bubble_Manager>();
 		mInitPrefabNode = transform.FindChild ("UIStory_Prefab");
 
 		method_InitPrefab = this.GetType().GetMethod("InitPrefab", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string) ,typeof(Vector3),typeof(Vector3)}, null);
-		method_SetObjectAnimation = this.GetType().GetMethod("SetObjectAnimation", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string)}, null);
+		method_SetObjectAnimation = this.GetType().GetMethod("SetObjectAnimation", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string),typeof(bool)}, null);
 		method_SetObjectMove = this.GetType().GetMethod("SetObjectMove", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(Vector3) ,typeof(Vector3),typeof(float)}, null);
 		method_SetShowActorBubble = this.GetType().GetMethod("SetShowActorBubble", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(string),typeof(float),typeof(float)}, null);
 		method_SetNextStepTime = this.GetType().GetMethod("SetNextStepTime", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(string),typeof(float),typeof(int)}, null);
 		method_SetCameraPos = this.GetType().GetMethod("SetCameraPos", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] { typeof(Vector3),typeof(Vector3)}, null);
-
+		method_SetStoryEnd = this.GetType().GetMethod("SetStoryEnd", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance, null, new Type[] {}, null);
 	}
 
     public void RegistFile(string FileName)
@@ -42,10 +43,12 @@ public class UI_Story_Interface: MonoBehaviour {
         LuaManager.Singleton().RegistFunction(FileName, "SetShowActorBubble", this, method_SetShowActorBubble);
         LuaManager.Singleton().RegistFunction(FileName, "SetNextStepTime", this, method_SetNextStepTime);
 		LuaManager.Singleton().RegistFunction(FileName, "SetCameraPos", this, method_SetCameraPos);
+		LuaManager.Singleton().RegistFunction(FileName, "SetStoryEnd", this, method_SetStoryEnd);
     }
 
     public void StartStory(string FileName)
     {
+		Debug.Log (LuaManager.Singleton().GetFunction(FileName, "Start"));
         LuaManager.Singleton().GetFunction(FileName, "Start").Call();
     }
 
@@ -79,13 +82,17 @@ public class UI_Story_Interface: MonoBehaviour {
 
 	}
 
-	public void SetObjectAnimation(string name,string AniName)
+	public void SetObjectAnimation(string name,string AniName,bool IsLoop)
 	{
 		GameObject tmpTarget = GetTargetWithName (name);
-		if(tmpTarget == null||(tmpTarget!=null&&tmpTarget.animation==null))
+		if(tmpTarget == null||(tmpTarget!=null&&tmpTarget.GetComponentInChildren<Animation>()==null))
 			return; 
-
-		tmpTarget.animation.CrossFade (AniName,0.1f);
+		Debug.Log (tmpTarget.GetComponentInChildren<Animation> ().GetClip (AniName));
+		//if (IsLoop)
+		//	tmpTarget.GetComponentInChildren<Animation> ().GetClip (AniName).wrapMode = WrapMode.Loop;
+		//else
+		//	tmpTarget.GetComponentInChildren<Animation> ().GetClip (AniName).wrapMode = WrapMode.Once;
+		tmpTarget.GetComponentInChildren<Animation>().CrossFade (AniName,0.1f);
 	}
 
 	public void SetObjectMove(string name,Vector3 StartPos,Vector3 EndPos,float MoveSpeed)
@@ -126,7 +133,7 @@ public class UI_Story_Interface: MonoBehaviour {
 	IEnumerator NextStep(string FileName,float WaitTime,int TargetStep)
 	{
 		yield return new WaitForSeconds (WaitTime);
-		LuaManager.Singleton().GetFunction("Story_01.txt", "MoveNext").Call(TargetStep);
+		LuaManager.Singleton().GetFunction(FileName, "MoveNext").Call(TargetStep);
 	}
 
 	public void SetShowStoryUI(string IconID)
@@ -141,7 +148,17 @@ public class UI_Story_Interface: MonoBehaviour {
 
 	public void SetStoryEnd()
 	{
+		StopAllCoroutines ();
+		ClearAllObject ();
+		this.SendEvent (GameEvent.FightingEvent.EVENT_FIGHT_END_STORY,null);
+	}
 
+	public void ClearAllObject()
+	{
+		for (int i=0; i<mObjectList.Count; ++i) 
+		{
+			Destroy(mObjectList[i]);
+		}
 	}
 
 	GameObject GetTargetWithName(string Name)

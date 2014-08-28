@@ -6,18 +6,11 @@ public class LookAtCamera : MonoBehaviour
 	Camera cacheMainCamera;
 	Transform mMainCameraTrans;
 	Transform mTrans;
+	public E_Camera_Type mCameraType;
 	// Use this for initialization
 	void Start () 
 	{
-		foreach (Camera tmp in Camera.allCameras) 
-		{
-			if((tmp.cullingMask&gameObject.layer)!=0)
-			{
-				Debug.Log ("Init Bubble Camera Success:"+tmp.name);
-				cacheMainCamera = Camera.main;
-				break;
-			}
-		}
+		cacheMainCamera = Game_Camera_Fade_Manager.Singleton ().GetCameraWithType (mCameraType);
 
 		if(cacheMainCamera== null)
 			Debug.LogError("!Init Bubble Camera Error:"+gameObject.name);

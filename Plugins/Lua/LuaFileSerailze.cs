@@ -21,6 +21,7 @@ public class LuaFileSerailze : MonoBehaviour {
 		byte[] tmpArray = Encoding.UTF8.GetBytes (TargetAsset.ToString());//Encoding.GetEncoding ("gb2312").GetBytes (TargetAsset.ToString());
 		tmp.Write(tmpArray, 0,tmpArray.Length); 
 		tmp.Close ();
+		Debug.Log ("Serailze Success");
 	}  
 }
 #endif

@@ -1,0 +1,36 @@
+luanet.load_assembly('mscorlib')
+luanet.load_assembly('Assembly-CSharp')
+luanet.load_assembly('UnityEngine')
+Vector3=luanet.import_type('UnityEngine.Vector3')
+
+function Start()
+  InitPrefab("One","Mesh_0001",Vector3(171.5,6.9,88),Vector3(0,23.3,0))
+  InitPrefab("Two","Mesh_0010",Vector3(172.4,6.57,89.94),Vector3(0,-158.44,0))
+  SetObjectAnimation("One","attack",true)
+  SetObjectAnimation("Two","panic",true)
+  SetCameraPos(Vector3(174.34,10.1,87.1),Vector3(35.1,-55,0))
+  SetNextStepTime("Story_0001_0001.txt",3,0)
+end
+
+
+function MoveNext(CurrentStep)
+	
+	if CurrentStep == 0 then
+		SetObjectAnimation("One","idle",true)
+		SetObjectAnimation("Two","idle",true)
+		SetNextStepTime("Story_0001_0001.txt",0.2,1)
+	elseif CurrentStep == 1 then
+		SetShowActorBubble("One","打死你,大魔王!!",420,130)
+		SetNextStepTime("Story_0001_0001.txt",1.2,2)
+	elseif CurrentStep == 2 then
+		SetShowActorBubble("Two","休想",170,130)
+		SetNextStepTime("Story_0001_0001.txt",1,3)
+	elseif CurrentStep == 3 then
+		SetShowActorBubble("Two","让我吃了你吧,我吃了你,我就无敌了",890,130)
+		SetNextStepTime("Story_0001_0001.txt",1.5,4)
+	elseif CurrentStep == 4 then
+		SetShowActorBubble("One","为了美好的明天,勇士加入我的行列吧",920,130)
+		SetNextStepTime("Story_0001_0001.txt",1.5,5)
+	end
+end
+

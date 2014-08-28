@@ -38,7 +38,7 @@ namespace Server
 
             if (!mActiveStoryList.Contains((string)tmpJson["results"]["target"]))
             {
-                mActiveStoryList.Add((string)tmpJson["results"]["target"]);
+                //mActiveStoryList.Add((string)tmpJson["results"]["target"]);
 
                 ((Dictionary<string, object>)tmpSend["results"]).Add("success", true);
                 this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_ACTIVE_STORY, tmpSend);

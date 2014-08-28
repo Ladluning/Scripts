@@ -60,7 +60,7 @@ public class Game_ObjectAction : Game_ObjectBase
 		Vector3 tmpLast = mCharacterController.transform.localPosition;
 		mCharacterController.Move (moveDirection);
 
-		if ((mCharacterController.transform.localPosition-tmpLast).sqrMagnitude<0.001f) 
+		if ((mCharacterController.transform.localPosition-tmpLast).sqrMagnitude<0.00001f) 
 		{
 			IsStartMove = false;
 			if(mCallBack!=null)mCallBack(false);
