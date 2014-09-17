@@ -11,6 +11,7 @@ public class UI_Character_Package_Cursor : Controller {
 	}
 	void Awake()
 	{
+		Debug.Log ("Init Character");
 		m_pInterface = this;
 
 		if (uiCamera == null)

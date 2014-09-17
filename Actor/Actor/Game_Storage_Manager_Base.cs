@@ -37,6 +37,7 @@ public class Game_Storage_Manager_Base : Controller
 		if(TmpItem == null)
 		{
       		mItemList.Add(Target);
+//			Debug.Log("Add Item"+mItemList.Count);
 		}
 		else 
 		{

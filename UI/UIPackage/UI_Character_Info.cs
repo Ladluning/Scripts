@@ -33,8 +33,8 @@ public class UI_Character_Info : Controller {
 
     void Start()
     {
-		Invoke ("InitPackage",5f);
-
+		//Invoke ("InitPackage",5f);
+		InitPackage ();
     }
 
     public UI_Package_Slot_Base GetSlotWithPos(int Pos)

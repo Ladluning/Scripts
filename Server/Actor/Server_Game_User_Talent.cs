@@ -8,6 +8,14 @@ namespace Server
 	{
 		public Server_Struct_Data_Talent mTalentData;
 
+		void OnEnable()
+		{
+			this.RegistEvent (GameEvent.WebEvent.EVENT_WEB_SEND_INIT_TALENT_DATA,OnHandleInitTalentData);
+		}
+		void OnDisable()
+		{
+			this.UnRegistEvent (GameEvent.WebEvent.EVENT_WEB_SEND_INIT_TALENT_DATA,OnHandleInitTalentData);
+		}
 		public override void Init (Server_Game_User Father)
 		{
 			base.Init (Father);
@@ -18,17 +26,22 @@ namespace Server
 			ApplyTalent(mTalentData);
 		}
 
+		object OnHandleInitTalentData(object pSender)
+		{
+			RequireTalentData ();
+			return null;
+		}
 		public Dictionary<string, object> RequireTalentData()
 		{
 			Dictionary<string, object> tmpSend = SerializeTalentData();
-			((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
-			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_TALENT_DATA, tmpSend);
+			//((Dictionary<string, object>)tmpSend["results"]).Add("id", mUser.mID);
+			this.SendEvent(GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_TALENT_DATA, tmpSend);
 			return tmpSend;
 		}
 
 		Dictionary<string, object> SerializeTalentData()
 		{
-			Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_TALENT_DATA);
+			Dictionary<string, object> tmpSend = ServerCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_RECEIVE_INIT_TALENT_DATA);
 			List<object> tmpData = new List<object>();
             for (int i = 0; i < mTalentData.Talent.Count; ++i)
 			{

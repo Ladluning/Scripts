@@ -30,7 +30,7 @@ public class Game_Input_Manager : Controller {
 	protected Transform mCenterTransform;
 	protected Transform mTargetTransform;
 
-	bool mIsStop = true;
+	bool mIsStop = false;
 	//protected Camera mMainCamera;
 	private static Game_Input_Manager m_pInterface;
 	public  static Game_Input_Manager Singleton()
@@ -40,7 +40,7 @@ public class Game_Input_Manager : Controller {
 
 	void OnEnable()
 	{
-		FingerGestures.OnTap += OnFingerTap;
+		FingerGestures.OnTap += OnFingerTap;//
 		FingerGestures.OnDragBegin += OnDragBegin;
 		FingerGestures.OnDragMove += OnDragMove;
 		FingerGestures.OnDragEnd += OnDragEnd;
@@ -107,7 +107,8 @@ public class Game_Input_Manager : Controller {
 	
 	void OnFingerTap(Vector2 fingerPos, int tapCount) 
 	{
-		if (mIsStop)
+		Debug.Log (UICamera.touchCount);
+		if ((UICamera.touchCount>0  && !mIsMakeInput)||mIsStop)
 			return;
 
 		Vector3 HitPos;
@@ -125,7 +126,8 @@ public class Game_Input_Manager : Controller {
 
 	void OnDragBegin(Vector2 fingerPos, Vector2 startPos)
 	{
-		if ((UICamera.touchCount>0 && !mIsMakeInput&&!mIsStop))
+		Debug.Log (UICamera.touchCount);
+		if ((UICamera.touchCount>0  && !mIsMakeInput)||mIsStop)
 			return;
 		
 		MakeInput (true);
@@ -133,7 +135,7 @@ public class Game_Input_Manager : Controller {
 
 	void OnDragMove(Vector2 fingerPos, Vector2 delta)
 	{
-		if ((UICamera.touchCount>0  || !mIsMakeInput)&&!mIsStop)
+		if ((UICamera.touchCount>0  && !mIsMakeInput)||mIsStop)
 			return;
 		OnFingerTap (fingerPos,1);
 //
@@ -152,14 +154,14 @@ public class Game_Input_Manager : Controller {
 
 	void OnPinchBegin(Vector2 fingerPos1, Vector2 fingerPos2)
 	{
-		if ((UICamera.touchCount>0  && !mIsMakeInput&&!mIsStop))
+		if ((UICamera.touchCount>0  && !mIsMakeInput)||mIsStop)
 			return;
 		
 		MakeInput (true);
 	}
 	void OnPinch(Vector2 fingerPos1, Vector2 fingerPos2, float delta)
 	{
-		if ((UICamera.touchCount>0  && !mIsMakeInput&&!mIsStop))
+		if ((UICamera.touchCount>0  && !mIsMakeInput)||mIsStop)
 			return;
 		
 		mTargetPinch += delta*mPinchSpeed;
@@ -170,14 +172,14 @@ public class Game_Input_Manager : Controller {
 	}
 	void OnSwipeBegin(Vector2 fingerPos1, Vector2 fingerPos2)
 	{
-		if ((UICamera.touchCount>0  && !mIsMakeInput&&!mIsStop))
+		if ((UICamera.touchCount>0  && !mIsMakeInput)||mIsStop)
 			return;
 		
 		MakeInput (true);
 	}
 	void OnSwipe(Vector2 fingerPos1, Vector2 fingerPos2, float rotationAngleDelta)
 	{
-		if ((UICamera.touchCount>0  && !mIsMakeInput&&!mIsStop))
+		if ((UICamera.touchCount>0  && !mIsMakeInput)||mIsStop)
 			return;
 		
 		mTargetAngle += rotationAngleDelta * mSwipeSpeed;

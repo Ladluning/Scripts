@@ -54,6 +54,19 @@ namespace Server
 		public int ActiveCount;
 		public List<Server_Struct_Data_Talent_Node> Child = new List<Server_Struct_Data_Talent_Node>();
 
+		public Server_Struct_Data_Talent_Node()
+		{
+				
+		}
+
+		public Server_Struct_Data_Talent_Node(string ID,bool IsUse,int DefaultCount,int Max,int Active)
+		{
+			NodeID = ID;
+			Avaliable = IsUse;
+			CurrentCount = DefaultCount;
+			MaxCount = Max;
+			ActiveCount = Active;	
+		}
 		public Server_Struct_Data_Talent_Node Copy()
 		{
 			Server_Struct_Data_Talent_Node tmpData = new Server_Struct_Data_Talent_Node();
@@ -95,15 +108,68 @@ namespace Server
 	}
 	public class Server_Data_Talent : MonoBehaviour
 	{
-		public Server_Struct_Data_Talent mTalentData;
+		protected Server_Struct_Data_Talent mTalentData = new Server_Struct_Data_Talent();
 
 		Server_Data_Talent()
 		{
 			//if(m_pInterface == null)
 			m_pInterface = this;
+			InitData ();
 			//object tmpData = null;
 			//Server_Data_IO.Singleton().LoadData(Application.persistentDataPath + "/Config_Talent.xml",ref tmpData,typeof(Server_Struct_Data_Talent));
 			//Init mTalentData;
+		}
+
+		void Awake()
+		{
+
+		}
+
+		void InitData()
+		{
+			Server_Struct_Data_Talent_Page newPage = new Server_Struct_Data_Talent_Page ();
+			newPage.PageName = "Talent";
+			newPage.PageID = "0";
+
+			Server_Struct_Data_Talent_Node tmp_100 = new Server_Struct_Data_Talent_Node ("100",true,0,5,3);
+
+			Server_Struct_Data_Talent_Node tmp_90 = new Server_Struct_Data_Talent_Node ("90",true,0,5,3);
+			Server_Struct_Data_Talent_Node tmp_91 = new Server_Struct_Data_Talent_Node ("91",true,0,5,3);
+
+			Server_Struct_Data_Talent_Node tmp_80 = new Server_Struct_Data_Talent_Node ("80",true,0,5,3);
+			Server_Struct_Data_Talent_Node tmp_81 = new Server_Struct_Data_Talent_Node ("81",true,0,5,3);
+
+			Server_Struct_Data_Talent_Node tmp_70 = new Server_Struct_Data_Talent_Node ("70",true,0,5,3);
+			Server_Struct_Data_Talent_Node tmp_71 = new Server_Struct_Data_Talent_Node ("71",true,0,5,3);
+
+			Server_Struct_Data_Talent_Node tmp_60 = new Server_Struct_Data_Talent_Node ("60",true,0,10,5);
+			Server_Struct_Data_Talent_Node tmp_61 = new Server_Struct_Data_Talent_Node ("61",true,0,10,5);
+			Server_Struct_Data_Talent_Node tmp_62 = new Server_Struct_Data_Talent_Node ("62",true,0,10,5);
+
+			Server_Struct_Data_Talent_Node tmp_50 = new Server_Struct_Data_Talent_Node ("50",true,0,10,5);
+			Server_Struct_Data_Talent_Node tmp_51 = new Server_Struct_Data_Talent_Node ("51",true,0,10,5);
+
+			tmp_100.Child.Add (tmp_90);
+			tmp_100.Child.Add (tmp_91);
+
+			tmp_90.Child.Add (tmp_80);
+			tmp_91.Child.Add (tmp_81);
+
+			tmp_80.Child.Add (tmp_70);
+			tmp_81.Child.Add (tmp_71);
+
+			tmp_70.Child.Add (tmp_60);
+			tmp_70.Child.Add (tmp_61);
+
+			tmp_71.Child.Add (tmp_61);
+			tmp_71.Child.Add (tmp_62);
+
+			tmp_60.Child.Add (tmp_50);
+			tmp_62.Child.Add (tmp_51);
+
+			newPage.Top = tmp_100;
+
+			mTalentData.Talent.Add (newPage);
 		}
 
 		static Server_Data_Talent m_pInterface;

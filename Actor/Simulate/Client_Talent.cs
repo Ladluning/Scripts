@@ -26,18 +26,19 @@ public class Client_Talent : Controller,Client_Component
 
     void Awake()
     {
-        Dictionary<string, object> tmpSend = SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_TALENT_DATA);
-        ((Dictionary<string, object>)tmpSend["results"]).Add("id", Client_User.Singleton().GetID());
-        this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_TALENT_DATA, tmpSend);
+
     }
 
     public void Init()
     {
-
+		Dictionary<string, object> tmpSend = SendCommand.NewCommand(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_TALENT_DATA);
+		((Dictionary<string, object>)tmpSend["results"]).Add("id", Client_User.Singleton().GetID());
+		this.SendEvent(GameEvent.WebEvent.EVENT_WEB_SEND_INIT_TALENT_DATA, tmpSend);
     }
 
     object OnHandleInitTalentData(object pSender)
     {
+		Debug.Log (MiniJSON.Json.Serialize(pSender));
         JsonData tmpJson = new JsonData(pSender);
         if ((string)tmpJson["results"]["id"] != gameObject.name)
             return null;
@@ -49,14 +50,15 @@ public class Client_Talent : Controller,Client_Component
             {
                 tmpNode = new Struct_Data_Talent_Node();
                 tmpNode.NodeID = (string)tmpJson["results"]["talent"][i]["id"];
+				mTalentList.Add(tmpNode);
             }
 
             tmpNode.CurrentCount = (int)tmpJson["results"]["talent"][i]["count"];
             tmpNode.Avaliable = (bool)tmpJson["results"]["talent"][i]["active"];
             tmpNode.MaxCount = (int)tmpJson["results"]["talent"][i]["max"];
-            mTalentList.Add(tmpNode);
+            
         }
-
+		Debug.Log (mTalentList.Count+" "+tmpJson["results"]["talent"].Count);
         return null;
     }
 

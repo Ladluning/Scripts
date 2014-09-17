@@ -55,6 +55,7 @@ public class UI_Package_Slot_Base : UI_Slot_Base
 
 		if (tmp != null) 
 		{
+//			Debug.Log(mSlotPosID);
 			mNumberLabel.text = tmp.mCurrentCount>1?tmp.mCurrentCount.ToString():"";		
 		}
 

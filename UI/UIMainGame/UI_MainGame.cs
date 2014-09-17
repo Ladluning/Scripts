@@ -8,5 +8,15 @@ public class UI_MainGame : UIBase {
     public UISlider mEXPSlider;
     public UILabel mEXPLabel;
 
+	public void OnHandleClickHead()
+	{
+		Debug.Log ("AAAAAAAAAAAAA");
+		this.SendEvent (GameEvent.UIEvent.EVENT_UI_SHOW_UI,"UICharacterInfo");
+	}
 
+	public void OnHandleClickTalent()
+	{
+
+		this.SendEvent (GameEvent.UIEvent.EVENT_UI_SHOW_UI,"UITalentInfo");
+	}
 }
