@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Server_Game_Talent_Base : MonoBehaviour {
+public class Server_Game_Talent_Base {
 
-	// Use this for initialization
-	void Start () {
+	public virtual void UpdateTalent () 
+	{
 	
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public virtual void ApplyTalent()
+	{
+
+	}
+
+	public virtual void ClearTalent()
+	{
+
 	}
 }

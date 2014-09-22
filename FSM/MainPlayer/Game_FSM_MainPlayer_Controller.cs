@@ -88,6 +88,15 @@ public class Game_FSM_MainPlayer_Controller: Game_FSM_Controller {
 		return null;
 	}
 
+	object OnHandleClickSkill(object pSender)
+	{
+		return null;
+	}
+
+	object OnHandleClickEnemy(object pSender)
+	{
+		return null;
+	}
 
     object OnHandleStopMaincharacter(object pSender)
     {
